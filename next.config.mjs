@@ -1,13 +1,13 @@
-// next.config.js
-/** @type {import('next').NextConfig} */
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
-  output: "export",  // Enables static exports, which GitHub Pages requires.
-  basePath: "/francyaraujo",  // Replace with your repository name.
-  assetPrefix: "/francyaraujo/", // Ensures static assets are correctly referenced.
+  output: "export",
   images: {
-    loader: "akamai",  // Use Akamai image loader for static exports.
-    path: "",  // Ensures image paths are relative.
+    loader: "akamai",
+    path: "",
   },
+  assetPrefix: "./",
 };
 
-module.exports = nextConfig;
+export default nextConfig;
