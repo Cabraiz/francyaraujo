@@ -1,19 +1,20 @@
 import Head from 'next/head';
+import { prefix } from '../utils/prefix';  // Import the prefix utility
 
 const Home = () => {
   return (
     <div>
       <Head>
         <meta charSet="utf-8" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={`${prefix}/favicon.ico`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta
           name="description"
           content="F R A N C Y A R A Ú J O - Empreendedor(a). ✂️ Hair stylist - Visagismo. 🔸 Especialista em Ruivo - Pioneira em Fortaleza. 📍 Rua Ana Bilhar 1167 Meireles."
         />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href={`${prefix}/apple-touch-icon.png`} />
+        <link rel="manifest" href={`${prefix}/manifest.json`} />
         <title>Francy Araujo - Cenário Da Beleza</title>
         <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -71,7 +72,7 @@ const Home = () => {
         <div className="container">
           <h2 className="text-danger">Especialistas em Cabelos Vermelhos</h2>
           <p className="lead">Transformando Cabelos em Obras de Arte</p>
-          <img src="/images/woman.webp" alt="Cabelo vermelho" className="img-fluid rounded shadow" />
+          <img src={`${prefix}/images/woman.webp`} alt="Cabelo vermelho" className="img-fluid rounded shadow" />
         </div>
       </section>
 
