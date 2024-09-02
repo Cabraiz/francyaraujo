@@ -39,12 +39,12 @@ const Home = () => {
                     return s.replace(/~and~/g, "&");
                   }).join("?");
 
-                  // Check if the URL has already been processed to avoid infinite loop
+                  // Adding a condition to avoid reprocessing the URL
                   if (!l.pathname.includes("processed")) {
                     window.history.replaceState(
                       null,
                       null,
-                      l.pathname.replace("processed", "") + decoded + l.hash
+                      l.pathname + decoded + l.hash + "?processed=true"
                     );
                   }
                 }
