@@ -35,18 +35,18 @@ const Home = () => {
             __html: `
               (function (l) {
                 if (l.search[1] === "/") {
-                  var decoded = l.search
-                    .slice(1)
-                    .split("&")
-                    .map(function (s) {
-                      return s.replace(/~and~/g, "&");
-                    })
-                    .join("?");
-                  window.history.replaceState(
-                    null,
-                    null,
-                    l.pathname.slice(0, -1) + decoded + l.hash
-                  );
+                  var decoded = l.search.slice(1).split("&").map(function (s) {
+                    return s.replace(/~and~/g, "&");
+                  }).join("?");
+
+                  // Check if the URL has already been processed to avoid infinite loop
+                  if (!l.pathname.includes("processed")) {
+                    window.history.replaceState(
+                      null,
+                      null,
+                      l.pathname.replace("processed", "") + decoded + l.hash
+                    );
+                  }
                 }
               })(window.location);
             `,
