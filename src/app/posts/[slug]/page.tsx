@@ -9,11 +9,14 @@ import Header from "@/app/_components/header";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 
-export default async function Post({ params }: Params) {
-  const post = getPostBySlug(params.slug);
+export default async function Post({ params }: { params: { slug: string } }) {
+  const fields = ["slug", "content", "date"]; // Defina os campos que você precisa
+  const config = { basePath: "/your/base/path" }; // Defina o basePath conforme necessário
 
-  if (!post) {
-    return notFound();
+  const post = getPostBySlug(params.slug, fields, config);
+
+  if (!post || !post.title || !post.ogImage || !post.ogImage.url) {
+    return notFound(); // Ou qualquer outra forma de tratamento de erro
   }
 
   const content = await markdownToHtml(post.content || "");
@@ -43,11 +46,14 @@ type Params = {
   };
 };
 
-export function generateMetadata({ params }: Params): Metadata {
-  const post = getPostBySlug(params.slug);
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata | undefined {
+  const fields = ["title", "description", "ogImage"]; // Certifique-se de incluir todos os campos necessários
+  const config = { basePath: "/your/base/path" }; // Defina o basePath conforme necessário
 
-  if (!post) {
-    return notFound();
+  const post = getPostBySlug(params.slug, fields, config);
+
+  if (!post || !post.title || !post.ogImage || !post.ogImage.url) {
+    return notFound(); // Ou qualquer outra forma de tratamento de erro
   }
 
   const title = `${post.title} | Next.js Blog Example with ${CMS_NAME}`;
@@ -56,10 +62,11 @@ export function generateMetadata({ params }: Params): Metadata {
     title,
     openGraph: {
       title,
-      images: [post.ogImage.url],
+      images: post.ogImage?.url ? [post.ogImage.url] : [], // Verifique se `ogImage.url` existe
     },
   };
 }
+
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
