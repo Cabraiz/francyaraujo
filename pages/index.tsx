@@ -11,7 +11,7 @@ const Home = () => {
         <meta name="theme-color" content="#000000" />
         <meta
           name="description"
-          content="F R A N C Y A R A Ú J O - Empreendedor(a). ✂️ Hair stylist - Visagismo. 🔸 Especialista em Ruivo - Pioneira em Fortaleza. 📍 Rua Ana Bilhar 1167 Meireles."
+          content="F R A N C Y A R A Ú J O. ✂️ Hair stylist - Visagismo. 🔸 Especialista em Ruivo - Pioneira em Fortaleza. 📍 Rua Ana Bilhar 1167 Meireles."
         />
         <link rel="apple-touch-icon" href={`${prefix}/apple-touch-icon.png`} />
         <link rel="manifest" href={`${prefix}/manifest.json`} />
