@@ -28,31 +28,6 @@ const Home = () => {
           crossOrigin="anonymous"
         ></script>
 
-        {/* Start Single Page Apps for GitHub Pages */}
-        <script
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function (l) {
-                if (l.search[1] === "/") {
-                  var decoded = l.search.slice(1).split("&").map(function (s) {
-                    return s.replace(/~and~/g, "&");
-                  }).join("?");
-
-                  // Adding a condition to avoid reprocessing the URL
-                  if (!l.pathname.includes("processed")) {
-                    window.history.replaceState(
-                      null,
-                      null,
-                      l.pathname + decoded + l.hash + "?processed=true"
-                    );
-                  }
-                }
-              })(window.location);
-            `,
-          }}
-        />
-        {/* End Single Page Apps for GitHub Pages */}
       </Head>
 
       <header className="bg-dark text-white py-3">
