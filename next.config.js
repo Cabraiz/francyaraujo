@@ -9,7 +9,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // other Next.js config options
+  trailingSlash: true, 
 };
 
 module.exports = nextConfig;
