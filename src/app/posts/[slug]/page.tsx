@@ -47,8 +47,8 @@ type Params = {
 };
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata | undefined {
-  const fields = ["title", "description", "ogImage"]; // Certifique-se de incluir todos os campos necessários
-  const config = { basePath: "/your/base/path" }; // Defina o basePath conforme necessário
+  const fields = ["title", "description", "ogImage"];
+  const config = { basePath: "/your/base/path" };
 
   const post = getPostBySlug(params.slug, fields, config);
 
@@ -56,13 +56,17 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     return notFound(); // Ou qualquer outra forma de tratamento de erro
   }
 
-  const title = `${post.title} | Next.js Blog Example with ${CMS_NAME}`;
+  const title = "Francy Araujo - Cenário Da Beleza";
+  const description = "F R A N C Y A R A Ú J O - Empreendedor(a). ✂️ Hair stylist - Visagismo. 🔸 Especialista em Ruivo - Pioneira em Fortaleza. 📍 Rua Ana Bilhar 1167 Meireles.";
 
   return {
+    metadataBase: new URL('https:francyaraujo.com'),
     title,
+    description,
     openGraph: {
       title,
-      images: post.ogImage?.url ? [post.ogImage.url] : [], // Verifique se `ogImage.url` existe
+      description,
+      images: post.ogImage?.url ? [post.ogImage.url] : [],
     },
   };
 }
