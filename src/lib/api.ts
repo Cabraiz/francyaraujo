@@ -9,7 +9,7 @@ export async function getPostSlugs(): Promise<string[]> {
   return fs.readdirSync(postsDirectory);
 }
 
-export async function getPostBySlug(slug: string, fields: string[]): Promise<Post | null> {
+export async function getPostBySlug(slug: string, fields: string[], basePath?: string): Promise<Post | null> {
   const realSlug = slug.replace(/\.md$/, "");
   const fullPath = join(postsDirectory, `${realSlug}.md`);
 
@@ -35,13 +35,17 @@ export async function getPostBySlug(slug: string, fields: string[]): Promise<Pos
       items[field] = content;
     } else if (data.hasOwnProperty(field)) {
       items[field] = data[field];
-    } else {
-      console.warn(`Field "${field}" not found in post "${realSlug}"`);
     }
   });
 
+  // Substitua o caminho da imagem com o basePath, se disponível
+  if (items.coverImage && basePath) {
+    items.coverImage = `${basePath}${items.coverImage}`;
+  }
+
   return items as Post;
 }
+
 
 export async function getAllPosts(): Promise<Post[]> {
   const slugs = await getPostSlugs();
