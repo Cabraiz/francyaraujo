@@ -1,7 +1,5 @@
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllPosts, getPostBySlug } from "@/lib/api";
-import { CMS_NAME } from "@/lib/constants";
+import { getPostBySlug } from "@/lib/api";
 import markdownToHtml from "@/lib/markdownToHtml";
 import Alert from "@/app/_components/alert";
 import Container from "@/app/_components/container";
@@ -10,10 +8,10 @@ import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 
 export default async function Post({ params }: { params: { slug: string } }) {
-  const fields = ["slug", "content", "date"]; // Defina os campos que você precisa
+  const fields = ["slug", "content", "date", "title", "coverImage", "ogImage"];
 
-  // Remove o `config`, agora passamos apenas `params.slug` e `fields`
-  const post = getPostBySlug(params.slug, fields);
+  // Torna o getPostBySlug assíncrono
+  const post = await getPostBySlug(params.slug, fields);
 
   if (!post || !post.title || !post.ogImage || !post.ogImage.url) {
     return notFound(); // Ou qualquer outra forma de tratamento de erro
@@ -38,43 +36,4 @@ export default async function Post({ params }: { params: { slug: string } }) {
       </Container>
     </main>
   );
-}
-
-type Params = {
-  params: {
-    slug: string;
-  };
-};
-
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata | undefined {
-  const fields = ["title", "description", "ogImage"];
-
-  // Remove o `config` aqui também, passe apenas `params.slug` e `fields`
-  const post = getPostBySlug(params.slug, fields);
-
-  if (!post || !post.title || !post.ogImage || !post.ogImage.url) {
-    return notFound(); // Ou qualquer outra forma de tratamento de erro
-  }
-
-  const title = "Francy Araujo - Cenário Da Beleza";
-  const description = "F R A N C Y A R A Ú J O - Empreendedor(a). ✂️ Hair stylist - Visagismo. 🔸 Especialista em Ruivo - Pioneira em Fortaleza. 📍 Rua Ana Bilhar 1167 Meireles.";
-
-  return {
-    metadataBase: new URL('https://francyaraujo.com'),
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      images: post.ogImage?.url ? [post.ogImage.url] : [],
-    },
-  };
-}
-
-export async function generateStaticParams() {
-  const posts = getAllPosts();
-
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
 }

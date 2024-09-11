@@ -10,11 +10,14 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: `Next.js Blog Example with ${CMS_NAME}`,
-  description: `A statically generated blog example using Next.js and ${CMS_NAME}.`,
+  title: "Francy Araujo - Cenário Da Beleza",
+  description: "F R A N C Y A R A Ú J O - Empreendedor(a). Hair stylist. Especialista em Ruivo - Pioneira em Fortaleza.",
   openGraph: {
     images: [HOME_OG_IMAGE_URL],
   },
+  // Meta tags adicionais para SEO
+  keywords: ["blog", "beleza", "hairstylist", "ruivo", "Fortaleza"],
+  robots: "index, follow",
 };
 
 export default function RootLayout({
@@ -55,6 +58,9 @@ export default function RootLayout({
           content="/favicon/browserconfig.xml"
         />
         <meta name="theme-color" content="#000" />
+        <meta name="keywords" content="blog, beleza, hairstylist, ruivo, Fortaleza" />
+        <meta name="author" content="Francy Araujo" />
+        <meta name="robots" content="index, follow" />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       </head>
       <body
