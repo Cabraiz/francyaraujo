@@ -29,7 +29,7 @@ export async function getPostBySlug(slug: string, fields: string[]): Promise<Pos
   }
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
+  const { data, content } = matter(fileContents); // Parseia o conteúdo Markdown
 
   if (typeof data !== 'object' || typeof content !== 'string') {
     console.error('Invalid file structure:', { data, content });
@@ -42,9 +42,10 @@ export async function getPostBySlug(slug: string, fields: string[]): Promise<Pos
     if (field === "slug") {
       items[field] = realSlug;
     } else if (field === "content") {
-      items[field] = content;
+      // Substitui ${basePath} no conteúdo
+      items[field] = content.replace(/\${basePath}/g, basePath);
     } else if (data.hasOwnProperty(field)) {
-      // Substitui manualmente ${basePath} pelos valores corretos de basePath
+      // Substitui ${basePath} nas propriedades do frontmatter
       if (typeof data[field] === 'string') {
         items[field] = data[field].replace(/\${basePath}/g, basePath);
       } else {
@@ -53,13 +54,14 @@ export async function getPostBySlug(slug: string, fields: string[]): Promise<Pos
     }
   });
 
-  // Aqui aplicamos o basePath manualmente ao coverImage, se não for feito automaticamente
-  if (items.coverImage) {
+  // Verifique se o basePath já está presente no coverImage para evitar duplicação
+  if (items.coverImage && !items.coverImage.startsWith(basePath)) {
     items.coverImage = `${basePath}${items.coverImage.startsWith('/') ? items.coverImage : `/${items.coverImage}`}`;
   }
 
   return items as Post;
 }
+
 
 // Função para obter todos os posts
 export async function getAllPosts(): Promise<Post[]> {
