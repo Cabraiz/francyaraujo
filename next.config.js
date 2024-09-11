@@ -8,9 +8,6 @@ const nextConfig = {
   distDir: "dist",
   images: {
     unoptimized: true,
-  },
-  publicRuntimeConfig: {
-    basePath: isProd ? '/francyaraujo' : ''
   }
 };
 

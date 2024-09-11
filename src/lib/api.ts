@@ -2,13 +2,6 @@ import { Post } from "@/interfaces/post";
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
-import getConfig from "next/config"; // Importa o getConfig para obter o basePath
-
-// Captura o basePath do publicRuntimeConfig
-const { publicRuntimeConfig } = getConfig();
-const basePath = publicRuntimeConfig?.basePath || ""; // Garante que o basePath está definido corretamente
-
-console.log("BasePath:", basePath); // Verifica se o basePath está correto
 
 // Define o diretório dos posts
 const postsDirectory = join(process.cwd(), "_posts");
@@ -42,21 +35,14 @@ export async function getPostBySlug(slug: string, fields: string[]): Promise<Pos
     if (field === "slug") {
       items[field] = realSlug;
     } else if (field === "content") {
-      // Substitui ${basePath} no conteúdo apenas se necessário
-      items[field] = content.replace(/\${basePath}/g, ""); // Não aplique o basePath manualmente
+      items[field] = content;
     } else if (data.hasOwnProperty(field)) {
-      // Substitui ${basePath} nas propriedades do frontmatter
-      if (typeof data[field] === 'string') {
-        items[field] = data[field].replace(/\${basePath}/g, ""); // Remova manualmente
-      } else {
-        items[field] = data[field];
-      }
+      items[field] = data[field];
     }
   });
 
   return items as Post;
 }
-
 
 // Função para obter todos os posts
 export async function getAllPosts(): Promise<Post[]> {
