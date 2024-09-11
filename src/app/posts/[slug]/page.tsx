@@ -11,9 +11,9 @@ import { PostHeader } from "@/app/_components/post-header";
 
 export default async function Post({ params }: { params: { slug: string } }) {
   const fields = ["slug", "content", "date"]; // Defina os campos que você precisa
-  const config = { basePath: "/your/base/path" }; // Defina o basePath conforme necessário
 
-  const post = getPostBySlug(params.slug, fields, config);
+  // Remove o `config`, agora passamos apenas `params.slug` e `fields`
+  const post = getPostBySlug(params.slug, fields);
 
   if (!post || !post.title || !post.ogImage || !post.ogImage.url) {
     return notFound(); // Ou qualquer outra forma de tratamento de erro
@@ -48,9 +48,9 @@ type Params = {
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata | undefined {
   const fields = ["title", "description", "ogImage"];
-  const config = { basePath: "/your/base/path" };
 
-  const post = getPostBySlug(params.slug, fields, config);
+  // Remove o `config` aqui também, passe apenas `params.slug` e `fields`
+  const post = getPostBySlug(params.slug, fields);
 
   if (!post || !post.title || !post.ogImage || !post.ogImage.url) {
     return notFound(); // Ou qualquer outra forma de tratamento de erro
@@ -60,7 +60,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const description = "F R A N C Y A R A Ú J O - Empreendedor(a). ✂️ Hair stylist - Visagismo. 🔸 Especialista em Ruivo - Pioneira em Fortaleza. 📍 Rua Ana Bilhar 1167 Meireles.";
 
   return {
-    metadataBase: new URL('https:francyaraujo.com'),
+    metadataBase: new URL('https://francyaraujo.com'),
     title,
     description,
     openGraph: {
@@ -70,7 +70,6 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     },
   };
 }
-
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
