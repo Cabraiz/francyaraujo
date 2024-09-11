@@ -41,11 +41,11 @@ export function getPostBySlug(slug: string, fields: string[], config: { basePath
     }
   });
   
-  // Substitui o basePath apenas no coverImage
+  // Substitui o basePath corretamente no coverImage
   try {
     if (items.coverImage) {
-      // Adiciona o basePath manualmente ao caminho da imagem
-      items.coverImage = `${config.basePath}${items.coverImage}`;
+      // Remove a string literal ${basePath} e garante que o basePath real seja usado
+      items.coverImage = config.basePath + items.coverImage;
     }
   } catch (error) {
     console.error('Error during JSON manipulation:', error);
@@ -70,4 +70,3 @@ export function getAllPosts(): Post[] {
 
   return posts;
 }
-
