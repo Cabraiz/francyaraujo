@@ -35,17 +35,18 @@ export function getPostBySlug(slug: string, fields: string[], config: { basePath
     } else if (field === "content") {
       items[field] = content;
     } else if (data.hasOwnProperty(field)) {
-      items[field] = data[field];
+      items[field] = data[field];  // Extrai o coverImage
     } else {
       console.warn(`Field "${field}" not found in post "${realSlug}"`);
     }
   });
-
-  // Converte o objeto para string e faz substituições baseadas no basePath
+  
+  // Substitui o basePath apenas no coverImage
   try {
-    let itemsStr = JSON.stringify(items);
-    itemsStr = itemsStr.replace(/\$\{basePath\}/g, config.basePath);
-    items = JSON.parse(itemsStr);
+    if (items.coverImage) {
+      // Adiciona o basePath manualmente ao caminho da imagem
+      items.coverImage = `${config.basePath}${items.coverImage}`;
+    }
   } catch (error) {
     console.error('Error during JSON manipulation:', error);
     return null;
@@ -56,16 +57,17 @@ export function getPostBySlug(slug: string, fields: string[], config: { basePath
 
 export function getAllPosts(): Post[] {
   const slugs = getPostSlugs();
-  const fields = ["slug", "content", "date"];
+  const fields = ["slug", "content", "date", "coverImage"];  // Adiciona coverImage aqui
   const config = { basePath: "/francyaraujo" };
 
   const posts = slugs
     .map((slug) => getPostBySlug(slug, fields, config))
-    .filter((post): post is Post => post !== null && post !== undefined) // Filtra valores null ou undefined
+    .filter((post): post is Post => post !== null && post !== undefined)
     .sort((post1, post2) => {
-      if (!post1 || !post2) return 0; // Garante que post1 e post2 existem antes de comparar
+      if (!post1 || !post2) return 0;
       return post1.date > post2.date ? -1 : 1;
     });
 
   return posts;
 }
+
