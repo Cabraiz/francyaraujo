@@ -4,15 +4,21 @@ import matter from "gray-matter";
 import { join } from "path";
 import getConfig from "next/config"; // Importa o getConfig para obter o basePath
 
+// Captura o basePath do publicRuntimeConfig
 const { publicRuntimeConfig } = getConfig();
 const basePath = publicRuntimeConfig?.basePath || ""; // Garante que o basePath está definido corretamente
 
+console.log("BasePath:", basePath); // Verifica se o basePath está correto
+
+// Define o diretório dos posts
 const postsDirectory = join(process.cwd(), "_posts");
 
+// Função para obter todos os slugs dos posts
 export async function getPostSlugs(): Promise<string[]> {
   return fs.readdirSync(postsDirectory);
 }
 
+// Função para obter os dados de um post específico pelo slug
 export async function getPostBySlug(slug: string, fields: string[]): Promise<Post | null> {
   const realSlug = slug.replace(/\.md$/, "");
   const fullPath = join(postsDirectory, `${realSlug}.md`);
@@ -38,21 +44,24 @@ export async function getPostBySlug(slug: string, fields: string[]): Promise<Pos
     } else if (field === "content") {
       items[field] = content;
     } else if (data.hasOwnProperty(field)) {
-      items[field] = data[field];
+      // Substitui manualmente ${basePath} pelos valores corretos de basePath
+      if (typeof data[field] === 'string') {
+        items[field] = data[field].replace(/\${basePath}/g, basePath);
+      } else {
+        items[field] = data[field];
+      }
     }
   });
 
-  // Garante que o basePath está sendo aplicado corretamente ao coverImage
+  // Aqui aplicamos o basePath manualmente ao coverImage, se não for feito automaticamente
   if (items.coverImage) {
-    items.coverImage = `${basePath}${items.coverImage}`;
+    items.coverImage = `${basePath}${items.coverImage.startsWith('/') ? items.coverImage : `/${items.coverImage}`}`;
   }
 
   return items as Post;
 }
 
-
-
-
+// Função para obter todos os posts
 export async function getAllPosts(): Promise<Post[]> {
   const slugs = await getPostSlugs();
   const fields = ["slug", "content", "date", "coverImage", "title", "ogImage"];
