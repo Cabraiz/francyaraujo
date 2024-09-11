@@ -5,11 +5,9 @@ import { MoreStories } from "@/app/_components/more-stories";
 import { getAllPosts } from "@/lib/api";
 
 export default async function Index() {
-  // Aguarde a resolução da Promise retornada por getAllPosts
-  const allPosts = await getAllPosts();
+  const allPosts = await getAllPosts(); // Aguarde a resolução da Promise
 
   const heroPost = allPosts[0];
-
   const morePosts = allPosts.slice(1);
 
   return (
@@ -18,7 +16,7 @@ export default async function Index() {
         <Intro />
         <HeroPost
           title={heroPost.title}
-          coverImage={heroPost.coverImage}
+          coverImage={heroPost.coverImage} // Já com o basePath aplicado
           date={heroPost.date}
           author={heroPost.author}
           slug={heroPost.slug}

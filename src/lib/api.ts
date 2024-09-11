@@ -2,6 +2,10 @@ import { Post } from "@/interfaces/post";
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig(); // Obtém o basePath do next.config.js
+const basePath = publicRuntimeConfig.basePath || ""; // BasePath padrão
 
 const postsDirectory = join(process.cwd(), "_posts");
 
@@ -9,7 +13,7 @@ export async function getPostSlugs(): Promise<string[]> {
   return fs.readdirSync(postsDirectory);
 }
 
-export async function getPostBySlug(slug: string, fields: string[], basePath?: string): Promise<Post | null> {
+export async function getPostBySlug(slug: string, fields: string[]): Promise<Post | null> {
   const realSlug = slug.replace(/\.md$/, "");
   const fullPath = join(postsDirectory, `${realSlug}.md`);
 
@@ -38,13 +42,14 @@ export async function getPostBySlug(slug: string, fields: string[], basePath?: s
     }
   });
 
-  // Substitua o caminho da imagem com o basePath, se disponível
-  if (items.coverImage && basePath) {
+  // Se o campo coverImage existir, aplica o basePath corretamente
+  if (items.coverImage) {
     items.coverImage = `${basePath}${items.coverImage}`;
   }
 
   return items as Post;
 }
+
 
 
 export async function getAllPosts(): Promise<Post[]> {
