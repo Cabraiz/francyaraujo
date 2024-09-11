@@ -42,22 +42,17 @@ export async function getPostBySlug(slug: string, fields: string[]): Promise<Pos
     if (field === "slug") {
       items[field] = realSlug;
     } else if (field === "content") {
-      // Substitui ${basePath} no conteúdo
-      items[field] = content.replace(/\${basePath}/g, basePath);
+      // Substitui ${basePath} no conteúdo apenas se necessário
+      items[field] = content.replace(/\${basePath}/g, ""); // Não aplique o basePath manualmente
     } else if (data.hasOwnProperty(field)) {
       // Substitui ${basePath} nas propriedades do frontmatter
       if (typeof data[field] === 'string') {
-        items[field] = data[field].replace(/\${basePath}/g, basePath);
+        items[field] = data[field].replace(/\${basePath}/g, ""); // Remova manualmente
       } else {
         items[field] = data[field];
       }
     }
   });
-
-  // Verifique se o basePath já está presente no coverImage para evitar duplicação
-  if (items.coverImage && !items.coverImage.startsWith(basePath)) {
-    items.coverImage = `${basePath}${items.coverImage.startsWith('/') ? items.coverImage : `/${items.coverImage}`}`;
-  }
 
   return items as Post;
 }
