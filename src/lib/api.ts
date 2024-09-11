@@ -2,10 +2,10 @@ import { Post } from "@/interfaces/post";
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
-import getConfig from "next/config";
+import getConfig from "next/config"; // Importa o getConfig para obter o basePath
 
-const { publicRuntimeConfig } = getConfig(); // Obtém o basePath do next.config.js
-const basePath = publicRuntimeConfig.basePath || ""; // BasePath padrão
+const { publicRuntimeConfig } = getConfig();
+const basePath = publicRuntimeConfig?.basePath || ""; // Garante que o basePath está definido corretamente
 
 const postsDirectory = join(process.cwd(), "_posts");
 
@@ -42,13 +42,14 @@ export async function getPostBySlug(slug: string, fields: string[]): Promise<Pos
     }
   });
 
-  // Se o campo coverImage existir, aplica o basePath corretamente
+  // Garante que o basePath está sendo aplicado corretamente ao coverImage
   if (items.coverImage) {
     items.coverImage = `${basePath}${items.coverImage}`;
   }
 
   return items as Post;
 }
+
 
 
 
