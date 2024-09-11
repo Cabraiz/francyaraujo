@@ -44,14 +44,14 @@ export function getPostBySlug(slug: string, fields: string[], config: { basePath
   // Substitui o basePath corretamente no coverImage
   try {
     if (items.coverImage) {
-      // Remove a string literal ${basePath} e garante que o basePath real seja usado
-      items.coverImage = config.basePath + items.coverImage;
+      // Verifica se o coverImage não contém ${basePath} e faz a concatenação correta
+      items.coverImage = `${config.basePath}${items.coverImage}`;
     }
   } catch (error) {
     console.error('Error during JSON manipulation:', error);
     return null;
   }
-
+  
   return items as Post;
 }
 
