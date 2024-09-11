@@ -11,7 +11,7 @@ export function getPostSlugs(): string[] {
 }
 
 // Busca um post específico pelo slug e retorna os campos necessários
-export function getPostBySlug(slug: string, fields: string[], config: { basePath: string }): Post | null {
+export function getPostBySlug(slug: string, fields: string[]): Post | null {
   const realSlug = slug.replace(/\.md$/, ""); // Remove a extensão .md
   const fullPath = join(postsDirectory, `${realSlug}.md`); // Obtém o caminho completo do arquivo .md
 
@@ -46,17 +46,6 @@ export function getPostBySlug(slug: string, fields: string[], config: { basePath
     }
   });
   
-  // Faz a concatenação do basePath corretamente no coverImage
-  try {
-    if (items.coverImage && !items.coverImage.includes(config.basePath)) {
-      // Concatenamos o basePath apenas se o coverImage não já inclui
-      items.coverImage = `${config.basePath}${items.coverImage}`;
-    }
-  } catch (error) {
-    console.error('Error processing coverImage:', error);
-    return null;
-  }
-  
   return items as Post;
 }
 
@@ -64,10 +53,9 @@ export function getPostBySlug(slug: string, fields: string[], config: { basePath
 export function getAllPosts(): Post[] {
   const slugs = getPostSlugs();
   const fields = ["slug", "content", "date", "coverImage"];  // Campos solicitados
-  const config = { basePath: "/francyaraujo" }; // Define o basePath
 
   const posts = slugs
-    .map((slug) => getPostBySlug(slug, fields, config)) // Mapeia e obtém cada post
+    .map((slug) => getPostBySlug(slug, fields)) // Mapeia e obtém cada post
     .filter((post): post is Post => post !== null && post !== undefined) // Filtra posts válidos
     .sort((post1, post2) => {
       return post1.date > post2.date ? -1 : 1; // Ordena por data
