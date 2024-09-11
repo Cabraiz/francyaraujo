@@ -1,39 +1,38 @@
+import { getAllPosts, getPostBySlug } from "@/lib/api";
 import { notFound } from "next/navigation";
-import { getPostBySlug } from "@/lib/api";
 import markdownToHtml from "@/lib/markdownToHtml";
-import Alert from "@/app/_components/alert";
-import Container from "@/app/_components/container";
-import Header from "@/app/_components/header";
-import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
+import { PostBody } from "@/app/_components/post-body";
+import Container from "@/app/_components/container";
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts(); // Obtém todos os posts
+
+  return posts.map((post) => ({
+    slug: post.slug, // Retorna os slugs para gerar as páginas estáticas
+  }));
+}
 
 export default async function Post({ params }: { params: { slug: string } }) {
-  const fields = ["slug", "content", "date", "title", "coverImage", "ogImage"];
+  const post = await getPostBySlug(params.slug, ["slug", "title", "content", "coverImage", "date", "author"]);
 
-  // Torna o getPostBySlug assíncrono
-  const post = await getPostBySlug(params.slug, fields);
-
-  if (!post || !post.title || !post.ogImage || !post.ogImage.url) {
-    return notFound(); // Ou qualquer outra forma de tratamento de erro
+  if (!post) {
+    return notFound();
   }
 
   const content = await markdownToHtml(post.content || "");
 
   return (
-    <main>
-      <Alert preview={post.preview} />
-      <Container>
-        <Header />
-        <article className="mb-32">
-          <PostHeader
-            title={post.title}
-            coverImage={post.coverImage}
-            date={post.date}
-            author={post.author}
-          />
-          <PostBody content={content} />
-        </article>
-      </Container>
-    </main>
+    <Container>
+      <article className="mb-32">
+        <PostHeader
+          title={post.title}
+          coverImage={post.coverImage}
+          date={post.date}
+          author={post.author}
+        />
+        <PostBody content={content} />
+      </article>
+    </Container>
   );
 }
