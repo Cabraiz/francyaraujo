@@ -5,13 +5,13 @@ import { MoreStories } from "@/app/_components/more-stories";
 import { getAllPosts } from "@/lib/api";
 
 export default async function Index() {
-  const allPosts = await getAllPosts(); // Aguarde a resolução da Promise
+  const allPosts = await getAllPosts();
 
   const heroPost = allPosts[0];
   const morePosts = allPosts.slice(1);
 
   return (
-    <main>
+    <main className="flex flex-col justify-start min-h-screen">
       <Container>
         <Intro />
         <HeroPost

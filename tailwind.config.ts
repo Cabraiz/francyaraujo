@@ -20,6 +20,8 @@ const config: Config = {
         "accent-7": "#333",
         success: "#0070f3",
         cyan: "#79FFE1",
+        redLight: '#ff6f61',
+        redDark: '#8B0000',
       },
       spacing: {
         28: "7rem",
