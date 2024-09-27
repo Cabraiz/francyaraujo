@@ -20,9 +20,9 @@ export function Intro() {
       {/* Espaçamento de 10% para criar o efeito de conteúdo ao redor */}
       <div className="flex flex-col md:w-[50%] justify-center items-end md:items-end space-y-4">
         
-        {/* Texto de contato */}
+        {/* Texto de contato com maior espaçamento entre linhas */}
         <motion.h4
-          className="text-base md:text-lg text-black font-light z-10 text-right"
+          className="text-base md:text-lg text-black font-light leading-relaxed z-10 text-right" // Ajuste no espaçamento entre as linhas
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
