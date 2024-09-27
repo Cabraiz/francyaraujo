@@ -1,3 +1,66 @@
+/* globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Classe personalizada para o efeito de vidro com brilho */
+.bg-glass {
+  @apply backdrop-blur-xl bg-glass-bg border border-glass-border;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, 0.2); /* Fundo translúcido */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Animação de brilho */
+.bg-glass::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 70%);
+  animation: shimmer 3s infinite;
+  z-index: 1;
+}
+
+/* Animação para o brilho */
+@keyframes shimmer {
+  0% {
+    transform: rotate(0deg) translate(-50%, -50%);
+  }
+  100% {
+    transform: rotate(360deg) translate(-50%, -50%);
+  }
+}
+
+/* Animação de reflexo dinâmico */
+.bg-glass::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: reflection 10s infinite alternate; /* Define o looping contínuo de ida e volta */
+  z-index: 2;
+  mix-blend-mode: overlay;
+}
+
+/* Animação para o reflexo */
+@keyframes reflection {
+    0% {
+      left: -100%;
+    }
+    50% {
+      left: 100%;
+    }
+    100% {
+      left: -100%; /* Reflexo volta ao ponto inicial para criar o looping contínuo */
+  }
+}

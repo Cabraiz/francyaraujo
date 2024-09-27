@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export function Intro() {
   return (
-    <section className="relative flex flex-col justify-around items-center text-center md:text-left md:flex-row mt-16 mb-16 md:mb-12 p-10 bg-gradient-to-r from-orange-500 to-orange-500 rounded-xl shadow-2xl overflow-hidden">
+    <section className="relative flex flex-col justify-around items-center text-center md:text-left md:flex-row mt-16 mb-16 md:mb-12 p-10 bg-glass rounded-xl shadow-2xl overflow-hidden">
       
       {/* Nome FrancyAraujo com largura ajustada e centrado */}
       <motion.h1

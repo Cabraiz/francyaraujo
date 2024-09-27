@@ -22,6 +22,8 @@ const config: Config = {
         cyan: "#79FFE1",
         redLight: '#ff6f61',
         redDark: '#8B0000',
+        'glass-bg': 'rgba(255, 255, 255, 0.1)',  // Cor do fundo para efeito de vidro
+        'glass-border': 'rgba(255, 255, 255, 0.2)',  // Cor da borda para efeito de vidro
       },
       spacing: {
         28: "7rem",
@@ -39,8 +41,16 @@ const config: Config = {
         sm: "0 5px 10px rgba(0, 0, 0, 0.12)",
         md: "0 8px 30px rgba(0, 0, 0, 0.12)",
       },
+      backdropBlur: {
+        xs: '2px',
+        sm: '4px',
+        md: '6px',
+        lg: '8px',
+        xl: '10px',  // Nível de desfoque para o efeito de vidro
+      },
     },
   },
   plugins: [],
 };
+
 export default config;
