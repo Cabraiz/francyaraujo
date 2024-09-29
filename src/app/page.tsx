@@ -12,8 +12,9 @@ export default async function Index() {
 
   return (
     <main className="flex flex-col justify-start min-h-screen">
+      {/* Intro fora do Container para ocupar toda a largura */}
+      <Intro />
       <Container>
-        <Intro />
         <HeroPost
           title={heroPost.title}
           coverImage={heroPost.coverImage}
