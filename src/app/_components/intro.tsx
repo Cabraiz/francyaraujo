@@ -30,7 +30,7 @@ export function Intro() {
   return (
     <section
       className="relative flex flex-col md:flex-row justify-around items-center text-center md:text-left mb-8 md:mb-12 p-6 md:p-10 bg-glass shadow-2xl overflow-hidden border-b-2 border-black"
-      style={{ height: sectionHeight }} // Define a altura com base no estado
+      style={{ height: sectionHeight, borderRadius: '0' }} // Adiciona ou ajusta o borderRadius para 0
     >
       {/* Nome FrancyAraujo ajustado para diferentes telas */}
       <motion.h1
