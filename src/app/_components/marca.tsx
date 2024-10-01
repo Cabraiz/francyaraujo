@@ -8,14 +8,14 @@ type Props = {
 
 const MarcaImage = ({ title, src, slug }: Props) => {
   return (
-    <div style={{ maxWidth: '150px', width: '100%', height: 'auto' }}> {/* Ajusta dinamicamente a largura */}
+    <div className="relative w-full h-full ms-16" style={{ height: '100%' }}> {/* Garante altura completa do pai */}
       <Image
         src={src}
         alt={`Marca Image for ${title}`}
-        layout="responsive" // Garante que a imagem seja responsiva
-        objectFit="contain" // Faz a imagem se ajustar ao contêiner sem cortar
-        width={833} // Tamanho base da imagem
-        height={495} // Tamanho base da imagem
+        layout="fill" // Preenche todo o contêiner pai
+        objectFit="contain" // Ajusta a imagem ao tamanho do pai sem cortar
+        objectPosition="left top" // Alinha a imagem ao topo esquerdo
+        className="absolute inset-0"
       />
     </div>
   );

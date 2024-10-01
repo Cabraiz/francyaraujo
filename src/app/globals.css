@@ -73,5 +73,78 @@
   font-style: normal;
 }
 
+@keyframes gradient-text {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
+@keyframes gradient-text {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
+@keyframes gradient-text {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-animation {
+  background: linear-gradient(90deg, #f3ec78, #af4261, #f3ec78); /* Gradiente de cores */
+  background-size: 200% 200%;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradient-text 3s ease-in-out infinite; /* Efeito contínuo */
+  transition: background 0.5s ease-in-out, color 0.5s ease-in-out; /* Transição suave */
+  position: relative;
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.4s ease; /* Transição para a cor */
+}
+
+.nav-item:hover .nav-link {
+  color: transparent;
+  background: linear-gradient(90deg, #f3ec78, #af4261, #f3ec78);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradient-text 1.5s ease-in-out; /* Transição rápida ao hover */
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: white;
+  bottom: -5px; /* Posição da linha abaixo do texto */
+  left: 0;
+  transition: width 0.5s ease; /* Transição suave da linha */
+}
+
+.nav-item:hover .nav-link::after {
+  width: 100%; /* Linha se expande completamente no hover */
+}
