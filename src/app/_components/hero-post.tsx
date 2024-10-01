@@ -17,11 +17,17 @@ export function HeroPost({
   slug,
 }: Readonly<Props>) {
   const [isCoverImage, setIsCoverImage] = useState(true);
-  const [zoomCorner, setZoomCorner] = useState<string>("top-left");
+  const [startPosition, setStartPosition] = useState<string>(""); // Define o ponto inicial do zoom
   const [isImageLoaded, setIsImageLoaded] = useState(false); // Controle de carregamento de imagens
   const [isAnimating, setIsAnimating] = useState(false); // Controle da animação
 
-  // Pré-carregamento das imagens usando fetch
+  // Função que retorna uma posição aleatória para o início do zoom
+  const getRandomPosition = () => {
+    const positions = ["top-left", "top-right", "bottom-left", "bottom-right"];
+    return positions[Math.floor(Math.random() * positions.length)];
+  };
+
+  // Pré-carregamento das imagens
   useEffect(() => {
     const loadImage = (src: string) => {
       return new Promise((resolve, reject) => {
@@ -44,14 +50,9 @@ export function HeroPost({
   useEffect(() => {
     if (!isImageLoaded) return; // Espera até que as imagens sejam carregadas
 
-    const randomZoomCorner = () => {
-      const corners = ["top-left", "top-right", "bottom-left", "bottom-right"];
-      return corners[Math.floor(Math.random() * corners.length)];
-    };
-
     const startAnimation = () => {
       setIsAnimating(true); // Inicia a animação
-      setZoomCorner(randomZoomCorner()); // Aplica um zoom em um canto aleatório
+      setStartPosition(getRandomPosition()); // Aplica uma posição aleatória para o zoom
 
       setTimeout(() => {
         setIsAnimating(false); // Finaliza a animação após 3 segundos
@@ -67,8 +68,9 @@ export function HeroPost({
   }, [isImageLoaded]);
 
   const getZoomStyle = () => {
+    // Se a animação estiver em execução, retorna o estilo de zoom apropriado
     if (isAnimating) {
-      switch (zoomCorner) {
+      switch (startPosition) {
         case "top-left":
           return "origin-top-left scale-150";
         case "top-right":
@@ -81,7 +83,9 @@ export function HeroPost({
           return "";
       }
     }
-    return "scale-100"; // Sem zoom quando não está animando
+
+    // Quando a animação termina, retorna ao estado normal (sem zoom)
+    return "scale-100"; // Sem zoom após a animação
   };
 
   return (
