@@ -13,16 +13,16 @@ const CoverImage = ({ title, src, slug }: Props) => {
     <Image
       src={src}
       alt={`Cover Image for ${title}`}
-      className={cn("w-full object-cover rounded-[10%]", { // Ajuste para porcentagem
+      className={cn("w-full object-cover", {
         "transition-shadow duration-200": slug,
       })}
       width={1300}
       height={700} // Ajuste as dimensões conforme necessário
-      layout="responsive" // Faz com que a imagem seja responsiva
+      layout="responsive" // Mantém a responsividade
     />
   );
   return (
-    <div className="sm:mx-0 overflow-hidden rounded-[10%]"> {/* Overflow e rounded preservam o recorte e o arredondamento */}
+    <div className="sm:mx-0 w-full overflow-hidden" style={{ height: '70vh' }}> {/* Garantindo w-full */}
       {slug ? (
         <Link href={`/posts/${slug}`} aria-label={title}>
           {image}

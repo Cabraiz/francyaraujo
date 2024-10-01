@@ -12,11 +12,10 @@ type Props = {
 
 const navItems = [
   { name: "HOME", link: "/" },
-  { name: "OUR STORY", link: "/story" },
-  { name: "OUR SERVICES", link: "/services" },
-  { name: "TEAM", link: "/team" },
-  { name: "CONTACT", link: "/contact" },
-  { name: "BOOK NOW", link: "/book" },
+  { name: "HISTÓRIA", link: "/story" },
+  { name: "SERVIÇOS", link: "/services" },
+  { name: "CONTATOS", link: "/contact" },
+  { name: "AGENDE AGORA!", link: "/book" },
 ];
 
 export function Intro({ title, coverImage }: Readonly<Props>) {
@@ -34,10 +33,10 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
     const updateSectionHeight = () => {
       if (isMobile) {
         setSectionHeight('13vh');
-      } else if (window.innerWidth > 1100) {
+      } else if (window.innerWidth > 1200) {
         setSectionHeight('9vh');
       } else {
-        setSectionHeight('5vh');
+        setSectionHeight('9vh');
       }
     };
 
@@ -113,11 +112,9 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
           <div className="col-8 d-flex justify-content-end align-items-center h-100">
             <ul className="navbar-nav mb-2 mb-lg-0 mt-2">
               {navItems.map((item) => (
-                <li className="nav-item" key={item.name}>
+                <li className="nav-item mx-1" key={item.name}> {/* Adiciona margem horizontal a cada nav-item */}
                   <a
-                    className={`nav-link ${
-                      currentPath === item.link ? 'gradient-animation' : ''
-                    }`} // Aplica a classe de animação se for o link ativo
+                    className={`nav-link ${currentPath === item.link ? 'gradient-animation' : ''}`}
                     href={item.link}
                     style={{
                       fontFamily: "'Novecento', sans-serif",
@@ -125,6 +122,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
                       fontSize: 'auto',
                       letterSpacing: '0.4em',
                       transition: 'color 0.3s ease',
+                      whiteSpace: 'nowrap', // Evita quebra de linha no texto
                     }}
                   >
                     {item.name}

@@ -9,6 +9,7 @@ export default async function Index() {
 
   const heroPost = allPosts[0];
   const marcaPost = allPosts[2];
+  const salaoPost = allPosts[4];
   const morePosts = allPosts.slice(1);
 
   return (
@@ -22,12 +23,9 @@ export default async function Index() {
         <HeroPost
           title={heroPost.title}
           coverImage={heroPost.coverImage}
-          date={heroPost.date}
-          author={heroPost.author}
+          salaoImage={salaoPost.coverImage}
           slug={heroPost.slug}
-          excerpt={heroPost.excerpt}
         />
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
       </Container>
     </main>
   );

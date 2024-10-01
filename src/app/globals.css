@@ -110,7 +110,7 @@
 }
 
 .gradient-animation {
-  background: linear-gradient(90deg, #f3ec78, #af4261, #f3ec78); /* Gradiente de cores */
+  background: linear-gradient(90deg, #252525, #af4261, #252525); /* Gradiente de cores */
   background-size: 200% 200%;
   color: transparent;
   -webkit-background-clip: text;
