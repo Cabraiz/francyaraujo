@@ -8,12 +8,16 @@ export default async function Index() {
   const allPosts = await getAllPosts();
 
   const heroPost = allPosts[0];
+  const marcaPost = allPosts[2];
   const morePosts = allPosts.slice(1);
 
   return (
     <main className="flex flex-col justify-start min-h-screen">
       {/* Intro fora do Container para ocupar toda a largura */}
-      <Intro />
+      <Intro 
+          title={marcaPost.title}
+          coverImage={marcaPost.coverImage}
+      />
       <Container>
         <HeroPost
           title={heroPost.title}

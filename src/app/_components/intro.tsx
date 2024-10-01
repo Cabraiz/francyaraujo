@@ -1,71 +1,92 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { motion } from "framer-motion";
-import Link from 'next/link';
-import { FaWhatsapp } from 'react-icons/fa'; // Para o ícone do WhatsApp
 
-export function Intro() {
-  const [sectionHeight, setSectionHeight] = useState('5vw'); // Altura padrão para web
+import { useLayoutEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
+import MarcaImage from "./marca";
 
-  // Atualiza a altura da seção com base na largura da tela
-  useEffect(() => {
-    const updateHeight = () => {
-      if (window.innerWidth > 768) {
-        setSectionHeight('5vw'); // Altura para web
+type Props = {
+  title: string;
+  coverImage: string;
+};
+
+const navItems = [
+  { name: "HOME", link: "/home" },
+  { name: "OUR STORY", link: "/story" },
+  { name: "OUR SERVICES", link: "/services" },
+  { name: "TEAM", link: "/team" },
+  { name: "CONTACT", link: "/contact" },
+  { name: "BOOK NOW", link: "/book" },
+];
+
+export function Intro({ title, coverImage }: Readonly<Props>) {
+  const [sectionHeight, setSectionHeight] = useState<string>(isMobile ? '13vh' : '9vh'); // Valor inicial baseado na detecção de mobile
+
+  useLayoutEffect(() => {
+    const updateSectionHeight = () => {
+      if (isMobile) {
+        setSectionHeight('13vh');
+      } else if (window.innerWidth > 1100) {
+        setSectionHeight('9vh');
       } else {
-        setSectionHeight('22vw'); // Altura para mobile
+        setSectionHeight('5vh');
       }
     };
 
-    // Atualiza a altura ao carregar e ao redimensionar a janela
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
+    // Atualiza a altura no carregamento inicial
+    updateSectionHeight();
 
-    // Remove o listener quando o componente for desmontado
+    // Listener para atualizações na mudança de tamanho da janela
+    const resizeListener = () => {
+      setTimeout(updateSectionHeight, 100); // Debounce com 100ms
+    };
+    window.addEventListener('resize', resizeListener);
+
     return () => {
-      window.removeEventListener('resize', updateHeight);
+      window.removeEventListener('resize', resizeListener);
     };
   }, []);
 
   return (
-    <section
-      className="relative flex flex-col md:flex-row justify-around items-center text-center md:text-left mb-8 md:mb-12 p-6 md:p-10 bg-glass shadow-2xl overflow-hidden border-b-2 border-black"
-      style={{ height: sectionHeight, borderRadius: '0' }} // Adiciona ou ajusta o borderRadius para 0
+    <nav
+      className="navbar navbar-expand-lg navbar-light"
+      style={{
+        height: sectionHeight,
+        transition: 'height 0.5s ease-in-out', // Transição suave para mudanças de altura
+        backgroundColor: 'rgba(255, 255, 255, 0.1)', // Transparência do fundo
+        backdropFilter: 'blur(10px)', // Efeito de desfoque
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Sombra suave
+        zIndex: 2, // Garante que o menu fique sobre a imagem
+      }}
     >
-      {/* Nome FrancyAraujo ajustado para diferentes telas */}
-      <motion.h1
-        className="text-[8vw] md:text-[4vw] font-extrabold tracking-tight leading-tight text-black z-10"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-      >
-        FrancyAraujo.
-      </motion.h1>
+      <div className="container-fluid d-flex align-items-center justify-content-between">
+        {/* Marca à esquerda */}
+        <MarcaImage title={title} src={coverImage} />
 
-      {/* Div com textos e botão ajustados para mobile e desktop */}
-      <div className="flex flex-col md:w-[50%] justify-center items-center md:items-end space-y-2 md:space-y-4 text-right">
-        {/* Texto otimizado, escondido no mobile */}
-        <motion.h4
-          className="text-sm md:text-lg text-black font-light leading-snug z-10 hidden sm:block" // Esconde o texto no mobile
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-        >
-          Seu cabelo ruivo perfeito está a um toque de distância. Deixe a transformação começar agora mesmo!
-        </motion.h4>
-
-        {/* Botão de ação com estilo WhatsApp visível no mobile */}
-        <Link href="https://wa.me/seu-numero-whatsapp" passHref>
-          <motion.button
-            className="mt-4 md:mt-0 bg-green-500 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400 flex items-center justify-center space-x-2"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <FaWhatsapp className="text-xl" />
-            <span>Converse Agora</span>
-          </motion.button>
-        </Link>
+        {/* Itens de navegação à direita */}
+        <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+          {navItems.map((item) => (
+            <li className="nav-item" key={item.name}>
+              <a
+                className="nav-link"
+                href={item.link}
+                style={{
+                  fontFamily: "'Novecento', sans-serif",
+                  color: '#000000b5', // Cinza claro
+                  fontSize: 'auto',
+                  letterSpacing: '0.4em',
+                  transition: 'color 0.3s ease',
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.color = '#ffdfa9')} // Dourado no hover
+                onMouseOut={(e) => (e.currentTarget.style.color = '#000000b5')} // Volta ao cinza
+                onFocus={(e) => (e.currentTarget.style.color = '#ffdfa9')} // Dourado no foco (teclado)
+                onBlur={(e) => (e.currentTarget.style.color = '#000000b5')} // Volta ao cinza quando perde o foco
+              >
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-    </section>
+    </nav>
   );
 }

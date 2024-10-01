@@ -64,3 +64,14 @@
       left: -100%; /* Reflexo volta ao ponto inicial para criar o looping contínuo */
   }
 }
+
+@font-face {
+  font-family: 'Novecento';
+  src: url('../../public/assets/blog/font/Novecento-WideNormal.woff2') format('woff2'),
+       url('../../public/assets/blog/font/Novecento-WideNormal.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+
+
