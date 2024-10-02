@@ -1,7 +1,6 @@
-import Container from "@/app/_components/container";
 import { HeroPost } from "@/app/_components/hero-post";
+import { SignaturePost } from "@/app/_components/signature-post";
 import { Intro } from "@/app/_components/intro";
-import { MoreStories } from "@/app/_components/more-stories";
 import { getAllPosts } from "@/lib/api";
 
 export default async function Index() {
@@ -10,7 +9,6 @@ export default async function Index() {
   const heroPost = allPosts[0];
   const marcaPost = allPosts[2];
   const salaoPost = allPosts[4];
-  const morePosts = allPosts.slice(1);
 
   return (
     <main className="flex flex-col justify-start min-h-screen">
@@ -19,14 +17,13 @@ export default async function Index() {
           title={marcaPost.title}
           coverImage={marcaPost.coverImage}
       />
-      <Container>
         <HeroPost
           title={heroPost.title}
           coverImage={heroPost.coverImage}
           salaoImage={salaoPost.coverImage}
           slug={heroPost.slug}
         />
-      </Container>
+        <SignaturePost/>
     </main>
   );
 }

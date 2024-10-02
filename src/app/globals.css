@@ -73,6 +73,22 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Holligate';
+  src: url('../../public/assets/blog/font/holligate-signature-demo.woff2') format('woff2'),
+       url('../../public/assets/blog/font/holligate-signature-demo.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Elegant';
+  src: url('../../public/assets/blog/font/ELEGANT.woff2') format('woff2'),
+       url('../../public/assets/blog/font/ELEGANT.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
 @keyframes gradient-text {
   0% {
     background-position: 0% 50%;
@@ -110,7 +126,7 @@
 }
 
 .gradient-animation {
-  background: linear-gradient(90deg, #252525, #af4261, #252525); /* Gradiente de cores */
+  background: linear-gradient(90deg, #252525, #af4261, #252525), #af4261; /* Gradiente de cores */
   background-size: 200% 200%;
   color: transparent;
   -webkit-background-clip: text;

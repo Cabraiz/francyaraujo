@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import markdownToHtml from "@/lib/markdownToHtml";
 import { PostHeader } from "@/app/_components/post-header";
 import { PostBody } from "@/app/_components/post-body";
-import Container from "@/app/_components/container";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts(); // Obtém todos os posts
@@ -23,16 +22,14 @@ export default async function Post({ params }: { params: { slug: string } }) {
   const content = await markdownToHtml(post.content || "");
 
   return (
-    <Container>
-      <article className="mb-32">
-        <PostHeader
-          title={post.title}
-          coverImage={post.coverImage}
-          date={post.date}
-          author={post.author}
-        />
-        <PostBody content={content} />
-      </article>
-    </Container>
+    <article className="mb-32">
+      <PostHeader
+        title={post.title}
+        coverImage={post.coverImage}
+        date={post.date}
+        author={post.author}
+      />
+      <PostBody content={content} />
+    </article>
   );
 }
