@@ -1,7 +1,6 @@
 import React from 'react';
 
 export const SignaturePost: React.FC = () => {
-  // Estilos do container principal
   const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100%',
@@ -11,59 +10,67 @@ export const SignaturePost: React.FC = () => {
     alignItems: 'center',
     textAlign: 'center',
     flexDirection: 'column',
-    backgroundColor: '#FF6F61', // cor de fundo
+    backgroundColor: '#FF6F61',
   };
 
-  // Texto de fundo grande, ajustando a altura para 100%
   const backgroundTextStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    fontFamily: 'Holligate, sans-serif', // Fonte para o fundo
-    fontSize: '14vw', // Ajuste da fonte proporcional à largura da tela
-    color: 'rgba(0, 0, 0, 0.05)', // Baixa opacidade
+    fontFamily: 'Holligate, sans-serif',
+    fontSize: '14vw',
+    color: 'rgba(0, 0, 0, 0.05)',
     zIndex: 1,
     whiteSpace: 'nowrap',
-    width: '100%', // Ocupa 100% da largura
+    width: '100%',
     overflow: 'hidden',
-    textOverflow: 'ellipsis', // Se precisar cortar o texto
-    pointerEvents: 'none', // Impede interação com o texto de fundo
+    textOverflow: 'ellipsis',
+    pointerEvents: 'none',
   };
 
-  // Estilos para o texto em primeiro plano (título e parágrafos)
   const foregroundTextStyle: React.CSSProperties = {
     position: 'relative',
     zIndex: 2,
     fontFamily: 'Times New Roman, serif',
     color: 'black',
-    maxWidth: '800px',
+    maxWidth: '1200px',
+    textAlign: 'center', // Centraliza o texto dentro do container
   };
 
-  // Estilo do título principal
   const headingStyle: React.CSSProperties = {
-    fontSize: '5vh', // Ajustado para destacar mais
+    fontSize: '5vh',
     fontWeight: 'bold',
-    fontFamily: 'Elegant , Georgia, serif', // Fonte para o título
-    marginBottom: '1vh',
-    marginTop: '1vh',
-    letterSpacing: '20px',
-    whiteSpace: 'nowrap', // Evita quebra de linha no título
+    fontFamily: 'Elegant , Georgia, serif',
+    marginBottom: '2vh',
+    marginTop: '2vh',
+    letterSpacing: '15px',
+    wordWrap: 'break-word',
+    lineHeight: '40px',
   };
 
-  // Estilo da legenda logo abaixo do título principal
   const subHeadingStyle: React.CSSProperties = {
     fontSize: '18px',
-    fontFamily: 'Arial, sans-serif', // Outra fonte para o subtítulo
+    fontFamily: 'Arial, sans-serif',
     letterSpacing: '7px',
-    whiteSpace: 'nowrap', // Evita quebra de linha nos subtítulos
+    wordWrap: 'break-word',
   };
 
-  // Estilo para o parágrafo
   const paragraphStyle: React.CSSProperties = {
     fontSize: '16px',
-    fontFamily: 'Verdana, sans-serif', // Fonte diferente para o corpo do texto
+    fontFamily: 'Thenat, sans-serif',
     marginTop: '1vh',
+    maxWidth: '90%', // Expande o parágrafo
+    wordWrap: 'break-word',
+    letterSpacing: '3px',
+    wordSpacing: '4px',
+    lineHeight: '35px',
+    textAlign: 'center', // Garante que o texto fique centralizado
+  };
+
+  const locationStyle: React.CSSProperties = {
+    fontWeight: 'bold',
+    color: 'black',
   };
 
   return (
@@ -77,9 +84,7 @@ export const SignaturePost: React.FC = () => {
         <h1 style={headingStyle}>FRANCY ARAÚJO</h1>
         <h2 style={subHeadingStyle}>SALON</h2>
         <p style={paragraphStyle}>
-          is a full-service salon located in West Hollywood, California founded by its namesake,
-          celebrated hair stylist Francy Araújo. It is here that we welcome you to familiarize
-          yourself with our team of artists and the extensive services we offer.
+          localizado na <span style={locationStyle}>Aldeota</span>, em <span style={locationStyle}>Fortaleza</span>, oferecemos uma experiência exclusiva com serviços de qualidade. Nossa equipe realiza cortes, colorações e tratamentos modernos com atendimento personalizado. Bem-vindo ao salão, onde sua beleza é prioridade.
         </p>
       </div>
     </div>
