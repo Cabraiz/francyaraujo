@@ -21,7 +21,6 @@ export default async function Index() {
           title={heroPost.title}
           coverImage={heroPost.coverImage}
           salaoImage={salaoPost.coverImage}
-          slug={heroPost.slug}
         />
         <SignaturePost/>
     </main>
