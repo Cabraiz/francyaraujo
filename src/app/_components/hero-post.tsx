@@ -7,25 +7,16 @@ type Props = {
   title: string;
   coverImage: string;
   salaoImage: string;
-  slug: string;
 };
 
 export function HeroPost({
   title,
   coverImage,
   salaoImage,
-  slug,
 }: Readonly<Props>) {
-  const [isCoverImage, setIsCoverImage] = useState(true);
-  const [startPosition, setStartPosition] = useState<string>(""); // Define o ponto inicial do zoom
   const [isImageLoaded, setIsImageLoaded] = useState(false); // Controle de carregamento de imagens
-  const [isZoomed, setIsZoomed] = useState(true); // Garantir que comece com zoom
-
-  // Função que retorna uma posição aleatória para o início do zoom
-  const getRandomPosition = () => {
-    const positions = ["top-left", "top-right", "bottom-left", "bottom-right"];
-    return positions[Math.floor(Math.random() * positions.length)];
-  };
+  const [currentImage, setCurrentImage] = useState(coverImage); // Estado para controlar a imagem atual
+  const [isCoverImage, setIsCoverImage] = useState(true); // Controla qual imagem está ativa
 
   // Pré-carregamento das imagens
   useEffect(() => {
@@ -40,95 +31,56 @@ export function HeroPost({
 
     Promise.all([loadImage(coverImage), loadImage(salaoImage)])
       .then(() => {
-        setIsImageLoaded(true); // Define quando ambas as imagens forem carregadas
+        setIsImageLoaded(true); // Define que ambas as imagens foram carregadas
       })
       .catch((error) => {
         console.error("Erro ao carregar imagens", error);
       });
   }, [coverImage, salaoImage]);
 
-  // Controla a animação de zoom e troca de imagem
+  // Controla a troca de imagem
   useEffect(() => {
-    if (!isImageLoaded) return; // Espera até que as imagens sejam carregadas
+    if (!isImageLoaded) return;
 
-    const startAnimation = () => {
-      setStartPosition(getRandomPosition()); // Define uma posição aleatória para o zoom
-      setIsZoomed(true); // Inicia o zoom imediatamente
+    const imageSwitchInterval = setInterval(() => {
+      setIsCoverImage((prevState) => !prevState); // Alterna entre as imagens
+      setCurrentImage(isCoverImage ? salaoImage : coverImage); // Atualiza a imagem
+    }, 6000); // Troca a imagem a cada 6 segundos
 
-      setTimeout(() => {
-        setIsZoomed(false); // Retorna ao estado normal após 3 segundos
-      }, 3000); // 3 segundos de zoom
-
-      setTimeout(() => {
-        setIsCoverImage((prevState) => !prevState); // Troca a imagem após o zoom
-        setIsZoomed(true); // Garante que a próxima imagem inicie com zoom
-      }, 6000); // Troca a imagem 3 segundos depois de voltar ao normal
-    };
-
-    const intervalId = setInterval(() => {
-      startAnimation();
-    }, 6000); // A cada 6 segundos
-
-    startAnimation(); // Inicia imediatamente após as imagens serem carregadas
-
-    return () => clearInterval(intervalId); // Limpa o intervalo ao desmontar o componente
-  }, [isImageLoaded]);
-
-  const getZoomStyle = () => {
-    // Se a imagem está em zoom, retorna o estilo apropriado
-    if (isZoomed) {
-      switch (startPosition) {
-        case "top-left":
-          return "origin-top-left scale-150";
-        case "top-right":
-          return "origin-top-right scale-150";
-        case "bottom-left":
-          return "origin-bottom-left scale-150";
-        case "bottom-right":
-          return "origin-bottom-right scale-150";
-        default:
-          return "";
-      }
-    }
-
-    // Quando não está em zoom, retorna ao estado normal
-    return "scale-100"; // Estado sem zoom
-  };
+    return () => clearInterval(imageSwitchInterval); // Limpa o intervalo quando o componente for desmontado
+  }, [isImageLoaded, isCoverImage, coverImage, salaoImage]);
 
   return (
     <section className="relative w-full h-[63vh]">
-  <div className="mb-8 md:mb-16 w-full h-full overflow-hidden relative">
-    {isImageLoaded ? (
-      <div
-        className={`transition-transform duration-[3000ms] ease-in-out transform ${getZoomStyle()} w-full h-full`}
-      >
-        {isCoverImage ? (
-          <Image
-            alt={title}
-            src={coverImage}
-            layout="fill"
-            objectFit="cover"
-            placeholder="blur"
-            blurDataURL={coverImage} // Imagem de baixa qualidade para o placeholder
-            quality={10} // Super low quality inicial
-          />
+      <div className="mb-8 md:mb-16 w-full h-full overflow-hidden relative">
+        {isImageLoaded ? (
+          <div
+            className="w-full h-full"
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Image
+              alt={title}
+              src={currentImage} // Exibe a imagem atual (cover ou salao)
+              layout="fill"
+              objectFit="cover"
+              placeholder="blur"
+              blurDataURL={currentImage} // Imagem de baixa qualidade para o placeholder
+              quality={10} // Qualidade baixa inicial para o placeholder
+              style={{
+                transform: "scale(1.5)", // Define o scale inicial para 150%
+                transition: "transform 0.3s ease-in-out", // Suaviza a transição do scale
+              }}
+            />
+          </div>
         ) : (
-          <Image
-            alt={title}
-            src={salaoImage}
-            layout="fill"
-            objectFit="cover"
-            placeholder="blur"
-            blurDataURL={salaoImage} // Imagem de baixa qualidade para o placeholder
-            quality={10} // Super low quality inicial
-          />
+          <div className="w-full h-full bg-gray-200 animate-pulse"></div> // Placeholder de loading profissional
         )}
       </div>
-    ) : (
-      <div className="w-full h-full bg-gray-200 animate-pulse"></div> // Placeholder de loading profissional
-    )}
-  </div>
-</section>
-
+    </section>
   );
 }

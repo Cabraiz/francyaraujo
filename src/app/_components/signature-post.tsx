@@ -15,22 +15,21 @@ export const SignaturePost: React.FC = () => {
   };
 
   // Texto de fundo grande, ajustando a altura para 100%
-    const backgroundTextStyle: React.CSSProperties = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        fontFamily: 'Holligate, sans-serif', // Fonte para o fundo
-        fontSize: '14vw', // Ajuste da fonte proporcional à largura da tela
-        color: 'rgba(0, 0, 0, 0.05)', // Baixa opacidade
-        zIndex: 1,
-        whiteSpace: 'nowrap',
-        width: '100%', // Ocupa 100% da largura
-        overflow: 'hidden',
-        textOverflow: 'ellipsis', // Se precisar cortar o texto
-        pointerEvents: 'none', // Impede interação com o texto de fundo
-    };
-
+  const backgroundTextStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    fontFamily: 'Holligate, sans-serif', // Fonte para o fundo
+    fontSize: '14vw', // Ajuste da fonte proporcional à largura da tela
+    color: 'rgba(0, 0, 0, 0.05)', // Baixa opacidade
+    zIndex: 1,
+    whiteSpace: 'nowrap',
+    width: '100%', // Ocupa 100% da largura
+    overflow: 'hidden',
+    textOverflow: 'ellipsis', // Se precisar cortar o texto
+    pointerEvents: 'none', // Impede interação com o texto de fundo
+  };
 
   // Estilos para o texto em primeiro plano (título e parágrafos)
   const foregroundTextStyle: React.CSSProperties = {
@@ -43,13 +42,13 @@ export const SignaturePost: React.FC = () => {
 
   // Estilo do título principal
   const headingStyle: React.CSSProperties = {
-    fontSize: '3vw', // Ajustado para destacar mais
+    fontSize: '5vh', // Ajustado para destacar mais
     fontWeight: 'bold',
     fontFamily: 'Elegant , Georgia, serif', // Fonte para o título
     marginBottom: '1vh',
     marginTop: '1vh',
-    letterSpacing: '20px'
-
+    letterSpacing: '20px',
+    whiteSpace: 'nowrap', // Evita quebra de linha no título
   };
 
   // Estilo da legenda logo abaixo do título principal
@@ -57,14 +56,14 @@ export const SignaturePost: React.FC = () => {
     fontSize: '18px',
     fontFamily: 'Arial, sans-serif', // Outra fonte para o subtítulo
     letterSpacing: '7px',
-    whiteSpace: 'nowrap',
+    whiteSpace: 'nowrap', // Evita quebra de linha nos subtítulos
   };
 
   // Estilo para o parágrafo
   const paragraphStyle: React.CSSProperties = {
     fontSize: '16px',
     fontFamily: 'Verdana, sans-serif', // Fonte diferente para o corpo do texto
-    marginTop: '10px',
+    marginTop: '1vh',
   };
 
   return (
