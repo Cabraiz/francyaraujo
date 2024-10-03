@@ -4,7 +4,7 @@ export const SignaturePost: React.FC = () => {
   const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100%',
-    height: '46vh',
+    height: '48vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -35,7 +35,12 @@ export const SignaturePost: React.FC = () => {
     fontFamily: 'Times New Roman, serif',
     color: 'black',
     maxWidth: '1200px',
-    textAlign: 'center', // Centraliza o texto dentro do container
+    textAlign: 'center', // Centraliza o texto horizontalmente
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center', // Centraliza verticalmente
+    alignItems: 'center',
+    height: '100%', // Garante que o conteúdo ocupe toda a altura disponível
   };
 
   const headingStyle: React.CSSProperties = {
@@ -60,12 +65,12 @@ export const SignaturePost: React.FC = () => {
     fontSize: '16px',
     fontFamily: 'Thenat, sans-serif',
     marginTop: '1vh',
-    maxWidth: '90%', // Expande o parágrafo
+    maxWidth: '90%',
     wordWrap: 'break-word',
     letterSpacing: '3px',
     wordSpacing: '4px',
     lineHeight: '35px',
-    textAlign: 'center', // Garante que o texto fique centralizado
+    textAlign: 'center',
   };
 
   const locationStyle: React.CSSProperties = {
@@ -84,7 +89,7 @@ export const SignaturePost: React.FC = () => {
         <h1 style={headingStyle}>FRANCY ARAÚJO</h1>
         <h2 style={subHeadingStyle}>SALON</h2>
         <p style={paragraphStyle}>
-          localizado na <span style={locationStyle}>Aldeota</span>, em <span style={locationStyle}>Fortaleza</span>, oferecemos uma experiência exclusiva com serviços de qualidade. Nossa equipe realiza cortes, colorações e tratamentos modernos com atendimento personalizado. Bem-vindo ao salão, onde sua beleza é prioridade.
+          localizado na <span style={locationStyle}>Aldeota</span>, em <span style={locationStyle}>Fortaleza</span>, oferecemos uma experiência exclusiva. Realizamos cortes, colorações e tratamentos modernos com atendimento personalizado. Bem-vindo ao salão, onde sua beleza é prioridade.
         </p>
       </div>
     </div>
