@@ -20,7 +20,7 @@ export const SignaturePost: React.FC = () => {
     transform: 'translate(-50%, -50%)',
     fontFamily: 'Holligate, sans-serif',
     fontSize: '14vw',
-    color: 'rgba(0, 0, 0, 0.05)',
+    color: 'rgba(0, 0, 0, 0.07)',
     zIndex: 1,
     whiteSpace: 'nowrap',
     width: '100%',
