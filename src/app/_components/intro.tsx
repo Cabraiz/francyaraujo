@@ -74,19 +74,18 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
 
   return (
     <nav
-      className="navbar navbar-expand-lg navbar-light"
-      style={{
-        height: sectionHeight,
-        transition: 'height 0.5s ease-in-out',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        backdropFilter: 'blur(15px) brightness(1.3) contrast(1.2)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
-        zIndex: 2,
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
+  className="navbar navbar-expand-lg navbar-light"
+  style={{
+    height: sectionHeight,
+    transition: 'height 0.5s ease-in-out',
+    background: 'linear-gradient(to bottom, #fa9783 0%, #fa7f6c  20%, #fa7f6c  80%, #fa9783 100%)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+    zIndex: 2,
+    position: 'relative',
+    overflow: 'hidden',
+  }}
+>
       <div
         style={{
           content: '""',
