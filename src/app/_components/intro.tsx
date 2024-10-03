@@ -20,19 +20,36 @@ const navItems = [
 
 export function Intro({ title, coverImage }: Readonly<Props>) {
   const [sectionHeight, setSectionHeight] = useState<string>(isMobile ? '13vh' : '9vh');
-  const [isMounted, setIsMounted] = useState(false); // Adicionado para garantir montagem
-  const [currentPath, setCurrentPath] = useState(''); // Estado para armazenar a rota
-  const pathname = usePathname(); // Usa o hook usePathname para obter a rota atual
+  const [isMounted, setIsMounted] = useState(false);
+  const [currentPath, setCurrentPath] = useState(''); 
+  const [showNavItems, setShowNavItems] = useState(true); // Estado para controlar a exibição dos nav items
+  const pathname = usePathname();
 
   useEffect(() => {
-    setIsMounted(true); // Marca o componente como montado
-    setCurrentPath(pathname); // Define a rota atual
+    setIsMounted(true); 
+    setCurrentPath(pathname);
+
+    const handleResize = () => {
+      if (window.innerWidth < 1000) {
+        setShowNavItems(false); // Esconder itens de navegação se a largura for menor que 1000px
+      } else {
+        setShowNavItems(true); // Mostrar itens de navegação se a largura for maior que 1000px
+      }
+    };
+
+    handleResize(); // Chama inicialmente para definir o estado correto
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [pathname]);
 
   useLayoutEffect(() => {
     const updateSectionHeight = () => {
       if (isMobile) {
-        setSectionHeight('13vh');
+        setSectionHeight('12vh');
       } else if (window.innerWidth > 1200) {
         setSectionHeight('9vh');
       } else {
@@ -42,7 +59,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
 
     updateSectionHeight();
     const resizeListener = () => {
-      setTimeout(updateSectionHeight, 100); // Debounce com 100ms
+      setTimeout(updateSectionHeight, 100); 
     };
     window.addEventListener('resize', resizeListener);
 
@@ -52,7 +69,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
   }, []);
 
   if (!isMounted) {
-    return null; // Retorna nulo até o componente estar montado no client-side
+    return null; 
   }
 
   return (
@@ -100,37 +117,40 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
         }}
       />
 
-      <div className="container-fluid h-100">
-        <div className="row w-100 align-items-center justify-content-between h-100">
+      <div className="container-fluid h-100 d-flex justify-content-center align-items-center px-0">
+        <div className={`row w-100 align-items-center ${showNavItems ? 'justify-content-between' : 'justify-content-center'} h-100`}>
+
           
-          {/* Marca à esquerda, ocupando 30% e com altura total */}
-          <div className="col-4 d-flex justify-content-start align-items-center h-100">
+          {/* Marca centralizada se os navItems estiverem ocultos */}
+          <div className={`col-${showNavItems ? '4' : '12'} d-flex justify-content-${showNavItems ? 'start' : 'center'} align-items-center h-100`}>
             <MarcaImage title={title} src={coverImage} />
           </div>
 
-          {/* Itens de navegação à direita, ocupando 70% */}
-          <div className="col-8 d-flex justify-content-end align-items-center h-100">
-            <ul className="navbar-nav mb-2 mb-lg-0 mt-2">
-              {navItems.map((item) => (
-                <li className="nav-item mx-1" key={item.name}> {/* Adiciona margem horizontal a cada nav-item */}
-                  <a
-                    className={`nav-link ${currentPath === item.link ? 'gradient-animation' : ''}`}
-                    href={item.link}
-                    style={{
-                      fontFamily: "'Novecento', sans-serif",
-                      color: currentPath === item.link ? 'transparent' : '#000000b5',
-                      fontSize: 'auto',
-                      letterSpacing: '0.4em',
-                      transition: 'color 0.3s ease',
-                      whiteSpace: 'nowrap', // Evita quebra de linha no texto
-                    }}
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Itens de navegação à direita, apenas se showNavItems for true */}
+          {showNavItems && (
+            <div className="col-8 d-flex justify-content-end align-items-center h-100">
+              <ul className="navbar-nav mb-2 mb-lg-0 mt-2">
+                {navItems.map((item) => (
+                  <li className="nav-item mx-1" key={item.name}>
+                    <a
+                      className={`nav-link ${currentPath === item.link ? 'gradient-animation' : ''}`}
+                      href={item.link}
+                      style={{
+                        fontFamily: "'Novecento', sans-serif",
+                        color: currentPath === item.link ? 'transparent' : '#000000b5',
+                        fontSize: 'auto',
+                        letterSpacing: '0.4em',
+                        transition: 'color 0.3s ease',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </nav>
