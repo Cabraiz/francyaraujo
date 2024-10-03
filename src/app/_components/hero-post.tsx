@@ -7,12 +7,14 @@ type Props = {
   title: string;
   coverImage: string;
   salaoImage: string;
+  marcaSoloImage: string;
 };
 
 export function HeroPost({
   title,
   coverImage,
   salaoImage,
+  marcaSoloImage,
 }: Readonly<Props>) {
   const [isImageLoaded, setIsImageLoaded] = useState(false); // Controle de carregamento de imagens
   const [currentImage, setCurrentImage] = useState(coverImage); // Estado para controlar a imagem atual
@@ -29,14 +31,14 @@ export function HeroPost({
       });
     };
 
-    Promise.all([loadImage(coverImage), loadImage(salaoImage)])
+    Promise.all([loadImage(coverImage), loadImage(salaoImage), loadImage(marcaSoloImage)])
       .then(() => {
-        setIsImageLoaded(true); // Define que ambas as imagens foram carregadas
+        setIsImageLoaded(true); // Define que todas as imagens foram carregadas
       })
       .catch((error) => {
         console.error("Erro ao carregar imagens", error);
       });
-  }, [coverImage, salaoImage]);
+  }, [coverImage, salaoImage, marcaSoloImage]);
 
   // Controla a troca de imagem
   useEffect(() => {
@@ -76,6 +78,17 @@ export function HeroPost({
                 transition: "transform 0.3s ease-in-out", // Suaviza a transição do scale
               }}
             />
+            {/* Adiciona a marcaSoloImage sobreposta */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Image
+                alt="Marca Solo"
+                src={marcaSoloImage}
+                layout="intrinsic" // Usa layout intrínseco para o logo
+                width={150} // Defina a largura da imagem da marca
+                height={150} // Defina a altura da imagem da marca
+                objectFit="contain"
+              />
+            </div>
           </div>
         ) : (
           <div className="w-full h-full bg-gray-200 animate-pulse"></div> // Placeholder de loading profissional

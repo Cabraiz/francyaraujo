@@ -8,7 +8,8 @@ export default async function Index() {
 
   const heroPost = allPosts[0];
   const marcaPost = allPosts[2];
-  const salaoPost = allPosts[4];
+  const salaoPost = allPosts[5];
+  const marcaSoloPost = allPosts[3];
 
   return (
     <main className="flex flex-col justify-start min-h-screen">
@@ -21,6 +22,7 @@ export default async function Index() {
           title={heroPost.title}
           coverImage={heroPost.coverImage}
           salaoImage={salaoPost.coverImage}
+          marcaSoloImage={marcaSoloPost.coverImage}
         />
         <SignaturePost/>
     </main>
