@@ -78,26 +78,30 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
   style={{
     height: sectionHeight,
     transition: 'height 0.5s ease-in-out',
-    background: 'linear-gradient(to bottom, #fdb4a6 0%,#f88b75 5%, #f76852  10%, #f76852  85%, #f88b75 95%,#fdb4a6 100%)',
+    background: window.innerWidth < 1000 
+      ? 'linear-gradient(to bottom, #f76852 10%, #f76852 90%)'
+      : 'linear-gradient(to bottom, #fdb4a6 0%,#f88b75 5%, #f76852  10%, #f76852  85%, #f88b75 95%,#fdb4a6 100%)',
     border: '1px solid rgba(255, 255, 255, 0.3)',
     boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
     zIndex: 2,
     position: 'relative',
     overflow: 'hidden',
   }}
-  >
-    <div
-      style={{
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: 'linear-gradient(to right, #f78670 0%, #f78670 5%, #f76852 10%, #f76852 90%,#f78670 95%, #f78670 100%)',
-        zIndex: -1, // Coloca o gradiente atrás do conteúdo do nav
-      }}
-    />
+>
+  <div
+    style={{
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      background: window.innerWidth < 1000 
+        ? 'linear-gradient(to right, #f76852 10%, #f76852 90%)'
+        : 'linear-gradient(to right, #f78670 0%, #f78670 5%, #f76852 10%, #f76852 90%,#f78670 95%, #f78670 100%)',
+      zIndex: -1,
+    }}
+  />
     {/* Seu conteúdo de navegação aqui */}
       <div
         style={{

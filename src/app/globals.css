@@ -151,7 +151,7 @@
 
 .nav-item:hover .nav-link {
   color: transparent;
-  background: linear-gradient(90deg, #f3ec78, #af4261, #f3ec78);
+  background: linear-gradient(90deg, #f3ec78, #c0bb5e, #f3ec78);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
