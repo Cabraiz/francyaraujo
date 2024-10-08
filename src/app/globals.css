@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Classe personalizada para o efeito de vidro com brilho */
+/* Efeito de vidro com brilho */
 .bg-glass {
   @apply backdrop-blur-xl bg-glass-bg border border-glass-border;
   position: relative;
@@ -38,33 +38,6 @@
   }
 }
 
-/* Animação de reflexo dinâmico */
-.bg-glass::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: reflection 10s infinite alternate; /* Define o looping contínuo de ida e volta */
-  z-index: 2;
-  mix-blend-mode: overlay;
-}
-
-/* Animação para o reflexo */
-@keyframes reflection {
-    0% {
-      left: -100%;
-    }
-    50% {
-      left: 100%;
-    }
-    100% {
-      left: -100%; /* Reflexo volta ao ponto inicial para criar o looping contínuo */
-  }
-}
-
 @font-face {
   font-family: 'Novecento';
   src: url('../../public/assets/blog/font/Novecento-WideNormal.woff2') format('woff2'),
@@ -96,79 +69,110 @@
   font-weight: 400;
   font-style: normal;
 }
+/* Reflexo dinâmico */
+.bg-glass::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.2), transparent); /* Reflexo mais sutil */
+  animation: reflection 12s infinite alternate; /* Loop mais suave e lento */
+  z-index: 2;
+  mix-blend-mode: overlay;
+}
 
-@keyframes gradient-text {
+/* Animação de reflexo */
+@keyframes reflection {
   0% {
-    background-position: 0% 50%;
+    left: -100%;
   }
   50% {
-    background-position: 100% 50%;
+    left: 100%;
   }
   100% {
-    background-position: 0% 50%;
+    left: -100%; /* Volta ao ponto inicial */
   }
 }
 
-@keyframes gradient-text {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes gradient-text {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
+/* Estilo dos itens de navegação com gradiente */
 .gradient-animation {
-  background: linear-gradient(90deg, #252525, #af4261, #252525), #af4261; /* Gradiente de cores */
+  background: linear-gradient(90deg, #BFA48E, #D3C2A5, #BFA48E); /* Gradiente em tons de ouro e champagne */
   background-size: 200% 200%;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: gradient-text 3s ease-in-out infinite; /* Efeito contínuo */
-  transition: background 0.5s ease-in-out, color 0.5s ease-in-out; /* Transição suave */
+  animation: gradient-text 5s ease-in-out infinite; /* Efeito mais lento e elegante */
+  transition: background 0.8s ease-in-out, color 0.8s ease-in-out; /* Transição suave */
   position: relative;
+  letter-spacing: 0.5em; /* Espaçamento maior entre letras */
+  font-family: 'Elegant', serif; /* Fonte mais sofisticada */
 }
 
+/* Animação do gradiente de texto */
+@keyframes gradient-text {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Estilo dos links da navegação */
 .nav-link {
   position: relative;
-  transition: color 0.4s ease; /* Transição para a cor */
+  color: transparent; /* Deixa o gradiente visível */
+  transition: color 0.6s ease, background 0.6s ease; /* Transições mais suaves */
 }
 
-.nav-item:hover .nav-link {
-  color: transparent;
-  background: linear-gradient(90deg, #f3ec78, #c0bb5e, #f3ec78);
+.nav-link.gradient-animation {
+  background: linear-gradient(90deg, #BFA48E, #D3C2A5, #BFA48E); /* Tons metálicos */
   background-size: 200% 200%;
+  color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: gradient-text 1.5s ease-in-out; /* Transição rápida ao hover */
+  animation: gradient-text 5s ease-in-out infinite; /* Animação mais suave e lenta */
 }
 
+/* Efeito de sublinhado no hover */
 .nav-link::after {
   content: '';
   position: absolute;
   width: 0;
-  height: 2px;
-  background: white;
-  bottom: -5px; /* Posição da linha abaixo do texto */
+  height: 3px; /* Um sublinhado um pouco mais grosso para mais ênfase */
+  background: linear-gradient(90deg, #FFFFFF, #A9A9A9); /* Gradiente de branco para cinza */
+  bottom: -6px;
   left: 0;
-  transition: width 0.5s ease; /* Transição suave da linha */
+  transition: width 0.7s ease; /* Transição suave */
+}
+
+.nav-item:hover .nav-link {
+  color: transparent;
+  background: linear-gradient(90deg, #E0E0E0, #F5F5F5, #D3D3D3); /* Gradiente de tons de cinza claro no hover */
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradient-text-hover 4s ease-in-out; /* Animação lenta no hover */
+  text-shadow: 0 1px 3px rgba(169, 169, 169, 0.5); /* Leve brilho cinza no hover */
 }
 
 .nav-item:hover .nav-link::after {
-  width: 100%; /* Linha se expande completamente no hover */
+  width: 100%; /* Sublinhado completo no hover */
+}
+
+@keyframes gradient-text-hover {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

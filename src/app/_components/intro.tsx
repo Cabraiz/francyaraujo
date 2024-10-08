@@ -145,26 +145,28 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
           {/* Itens de navegação à direita, apenas se showNavItems for true */}
           {showNavItems && (
             <div className="col-8 d-flex justify-content-end align-items-center h-100">
-              <ul className="navbar-nav mb-2 mb-lg-0 mt-2">
-                {navItems.map((item) => (
-                  <li className="nav-item mx-1" key={item.name}>
-                    <a
-                      className={`nav-link ${currentPath === item.link ? 'gradient-animation' : ''}`}
-                      href={item.link}
-                      style={{
-                        fontFamily: "'Novecento', sans-serif",
-                        color: currentPath === item.link ? 'transparent' : '#000000b5',
-                        fontSize: 'auto',
-                        letterSpacing: '0.4em',
-                        transition: 'color 0.3s ease',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+<ul className="navbar-nav mb-2 mb-lg-0 mt-2">
+  {navItems.map((item) => (
+    <li className="nav-item mx-1" key={item.name}>
+      <a
+        className={`nav-link ${currentPath === item.link ? 'active' : 'gradient-animation'} ${item.name === 'AGENDE AGORA!' ? 'highlight-agenda' : ''}`}
+        href={item.link}
+        style={{
+          fontFamily: "'Novecento', sans-serif",
+          fontSize: item.name === 'AGENDE AGORA!' ? '1.1em' : 'auto',  // Aumenta a fonte de "AGENDE AGORA!"
+          letterSpacing: '0.4em',
+          transition: 'color 0.3s ease',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {item.name}
+      </a>
+    </li>
+  ))}
+</ul>
+
+
+
             </div>
           )}
         </div>
