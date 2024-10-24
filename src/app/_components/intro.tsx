@@ -27,18 +27,17 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
 
   useEffect(() => {
     setIsMounted(true); 
-    setCurrentPath(pathname ?? '');  // Ajuste feito aqui
+    setCurrentPath(pathname ?? '');
 
     const handleResize = () => {
       if (window.innerWidth < 1000) {
-        setShowNavItems(false); 
+        setShowNavItems(false);
       } else {
-        setShowNavItems(true); 
+        setShowNavItems(true);
       }
     };
 
-    handleResize(); 
-
+    handleResize();
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -59,7 +58,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
 
     updateSectionHeight();
     const resizeListener = () => {
-      setTimeout(updateSectionHeight, 100); 
+      setTimeout(updateSectionHeight, 100);
     };
     window.addEventListener('resize', resizeListener);
 
@@ -69,7 +68,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
   }, []);
 
   if (!isMounted) {
-    return null; 
+    return null;
   }
 
   return (
@@ -81,8 +80,8 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
         background: window.innerWidth < 1000 
           ? 'linear-gradient(to bottom, #f76852 10%, #f76852 90%)'
           : 'linear-gradient(to bottom, #fdb4a6 0%,#f88b75 5%, #f76852  10%, #f76852  85%, #f88b75 95%,#fdb4a6 100%)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.15)', // Bordas mais suaves
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)', // Sombra um pouco mais leve
         zIndex: 2,
         position: 'relative',
         overflow: 'hidden',
@@ -98,7 +97,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
           height: '100%',
           background: window.innerWidth < 1000 
             ? 'linear-gradient(to right, #f76852 10%, #f76852 90%)'
-            : 'linear-gradient(to right, #f78670 0%, #f78670 5%, #f76852 10%, #f76852 90%,#f78670 95%, #f78670 100%)',
+            : 'linear-gradient(to right, #f78670 0%, #f76852 90%,#f78670 100%)',
           zIndex: -1,
         }}
       />
@@ -111,8 +110,8 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0))',
-          opacity: 0.6,
+          background: 'linear-gradient(to bottom, rgba(255, 228, 225, 0.4), rgba(255, 228, 225, 0))', // Cor creme no lugar do branco
+          opacity: 0.7,
           pointerEvents: 'none',
         }}
       />
@@ -154,6 +153,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
                         letterSpacing: '0.4em',
                         transition: 'color 0.3s ease',
                         whiteSpace: 'nowrap',
+                        color: currentPath === item.link ? '#ffffff' : 'rgba(255, 228, 225, 0.8)', // Cor creme no lugar do branco
                       }}
                     >
                       {item.name}
