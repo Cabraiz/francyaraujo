@@ -25,9 +25,20 @@ export async function generateStaticParams() {
 }
 
 // Componente de página para renderizar o post baseado no slug
-export default async function Post({ params }: { params: { slug: string } }) {
-  // Buscando o post pelo slug
-  const post = getPostBySlug(params.slug, ["slug", "title", "content", "coverImage", "date", "author"]);
+export default async function Post({ params }: { params: Promise<{ slug: string }> | { slug: string } }) {
+  let slugValue = "";
+
+  // Se params for uma Promise, espera sua resolução
+  if (params instanceof Promise) {
+    params = await params;
+  }
+
+  // Acessa o valor do slug
+  if ('slug' in params) {
+    slugValue = params.slug;
+  }
+
+  const post = getPostBySlug(slugValue, ["slug", "title", "content", "coverImage", "date", "author"]);
 
   if (!post) {
     return <p>Post not found</p>;
