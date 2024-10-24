@@ -1,7 +1,4 @@
-"use client";  // Isso indica que este arquivo é um componente cliente
-
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
-import { useParams } from "next/navigation"; // Importando useParams
 
 interface Post {
   title: string;
@@ -18,18 +15,9 @@ export async function generateStaticParams() {
 }
 
 // Componente de página para renderizar apenas a imagem e o nome baseado no slug
-export default function Post() {
-  const params = useParams(); // Obtendo params via useParams
-
-  // Verifica se o slug é um array de strings e pega a primeira string
-  const slug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug;
-
-  if (!slug) {
-    return <p>Post not found</p>;
-  }
-
+export default async function Post({ params }: { params: { slug: string } }) {
   // Buscando os dados da imagem com base no slug
-  const post = getPostBySlug(slug, ["title", "coverImage"]);
+  const post = getPostBySlug(params.slug, ["title", "coverImage"]);
 
   if (!post) {
     return <p>Post not found</p>;
