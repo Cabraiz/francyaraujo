@@ -26,7 +26,7 @@ export async function generateStaticParams() {
 }
 
 // Componente de página para renderizar o post baseado no slug
-export default async function Post({ params }: PostPageProps) {
+export default async function Post({ params }: { params: { slug: string } }) {  // Alteração aqui
   const post = await getPostBySlug(params.slug, ["slug", "title", "content", "coverImage", "date", "author"]);
 
   if (!post) {
