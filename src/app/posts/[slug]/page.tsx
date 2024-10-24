@@ -13,7 +13,7 @@ interface Post {
   coverImage: string;
   date: string;
   author: string;
-  content: string; // Inclua 'content' no tipo Post
+  content: string;
 }
 
 // Função para gerar os parâmetros estáticos (slugs)
@@ -27,7 +27,7 @@ export async function generateStaticParams() {
 
 // Componente de página para renderizar o post baseado no slug
 export default async function Post({ params }: PostPageProps) {
-  const post = getPostBySlug(params.slug, ["slug", "title", "content", "coverImage", "date", "author"]);
+  const post = await getPostBySlug(params.slug, ["slug", "title", "content", "coverImage", "date", "author"]);
 
   if (!post) {
     return <p>Post not found</p>;
@@ -35,6 +35,5 @@ export default async function Post({ params }: PostPageProps) {
 
   const content = await markdownToHtml(post.content || "");
 
-  // Inclui `content` diretamente no objeto `post` e passa o objeto `post` completo
   return <PostContent post={{ ...post, content }} />;
 }
