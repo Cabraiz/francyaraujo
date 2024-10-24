@@ -26,18 +26,14 @@ export function getPostBySlug(slug: string, fields: string[]): Post | null {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents); // Parseia o conteúdo Markdown
 
-  if (typeof data !== 'object' || typeof content !== 'string') {
-    console.error('Invalid file structure:', { data, content });
-    return null;
-  }
-
   let items: { [key: string]: any } = {};
 
   fields.forEach((field) => {
     if (field === "slug") {
       items[field] = realSlug;
-    } else if (field === "content") {
-      items[field] = content;
+    }
+    if (field === "content") {
+      items[field] = content; // Adiciona o content
     } else if (data.hasOwnProperty(field)) {
       items[field] = data[field];
     }
@@ -45,6 +41,7 @@ export function getPostBySlug(slug: string, fields: string[]): Post | null {
 
   return items as Post;
 }
+
 
 // Função para obter todos os posts
 export function getAllPosts(fields: string[]): Post[] {
