@@ -17,7 +17,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context: GetStaticPropsContext) => {
   const { params } = context;
-  const post = getPostBySlug(params?.slug as string, ["slug", "title", "content", "coverImage", "date", "author"]);
+
+  if (!params || typeof params.slug !== 'string') {
+    return {
+      notFound: true,
+    };
+  }
+
+  const post = getPostBySlug(params.slug, ["slug", "title", "content", "coverImage", "date", "author"]);
 
   if (!post) {
     return {
