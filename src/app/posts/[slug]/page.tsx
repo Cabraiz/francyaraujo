@@ -1,31 +1,28 @@
-import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { getPostBySlug, getAllPosts } from "@/lib/posts";
 
-interface Post {
-  title: string;
-  coverImage: string;
+// Tipagem para os props, garantindo que params seja uma Promise ou undefined
+interface PageProps {
+  params?: Promise<{ slug: string }>;
 }
 
-// Função para gerar os caminhos (slugs) das páginas estáticas
-export async function generateStaticParams() {
-  const posts = await getAllPosts(["slug"]);  // Assegure que isso é uma operação assíncrona
+// Página de Post com params como uma promessa
+export default async function PostPage({ params }: PageProps) {
+  // Resolvendo params se ele for uma Promise
+  const resolvedParams = params ? await params : undefined;
 
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
+  if (!resolvedParams) {
+    return <p>Invalid parameters</p>;
+  }
 
-// Componente de página para renderizar apenas a imagem e o nome baseado no slug
-export default async function Post({ params }: { params: { slug: string } | Promise<{ slug: string }> }) {
-  const resolvedParams = await Promise.resolve(params); // Certifique-se de resolver a promessa se for necessária
-  
-  // Buscando os dados da imagem com base no slug
+  // Buscando os dados do post com base no slug
   const post = await getPostBySlug(resolvedParams.slug, ["title", "coverImage"]);
 
+  // Tratamento de erro caso o post não seja encontrado
   if (!post) {
     return <p>Post not found</p>;
   }
 
-  // Renderiza a imagem e o título (nome da imagem)
+  // Renderiza a imagem e o título do post
   return (
     <article>
       <h1>{post.title}</h1>
@@ -34,3 +31,11 @@ export default async function Post({ params }: { params: { slug: string } | Prom
   );
 }
 
+// Função para gerar os slugs estaticamente
+export async function generateStaticParams() {
+  const posts = await getAllPosts(["slug"]);
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
