@@ -1,12 +1,12 @@
-import { getAllPosts, getPostBySlug } from "@/lib/posts"; 
+import { getAllPosts, getPostBySlug } from "@/lib/posts"; // Certifique-se de que o caminho esteja correto
 import { notFound } from "next/navigation";
 import markdownToHtml from "@/lib/markdownToHtml";
 import { PostHeader } from "@/app/_components/post-header";
 import { PostBody } from "@/app/_components/post-body";
 
 interface PostPageProps {
-  readonly params: {
-    readonly slug: string;
+  params: {
+    slug: string;
   };
 }
 
@@ -18,7 +18,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Post({ params }: PostPageProps) {
+export default async function Post({ params }: Readonly<PostPageProps>) {
   const post = await getPostBySlug(params.slug, ["slug", "title", "content", "coverImage", "date", "author"]);
 
   if (!post) {
