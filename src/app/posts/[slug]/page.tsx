@@ -1,3 +1,5 @@
+"use client";  // Isso indica que este arquivo é um componente cliente
+
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import { useParams } from "next/navigation"; // Importando useParams
 
@@ -16,7 +18,7 @@ export async function generateStaticParams() {
 }
 
 // Componente de página para renderizar apenas a imagem e o nome baseado no slug
-export default async function Post() {
+export default function Post() {
   const params = useParams(); // Obtendo params via useParams
 
   // Verifica se o slug é um array de strings e pega a primeira string
