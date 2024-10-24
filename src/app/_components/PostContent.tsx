@@ -1,11 +1,6 @@
+import { Author } from "@/interfaces/author";  // Importe a interface correta
 import { PostHeader } from "@/app/_components/post-header";
 import { PostBody } from "@/app/_components/post-body";
-
-// Defina o tipo Author corretamente
-interface Author {
-  name: string;
-  picture?: string;
-}
 
 // Defina o tipo PostContentProps, garantindo que `content` esteja dentro de `post`
 interface PostContentProps {
@@ -13,8 +8,8 @@ interface PostContentProps {
     title: string;
     coverImage: string;
     date: string;
-    author: Author; 
-    content: string; // `content` agora faz parte de `post`
+    author: Author;  // Agora usa a interface importada
+    content: string;
   };
 }
 
@@ -26,9 +21,9 @@ export default function PostContent({ post }: PostContentProps) {
         title={post.title}
         coverImage={post.coverImage}
         date={post.date}
-        author={post.author.name}  // Usa `post.author.name` aqui para passar o nome
+        author={post.author} 
       />
-      <PostBody content={post.content} />  {/* Agora `post.content` */}
+      <PostBody content={post.content} />
     </article>
   );
 }
