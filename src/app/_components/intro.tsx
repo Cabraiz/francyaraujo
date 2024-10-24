@@ -73,7 +73,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
 
   return (
     <nav
-      className="navbar navbar-expand-lg navbar-light"
+      className="navbar navbar-expand-lg navbar-light fade-in"
       style={{
         height: sectionHeight,
         transition: 'height 0.5s ease-in-out',
@@ -97,7 +97,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
           height: '100%',
           background: window.innerWidth < 1000 
             ? 'linear-gradient(to right, #f76852 10%, #f76852 90%)'
-            : 'linear-gradient(to right, #f78670 0%, #f76852 90%,#f78670 100%)',
+            : 'linear-gradient(to right, #f78670 0%, #f76852 90%,#f76852 100%)',
           zIndex: -1,
         }}
       />
@@ -132,6 +132,8 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
         }}
       />
 
+      <div className="particles" />
+
       <div className="container-fluid h-100 d-flex justify-content-center align-items-center px-0">
         <div className={`row w-100 align-items-center ${showNavItems ? 'justify-content-between' : 'justify-content-center'} h-100`}>
 
@@ -151,7 +153,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
                         fontFamily: "'Novecento', sans-serif",
                         fontSize: item.name === 'AGENDE AGORA!' ? '1.1em' : 'auto',  
                         letterSpacing: '0.4em',
-                        transition: 'color 0.3s ease',
+                        transition: 'color 0.3s ease, letter-spacing 0.4s ease',
                         whiteSpace: 'nowrap',
                         color: currentPath === item.link ? '#ffffff' : 'rgba(255, 228, 225, 0.8)', // Cor creme no lugar do branco
                       }}
