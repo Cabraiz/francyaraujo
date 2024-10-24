@@ -20,7 +20,11 @@ export function PostPreview({
   excerpt,
   author,
   slug,
-}: Props) {
+}: Readonly<Props>) {
+  if (!author || !coverImage || !date || !slug) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <div className="mb-5">

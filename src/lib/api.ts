@@ -1,59 +1,38 @@
-import { Post } from "@/interfaces/post";
-import fs from "fs";
-import matter from "gray-matter";
-import { join } from "path";
+import { getPostBySlug, getAllPosts } from '@/lib/posts';
 
-// Define o diretório dos posts
-const postsDirectory = join(process.cwd(), "_posts");
-
-// Função para obter todos os slugs dos posts
-export async function getPostSlugs(): Promise<string[]> {
-  return fs.readdirSync(postsDirectory);
+interface Params {
+  params: {
+    slug: string;
+  };
 }
 
-// Função para obter os dados de um post específico pelo slug
-export async function getPostBySlug(slug: string, fields: string[]): Promise<Post | null> {
-  const realSlug = slug.replace(/\.md$/, "");
-  const fullPath = join(postsDirectory, `${realSlug}.md`);
+export const getStaticProps = async ({ params }: Params) => {
+  const post = getPostBySlug(params?.slug, ['title', 'content', 'date', 'coverImage', 'slug']);
 
-  if (!fs.existsSync(fullPath)) {
-    console.error(`File not found: ${fullPath}`);
-    return null;
+  if (!post) {
+    return {
+      notFound: true,
+    };
   }
 
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents); // Parseia o conteúdo Markdown
+  return {
+    props: {
+      post,
+    },
+  };
+};
 
-  if (typeof data !== 'object' || typeof content !== 'string') {
-    console.error('Invalid file structure:', { data, content });
-    return null;
-  }
 
-  let items: { [key: string]: any } = {};
+export const getStaticPaths = async () => {
+  const posts = getAllPosts(['slug']);
+  const paths = posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
 
-  fields.forEach((field) => {
-    if (field === "slug") {
-      items[field] = realSlug;
-    } else if (field === "content") {
-      items[field] = content;
-    } else if (data.hasOwnProperty(field)) {
-      items[field] = data[field];
-    }
-  });
+  return {
+    paths,
+    fallback: false,
+  };
+};
+export { getAllPosts };
 
-  return items as Post;
-}
-
-// Função para obter todos os posts
-export async function getAllPosts(): Promise<Post[]> {
-  const slugs = await getPostSlugs();
-  const fields = ["slug", "content", "date", "coverImage", "title", "ogImage"];
-
-  const posts = await Promise.all(
-    slugs.map((slug) => getPostBySlug(slug, fields))
-  );
-
-  return posts
-    .filter((post): post is Post => post !== null)
-    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
-}

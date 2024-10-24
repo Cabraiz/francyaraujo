@@ -22,22 +22,22 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
   const [sectionHeight, setSectionHeight] = useState<string>(isMobile ? '13vh' : '9vh');
   const [isMounted, setIsMounted] = useState(false);
   const [currentPath, setCurrentPath] = useState(''); 
-  const [showNavItems, setShowNavItems] = useState(true); // Estado para controlar a exibição dos nav items
+  const [showNavItems, setShowNavItems] = useState(true); 
   const pathname = usePathname();
 
   useEffect(() => {
     setIsMounted(true); 
-    setCurrentPath(pathname);
+    setCurrentPath(pathname ?? '');  // Ajuste feito aqui
 
     const handleResize = () => {
       if (window.innerWidth < 1000) {
-        setShowNavItems(false); // Esconder itens de navegação se a largura for menor que 1000px
+        setShowNavItems(false); 
       } else {
-        setShowNavItems(true); // Mostrar itens de navegação se a largura for maior que 1000px
+        setShowNavItems(true); 
       }
     };
 
-    handleResize(); // Chama inicialmente para definir o estado correto
+    handleResize(); 
 
     window.addEventListener('resize', handleResize);
 
@@ -73,36 +73,36 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
   }
 
   return (
-   <nav
-  className="navbar navbar-expand-lg navbar-light"
-  style={{
-    height: sectionHeight,
-    transition: 'height 0.5s ease-in-out',
-    background: window.innerWidth < 1000 
-      ? 'linear-gradient(to bottom, #f76852 10%, #f76852 90%)'
-      : 'linear-gradient(to bottom, #fdb4a6 0%,#f88b75 5%, #f76852  10%, #f76852  85%, #f88b75 95%,#fdb4a6 100%)',
-    border: '1px solid rgba(255, 255, 255, 0.3)',
-    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
-    zIndex: 2,
-    position: 'relative',
-    overflow: 'hidden',
-  }}
->
-  <div
-    style={{
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background: window.innerWidth < 1000 
-        ? 'linear-gradient(to right, #f76852 10%, #f76852 90%)'
-        : 'linear-gradient(to right, #f78670 0%, #f78670 5%, #f76852 10%, #f76852 90%,#f78670 95%, #f78670 100%)',
-      zIndex: -1,
-    }}
-  />
-    {/* Seu conteúdo de navegação aqui */}
+    <nav
+      className="navbar navbar-expand-lg navbar-light"
+      style={{
+        height: sectionHeight,
+        transition: 'height 0.5s ease-in-out',
+        background: window.innerWidth < 1000 
+          ? 'linear-gradient(to bottom, #f76852 10%, #f76852 90%)'
+          : 'linear-gradient(to bottom, #fdb4a6 0%,#f88b75 5%, #f76852  10%, #f76852  85%, #f88b75 95%,#fdb4a6 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.3)',
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+        zIndex: 2,
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: window.innerWidth < 1000 
+            ? 'linear-gradient(to right, #f76852 10%, #f76852 90%)'
+            : 'linear-gradient(to right, #f78670 0%, #f78670 5%, #f76852 10%, #f76852 90%,#f78670 95%, #f78670 100%)',
+          zIndex: -1,
+        }}
+      />
+      
       <div
         style={{
           content: '""',
@@ -136,37 +136,31 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
       <div className="container-fluid h-100 d-flex justify-content-center align-items-center px-0">
         <div className={`row w-100 align-items-center ${showNavItems ? 'justify-content-between' : 'justify-content-center'} h-100`}>
 
-          
-          {/* Marca centralizada se os navItems estiverem ocultos */}
           <div className={`col-${showNavItems ? '4' : '12'} d-flex justify-content-${showNavItems ? 'start' : 'center'} align-items-center h-100`}>
             <MarcaImage title={title} src={coverImage} />
           </div>
 
-          {/* Itens de navegação à direita, apenas se showNavItems for true */}
           {showNavItems && (
             <div className="col-8 d-flex justify-content-end align-items-center h-100">
-<ul className="navbar-nav mb-2 mb-lg-0 mt-2">
-  {navItems.map((item) => (
-    <li className="nav-item mx-1" key={item.name}>
-      <a
-        className={`nav-link ${currentPath === item.link ? 'active' : 'gradient-animation'} ${item.name === 'AGENDE AGORA!' ? 'highlight-agenda' : ''}`}
-        href={item.link}
-        style={{
-          fontFamily: "'Novecento', sans-serif",
-          fontSize: item.name === 'AGENDE AGORA!' ? '1.1em' : 'auto',  // Aumenta a fonte de "AGENDE AGORA!"
-          letterSpacing: '0.4em',
-          transition: 'color 0.3s ease',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {item.name}
-      </a>
-    </li>
-  ))}
-</ul>
-
-
-
+              <ul className="navbar-nav mb-2 mb-lg-0 mt-2">
+                {navItems.map((item) => (
+                  <li className="nav-item mx-1" key={item.name}>
+                    <a
+                      className={`nav-link ${currentPath === item.link ? 'active' : 'gradient-animation'} ${item.name === 'AGENDE AGORA!' ? 'highlight-agenda' : ''}`}
+                      href={item.link}
+                      style={{
+                        fontFamily: "'Novecento', sans-serif",
+                        fontSize: item.name === 'AGENDE AGORA!' ? '1.1em' : 'auto',  
+                        letterSpacing: '0.4em',
+                        transition: 'color 0.3s ease',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>

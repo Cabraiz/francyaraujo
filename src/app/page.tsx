@@ -4,7 +4,11 @@ import { Intro } from "@/app/_components/intro";
 import { getAllPosts } from "@/lib/api";
 
 export default async function Index() {
-  const allPosts = await getAllPosts();
+  const allPosts = getAllPosts(["title", "coverImage", "date"]);
+
+  if (!allPosts || allPosts.length === 0) {
+    return <p>No posts available.</p>; // Verificação adicional para garantir que os posts estão carregados
+  }
 
   const heroPost = allPosts[0];
   const marcaPost = allPosts[2];
@@ -14,17 +18,14 @@ export default async function Index() {
   return (
     <main className="flex flex-col justify-start min-h-screen">
       {/* Intro fora do Container para ocupar toda a largura */}
-      <Intro 
-          title={marcaPost.title}
-          coverImage={marcaPost.coverImage}
+      <Intro title={marcaPost.title} coverImage={marcaPost.coverImage} />
+      <HeroPost
+        title={heroPost.title}
+        coverImage={heroPost.coverImage}
+        salaoImage={salaoPost.coverImage}
+        marcaSoloImage={marcaSoloPost.coverImage}
       />
-        <HeroPost
-          title={heroPost.title}
-          coverImage={heroPost.coverImage}
-          salaoImage={salaoPost.coverImage}
-          marcaSoloImage={marcaSoloPost.coverImage}
-        />
-        <SignaturePost/>
+      <SignaturePost />
     </main>
   );
 }

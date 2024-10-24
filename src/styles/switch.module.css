@@ -1,0 +1,24 @@
+.switch {
+    background-color: var(--button-bg, #0070f3); /* Usa uma variável CSS para flexibilidade */
+    color: var(--button-text, #fff);              /* Cor do texto */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;       /* Transição suave ao trocar de tema */
+  }
+  
+  .switch:hover {
+    background-color: var(--button-hover-bg, #005bb5); /* Cor ao passar o mouse */
+  }
+  
+  .switch:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.4); /* Efeito de foco acessível */
+  }
+  
+  .switch:active {
+    background-color: var(--button-active-bg, #003f7f); /* Cor ao clicar */
+  }
+  

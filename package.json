@@ -7,15 +7,15 @@
   },
   "dependencies": {
     "@types/fs-extra": "^11.0.4",
-    "@types/path-type": "^3.0.1",
-    "ajv": "^6.12.3",
+    "@types/path-type": "^3.0.0",
+    "ajv": "^8.17.1",
     "bootstrap": "^5.3.3",
     "classnames": "^2.5.1",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.1.0",
     "framer-motion": "^11.5.4",
     "gray-matter": "^4.0.3",
-    "minimatch": "^3.0.5",
-    "next": "^14.2.11",
+    "minimatch": "^10.0.1",
+    "next": "^15.0.1",
     "path-to-regexp": "^8.1.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
@@ -28,8 +28,8 @@
     "serve-handler": "^6.1.5"
   },
   "devDependencies": {
-    "@types/node": "^20.16.3",
-    "@types/react": "^18.3.3",
+    "@types/node": "^22.7.9",
+    "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.45",
@@ -37,7 +37,7 @@
     "typescript": "^5.5.2"
   },
   "engines": {
-    "node": ">=22.8.0"
+    "node": "23.0.0"
   },
   "resolutions": {
     "punycode": "2.3.1"
