@@ -11,7 +11,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     };
   }
 
-  // Se params.slug for um array, usa o primeiro item.
   const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
 
   const post = getPostBySlug(slug, ["slug", "title", "content", "coverImage", "date", "author"]);
@@ -26,8 +25,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
   return {
     props: {
-      post,
-      content,
+      post: {
+        ...post,
+        content, // Inclui o conteúdo gerado do markdown
+      },
     },
   };
 }

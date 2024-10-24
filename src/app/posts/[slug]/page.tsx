@@ -7,9 +7,10 @@ interface PostPageProps {
     coverImage: string;
     date: string;
     author: string;
+    content: string;
   };
-  content: string;
 }
+
 
 
 export async function generateStaticParams() {
@@ -20,6 +21,6 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function Post({ post, content }: PostPageProps) {
-  return <PostContent post={post} content={content} />;
+export default function Post({ post }: PostPageProps) {
+  return <PostContent post={post} content={post.content} />;
 }
