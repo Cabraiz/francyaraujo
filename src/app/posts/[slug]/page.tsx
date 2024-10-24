@@ -1,18 +1,8 @@
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
-import markdownToHtml from "@/lib/markdownToHtml";
-import PostContent from "@/app/_components/PostContent";
-
-interface Author {
-  name: string;
-  picture: string;  // picture agora é sempre uma string
-}
 
 interface Post {
   title: string;
   coverImage: string;
-  date: string;
-  author: Author;
-  content: string;
 }
 
 // Função para gerar os caminhos (slugs) das páginas estáticas
@@ -24,27 +14,20 @@ export async function generateStaticParams() {
   }));
 }
 
-// Componente de página para renderizar o post baseado no slug
-export default async function Post({ params }: { params: Promise<{ slug: string }> | { slug: string } }) {
-  let slugValue = "";
-
-  // Se params for uma Promise, espera sua resolução
-  if (params instanceof Promise) {
-    params = await params;
-  }
-
-  // Acessa o valor do slug
-  if ('slug' in params) {
-    slugValue = params.slug;
-  }
-
-  const post = getPostBySlug(slugValue, ["slug", "title", "content", "coverImage", "date", "author"]);
+// Componente de página para renderizar apenas a imagem e o nome baseado no slug
+export default async function Post({ params }: { params: { slug: string } }) {
+  // Buscando os dados da imagem com base no slug
+  const post = getPostBySlug(params.slug, ["title", "coverImage"]);
 
   if (!post) {
     return <p>Post not found</p>;
   }
 
-  const content = await markdownToHtml(post.content || "");
-
-  return <PostContent post={{ ...post, content }} />;
+  // Renderiza a imagem e o título (nome da imagem)
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <img src={post.coverImage} alt={post.title} />
+    </article>
+  );
 }
