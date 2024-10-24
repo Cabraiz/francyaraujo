@@ -1,7 +1,7 @@
 import { HeroPost } from "@/app/_components/hero-post";
 import { SignaturePost } from "@/app/_components/signature-post";
 import { Intro } from "@/app/_components/intro";
-import { getAllPosts } from "@/lib/api";
+import { getAllPosts } from "@/lib/posts";
 
 export default async function Index() {
   const allPosts = getAllPosts(["title", "coverImage", "date"]);

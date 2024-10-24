@@ -1,30 +1,10 @@
-import { getPostBySlug, getAllPosts } from '@/lib/posts';
+import { GetStaticProps, GetStaticPaths } from 'next';
+import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import markdownToHtml from "@/lib/markdownToHtml";
 
-interface Params {
-  params: {
-    slug: string;
-  };
-}
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = getAllPosts(["slug"]);
 
-export const getStaticProps = async ({ params }: Params) => {
-  const post = getPostBySlug(params?.slug, ['title', 'content', 'date', 'coverImage', 'slug']);
-
-  if (!post) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: {
-      post,
-    },
-  };
-};
-
-
-export const getStaticPaths = async () => {
-  const posts = getAllPosts(['slug']);
   const paths = posts.map((post) => ({
     params: { slug: post.slug },
   }));
@@ -34,5 +14,22 @@ export const getStaticPaths = async () => {
     fallback: false,
   };
 };
-export { getAllPosts };
 
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const post = getPostBySlug(params?.slug as string, ["slug", "title", "content", "coverImage", "date", "author"]);
+
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const content = await markdownToHtml(post.content || "");
+
+  return {
+    props: {
+      post,
+      content,
+    },
+  };
+};
