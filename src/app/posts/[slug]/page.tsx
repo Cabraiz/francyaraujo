@@ -7,7 +7,7 @@ interface Post {
 
 // Função para gerar os caminhos (slugs) das páginas estáticas
 export async function generateStaticParams() {
-  const posts = getAllPosts(["slug"]);
+  const posts = await getAllPosts(["slug"]);  // Assegure que isso é uma operação assíncrona
 
   return posts.map((post) => ({
     slug: post.slug,
@@ -15,9 +15,11 @@ export async function generateStaticParams() {
 }
 
 // Componente de página para renderizar apenas a imagem e o nome baseado no slug
-export default async function Post({ params }: { params: { slug: string } }) {
+export default async function Post({ params }: { params: { slug: string } | Promise<{ slug: string }> }) {
+  const resolvedParams = await Promise.resolve(params); // Certifique-se de resolver a promessa se for necessária
+  
   // Buscando os dados da imagem com base no slug
-  const post = getPostBySlug(params.slug, ["title", "coverImage"]);
+  const post = await getPostBySlug(resolvedParams.slug, ["title", "coverImage"]);
 
   if (!post) {
     return <p>Post not found</p>;
@@ -31,3 +33,4 @@ export default async function Post({ params }: { params: { slug: string } }) {
     </article>
   );
 }
+
