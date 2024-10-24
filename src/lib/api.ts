@@ -1,4 +1,4 @@
-import { GetStaticProps, GetStaticPaths } from 'next';
+import { GetStaticProps, GetStaticPaths, GetStaticPropsContext } from 'next';
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import markdownToHtml from "@/lib/markdownToHtml";
 
@@ -15,7 +15,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async (context: GetStaticPropsContext) => {
+  const { params } = context;
   const post = getPostBySlug(params?.slug as string, ["slug", "title", "content", "coverImage", "date", "author"]);
 
   if (!post) {
