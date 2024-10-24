@@ -1,18 +1,24 @@
-import { getAllPosts, getPostBySlug } from "@/lib/api";
+import { getAllPosts, getPostBySlug } from "@/lib/posts"; 
 import { notFound } from "next/navigation";
 import markdownToHtml from "@/lib/markdownToHtml";
 import { PostHeader } from "@/app/_components/post-header";
 import { PostBody } from "@/app/_components/post-body";
 
+interface PostPageProps {
+  readonly params: {
+    readonly slug: string;
+  };
+}
+
 export async function generateStaticParams() {
-  const posts = await getAllPosts(); // Obtém todos os posts
+  const posts = getAllPosts(["slug"]); // Passando os campos corretos
 
   return posts.map((post) => ({
     slug: post.slug, // Retorna os slugs para gerar as páginas estáticas
   }));
 }
 
-export default async function Post({ params }: { params: { slug: string } }) {
+export default async function Post({ params }: PostPageProps) {
   const post = await getPostBySlug(params.slug, ["slug", "title", "content", "coverImage", "date", "author"]);
 
   if (!post) {
