@@ -1,4 +1,3 @@
-import { GetStaticProps, GetStaticPaths } from "next";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import markdownToHtml from "@/lib/markdownToHtml";
 import PostContent from "@/app/_components/PostContent";
@@ -22,46 +21,23 @@ interface Post {
 }
 
 // Função para gerar os caminhos (slugs) das páginas estáticas
-export const getStaticPaths: GetStaticPaths = async () => {
+export async function generateStaticParams() {
   const posts = getAllPosts(["slug"]);
 
-  const paths = posts.map((post) => ({
-    params: { slug: post.slug },
+  return posts.map((post) => ({
+    slug: post.slug,
   }));
+}
 
-  return {
-    paths,
-    fallback: false,  // Define como 'false' para retornar 404 se o slug não for encontrado
-  };
-};
-
-// Função para passar as props estáticas para o componente
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const post = getPostBySlug(params?.slug as string, ["slug", "title", "content", "coverImage", "date", "author"]);
+// Componente de página para renderizar o post baseado no slug
+export default async function Post({ params }: { params: { slug: string } }) {
+  const post = getPostBySlug(params.slug, ["slug", "title", "content", "coverImage", "date", "author"]);
 
   if (!post) {
-    return {
-      notFound: true,
-    };
+    return <p>Post not found</p>;
   }
 
   const content = await markdownToHtml(post.content || "");
 
-  return {
-    props: {
-      post: {
-        ...post,
-        author: {
-          name: post.author.name,
-          picture: post.author.picture ?? "",  // Se picture for undefined, usa string vazia
-        },
-      },
-      content,
-    },
-  };
-};
-
-// Componente de página para renderizar o post baseado no slug
-export default function Post({ post, content }: PostPageProps) {
   return <PostContent post={{ ...post, content }} />;
 }
