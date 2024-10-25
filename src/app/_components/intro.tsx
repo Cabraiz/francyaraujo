@@ -15,7 +15,7 @@ const navItems = [
   { name: "HISTÓRIA", link: "/story" },
   { name: "SERVIÇOS", link: "/services" },
   { name: "CONTATOS", link: "/contact" },
-  { name: "AGENDE AGORA!", link: "/book" },
+  { name: "AGENDE AGORA", link: "/book" },
 ];
 
 export function Intro({ title, coverImage }: Readonly<Props>) {
@@ -145,13 +145,13 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
             <div className="col-8 d-flex justify-content-end align-items-center h-100">
               <ul className="navbar-nav mb-2 mb-lg-0 mt-2">
                 {navItems.map((item) => (
-                  <li className="nav-item mx-1" key={item.name}>
+                  <li className="nav-item mx-3" key={item.name}>
                     <a
-                      className={`nav-link ${currentPath === item.link ? 'active' : 'gradient-animation'} ${item.name === 'AGENDE AGORA!' ? 'highlight-agenda' : ''}`}
+                      className={`nav-link ${currentPath === item.link ? 'active' : 'gradient-animation'} ${item.name === 'AGENDE AGORA' ? 'highlight-agenda' : ''}`}
                       href={item.link}
                       style={{
                         fontFamily: "'Novecento', sans-serif",
-                        fontSize: item.name === 'AGENDE AGORA!' ? '1.1em' : 'auto',  
+                        fontSize: item.name === 'AGENDE AGORA' ? '1.1em' : 'auto',  
                         letterSpacing: '0.4em',
                         transition: 'color 0.3s ease, letter-spacing 0.4s ease',
                         whiteSpace: 'nowrap',

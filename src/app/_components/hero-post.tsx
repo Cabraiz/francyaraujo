@@ -7,6 +7,7 @@ type Props = {
   title: string;
   coverImage: string;
   salaoImage: string;
+  salonImage: string;
   marcaSoloImage: string;
 };
 
@@ -14,11 +15,11 @@ export function HeroPost({
   title,
   coverImage,
   salaoImage,
+  salonImage,
   marcaSoloImage,
 }: Readonly<Props>) {
-  const [isImageLoaded, setIsImageLoaded] = useState(false); // Controle de carregamento de imagens
-  const [currentImage, setCurrentImage] = useState(coverImage); // Estado para controlar a imagem atual
-  const [isCoverImage, setIsCoverImage] = useState(true); // Controla qual imagem está ativa
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Controla o índice da imagem atual
 
   // Pré-carregamento das imagens
   useEffect(() => {
@@ -31,67 +32,64 @@ export function HeroPost({
       });
     };
 
-    Promise.all([loadImage(coverImage), loadImage(salaoImage), loadImage(marcaSoloImage)])
+    Promise.all([loadImage(coverImage), loadImage(salaoImage), loadImage(salonImage), loadImage(marcaSoloImage)])
       .then(() => {
-        setIsImageLoaded(true); // Define que todas as imagens foram carregadas
+        setIsImageLoaded(true);
       })
       .catch((error) => {
         console.error("Erro ao carregar imagens", error);
       });
-  }, [coverImage, salaoImage, marcaSoloImage]);
+  }, [coverImage, salaoImage, salonImage, marcaSoloImage]);
+
+  // Imagens a serem alternadas
+  const images = [coverImage, salaoImage, salonImage];
 
   // Controla a troca de imagem
   useEffect(() => {
     if (!isImageLoaded) return;
 
     const imageSwitchInterval = setInterval(() => {
-      setIsCoverImage((prevState) => !prevState); // Alterna entre as imagens
-      setCurrentImage(isCoverImage ? salaoImage : coverImage); // Atualiza a imagem
-    }, 6000); // Troca a imagem a cada 6 segundos
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 6000); // Altera a imagem a cada 6 segundos
 
-    return () => clearInterval(imageSwitchInterval); // Limpa o intervalo quando o componente for desmontado
-  }, [isImageLoaded, isCoverImage, coverImage, salaoImage]);
+    return () => clearInterval(imageSwitchInterval);
+  }, [isImageLoaded, images.length]);
 
   return (
-    <section className="relative w-full h-[63vh]">
+    <section className="relative w-full h-[66vh]">
       <div className="mb-8 md:mb-16 w-full h-full overflow-hidden relative">
         {isImageLoaded ? (
           <div
             className="w-full h-full"
             style={{
               position: "relative",
-              overflow: "hidden",
               width: "100%",
               height: "100%",
             }}
           >
             <Image
               alt={title}
-              src={currentImage} // Exibe a imagem atual (cover ou salao)
+              src={images[currentImageIndex]} 
               layout="fill"
               objectFit="cover"
               placeholder="blur"
-              blurDataURL={currentImage} // Imagem de baixa qualidade para o placeholder
-              quality={10} // Qualidade baixa inicial para o placeholder
-              style={{
-                transform: "scale(1.5)", // Define o scale inicial para 150%
-                transition: "transform 0.3s ease-in-out", // Suaviza a transição do scale
-              }}
+              blurDataURL={images[currentImageIndex]} 
+              quality={10} 
             />
             {/* Adiciona a marcaSoloImage sobreposta */}
             <div className="absolute inset-0 flex items-center justify-center">
               <Image
                 alt="Marca Solo"
                 src={marcaSoloImage}
-                layout="intrinsic" // Usa layout intrínseco para o logo
-                width={150} // Defina a largura da imagem da marca
-                height={150} // Defina a altura da imagem da marca
+                layout="intrinsic"
+                width={150}
+                height={150}
                 objectFit="contain"
               />
             </div>
           </div>
         ) : (
-          <div className="w-full h-full bg-gray-200 animate-pulse"></div> // Placeholder de loading profissional
+          <div className="w-full h-full bg-gray-200 animate-pulse"></div>
         )}
       </div>
     </section>

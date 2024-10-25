@@ -13,6 +13,7 @@ export default async function Index() {
   const heroPost = allPosts[0];
   const marcaPost = allPosts[2];
   const salaoPost = allPosts[5];
+  const salonPost = allPosts[6];
   const marcaSoloPost = allPosts[3];
 
   return (
@@ -23,6 +24,7 @@ export default async function Index() {
         title={heroPost.title}
         coverImage={heroPost.coverImage}
         salaoImage={salaoPost.coverImage}
+        salonImage={salonPost.coverImage}
         marcaSoloImage={marcaSoloPost.coverImage}
       />
       <SignaturePost />
