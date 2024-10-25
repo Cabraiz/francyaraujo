@@ -19,7 +19,9 @@ export function HeroPost({
   marcaSoloImage,
 }: Readonly<Props>) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Controla o índice da imagem atual
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [objectPosition, setObjectPosition] = useState("top"); // Posição inicial da imagem
+  const images = [coverImage, salaoImage, salonImage];
 
   // Pré-carregamento das imagens
   useEffect(() => {
@@ -41,16 +43,22 @@ export function HeroPost({
       });
   }, [coverImage, salaoImage, salonImage, marcaSoloImage]);
 
-  // Imagens a serem alternadas
-  const images = [coverImage, salaoImage, salonImage];
-
-  // Controla a troca de imagem
+  // Controla a troca de imagem e persistência da posição/zoom
   useEffect(() => {
     if (!isImageLoaded) return;
 
+    const updateImagePosition = (index: number) => {
+      const position = index === 1 ? "center" : "top";
+      setObjectPosition(position);
+    };
+
     const imageSwitchInterval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 6000); // Altera a imagem a cada 6 segundos
+      setCurrentImageIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % images.length;
+        updateImagePosition(nextIndex);
+        return nextIndex;
+      });
+    }, 6000);
 
     return () => clearInterval(imageSwitchInterval);
   }, [isImageLoaded, images.length]);
@@ -65,18 +73,21 @@ export function HeroPost({
               position: "relative",
               width: "100%",
               height: "100%",
+              transition: "transform 0.2s ease-in-out",
+              transform: "scale(1.1)", // Aplica um leve zoom fixo
             }}
           >
             <Image
               alt={title}
-              src={images[currentImageIndex]} 
+              src={images[currentImageIndex]}
               layout="fill"
               objectFit="cover"
+              objectPosition={objectPosition} // Define a posição dinâmica fixa
               placeholder="blur"
-              blurDataURL={images[currentImageIndex]} 
-              quality={10} 
+              blurDataURL={images[currentImageIndex]}
+              quality={100} // Qualidade fixa
+              priority // Configura a imagem para carregamento prioritário
             />
-            {/* Adiciona a marcaSoloImage sobreposta */}
             <div className="absolute inset-0 flex items-center justify-center">
               <Image
                 alt="Marca Solo"
