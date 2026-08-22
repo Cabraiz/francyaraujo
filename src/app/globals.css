@@ -371,11 +371,96 @@
   inset: 0;
   z-index: 26;
   pointer-events: none;
-  background-image: url("/assets/blog/dynamic-routing/ornamental-frame-generated.png");
+}
+
+.hero-ornamental-frame__top-line,
+.hero-ornamental-frame__left-line,
+.hero-ornamental-frame__piece {
+  position: absolute;
+  display: block;
+}
+
+.hero-ornamental-frame__top-line {
+  top: clamp(7px, 0.75vw, 11px);
+  right: clamp(7px, 0.75vw, 11px);
+  left: clamp(7px, 0.75vw, 11px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(198, 149, 91, 0.72),
+    rgba(198, 149, 91, 0.38) 78%,
+    transparent
+  );
+}
+
+.hero-ornamental-frame__left-line {
+  top: clamp(7px, 0.75vw, 11px);
+  bottom: 32%;
+  left: clamp(7px, 0.75vw, 11px);
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(198, 149, 91, 0.72),
+    rgba(198, 149, 91, 0.46) 76%,
+    transparent
+  );
+}
+
+.hero-ornamental-frame__piece {
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: contain;
+}
+
+.hero-ornamental-frame__corner {
+  top: clamp(7px, 0.75vw, 11px);
+  left: clamp(7px, 0.75vw, 11px);
+  width: clamp(4.4rem, 6.5vw, 6.5rem);
+  aspect-ratio: 80 / 82;
+  background-image: url("/assets/blog/dynamic-routing/ornamental-corner.png");
   opacity: 0.76;
+}
+
+.hero-ornamental-frame__flourish {
+  bottom: clamp(5px, 0.7vw, 10px);
+  left: clamp(7px, 0.75vw, 11px);
+  width: clamp(9rem, 17vw, 15rem);
+  aspect-ratio: 165 / 136;
+  background-image: url("/assets/blog/dynamic-routing/ornamental-flourish.png");
+  background-position: left bottom;
+  opacity: 0.64;
+}
+
+.hero-ornamental-frame__sparkle {
+  width: clamp(0.75rem, 1.15vw, 1.15rem);
+  aspect-ratio: 23 / 52;
+  background-image: url("/assets/blog/dynamic-routing/ornamental-sparkle.png");
+  opacity: 0.68;
+}
+
+.hero-ornamental-frame__sparkle--upper {
+  top: 17%;
+  right: 2.4%;
+}
+
+.hero-ornamental-frame__sparkle--lower {
+  right: 2.8%;
+  bottom: 5%;
+  transform: scale(1.2) rotate(180deg);
+}
+
+@media (max-width: 767px) {
+  .hero-ornamental-frame__corner {
+    width: 4.8rem;
+  }
+
+  .hero-ornamental-frame__flourish {
+    width: min(42vw, 10.25rem);
+  }
+
+  .hero-ornamental-frame__sparkle--upper {
+    top: 22%;
+  }
 }
 
 .hero-portrait {
