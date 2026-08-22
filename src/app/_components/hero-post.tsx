@@ -12,6 +12,11 @@ type Props = {
   portraitImages: readonly string[];
 };
 
+const whatsappNumber = "558881902582";
+const whatsappMessage = encodeURIComponent(
+  "Olá, Francy! Gostaria de agendar um horário.",
+);
+
 if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP, ScrollTrigger);
 }
@@ -45,9 +50,12 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             return;
           }
 
-          gsap.set("[data-hero-copy-line], [data-hero-tagline-item]", {
-            autoAlpha: 0,
-          });
+          gsap.set(
+            "[data-hero-copy-line], [data-hero-tagline-item], [data-hero-cta]",
+            {
+              autoAlpha: 0,
+            },
+          );
           gsap.set("[data-hero-signature-stroke]", {
             strokeDasharray: 1,
             strokeDashoffset: 1,
@@ -244,6 +252,17 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 ease: "power2.out",
               },
               0.56,
+            )
+            .fromTo(
+              "[data-hero-cta]",
+              { autoAlpha: 0, y: 12 },
+              {
+                autoAlpha: 1,
+                duration: 0.32,
+                ease: "power2.out",
+                y: 0,
+              },
+              0.62,
             )
             .fromTo(
               "[data-scroll-hero-sheen]",
@@ -494,6 +513,29 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 src="/assets/blog/dynamic-routing/tagline-ornament-generated.png"
                 width={1991}
               />
+            </div>
+
+            <div className="hero-cta" data-hero-cta>
+              <p className="hero-cta__copy">
+                Realce sua melhor versão com atendimento personalizado em um
+                ambiente acolhedor e exclusivo.
+              </p>
+
+              <div className="hero-cta__actions">
+                <a
+                  className="hero-cta__primary"
+                  href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  AGENDAR HORÁRIO
+                  <span aria-hidden="true">✦</span>
+                </a>
+
+                <a className="hero-cta__secondary" href="#historia">
+                  CONHEÇA MAIS
+                </a>
+              </div>
             </div>
           </div>
 

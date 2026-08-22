@@ -80,7 +80,7 @@ export const SignaturePost = () => {
   };
 
   return (
-    <section data-scroll-signature style={containerStyle}>
+    <section data-scroll-signature id="historia" style={containerStyle}>
       {/* Texto de fundo grande */}
       <div data-scroll-signature-bg style={backgroundTextStyle}>
         Francy Araujo
