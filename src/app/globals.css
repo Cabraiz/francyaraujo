@@ -81,9 +81,9 @@
 
 .contact-ribbon__inner {
   display: grid;
-  width: min(100% - 3rem, 1180px);
+  width: 100%;
   margin-inline: auto;
-  grid-template-columns: 0.85fr 1.45fr 1fr;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.45fr) minmax(0, 1fr);
 }
 
 .contact-ribbon__item {
@@ -91,6 +91,7 @@
   min-width: 0;
   padding: 0.8rem clamp(1rem, 2.1vw, 1.9rem);
   align-items: center;
+  justify-content: center;
   gap: 0.7rem;
   color: inherit;
   text-decoration: none;
@@ -98,6 +99,13 @@
   transition:
     color 0.25s ease,
     background-color 0.25s ease;
+}
+
+.contact-ribbon__icon {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: #e0bd88;
 }
 
 .contact-ribbon__item:first-child {
@@ -141,8 +149,28 @@
 
 @media (max-width: 1199px) {
   .contact-ribbon__inner {
-    display: flex;
     width: 100%;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.45fr) minmax(0, 1fr);
+  }
+
+  .contact-ribbon__item {
+    padding: 0.7rem clamp(0.75rem, 1.5vw, 1.15rem);
+  }
+
+  .contact-ribbon__item:first-child {
+    border-left: 0;
+  }
+
+  .contact-ribbon__note {
+    padding-inline: 1rem;
+    font-size: 0.49rem;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-ribbon__inner {
+    display: flex;
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scrollbar-width: none;
@@ -155,18 +183,8 @@
 
   .contact-ribbon__item {
     min-width: max-content;
-    padding-block: 0.7rem;
+    justify-content: flex-start;
     scroll-snap-align: start;
-  }
-
-  .contact-ribbon__item:first-child {
-    border-left: 0;
-  }
-
-  .contact-ribbon__note {
-    padding-inline: 1rem;
-    font-size: 0.49rem;
-    line-height: 1.45;
   }
 }
 
