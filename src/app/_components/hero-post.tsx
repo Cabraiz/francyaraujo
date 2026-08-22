@@ -457,10 +457,10 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                       aria-hidden="true"
                       className="hero-signature-flourish"
                       focusable="false"
-                      viewBox="0 0 140 70"
+                      viewBox="0 0 60 70"
                     >
                       <path
-                        d="M7 38 C20 44 34 39 48 35 C66 30 84 32 101 35 C111 37 120 36 129 33"
+                        d="M3 38 C18 40 36 37 57 33"
                         data-hero-signature-stroke
                         pathLength="1"
                       />

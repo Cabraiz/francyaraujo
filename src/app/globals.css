@@ -547,7 +547,7 @@
   position: relative;
   display: inline-block;
   height: 1.18em;
-  padding-left: 0.46em;
+  padding-left: 0.6em;
   white-space: nowrap;
 }
 
@@ -563,7 +563,7 @@
   top: 0.08em;
   left: 0;
   z-index: 0;
-  width: 2.2em;
+  width: 0.58em;
   height: 0.72em;
   overflow: visible;
   fill: none;
