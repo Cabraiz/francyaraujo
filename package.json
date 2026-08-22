@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "vinext build",
-    "build:next": "next build",
-    "start": "vinext start",
+    "build": "next build",
+    "start": "serve dist -l 3000",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
@@ -30,22 +29,13 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.10",
-    "@cloudflare/vite-plugin": "1.53.1",
-    "@cloudflare/workers-types": "5.20260822.1",
-    "@openai/sites-vite-plugin": "0.2.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "@vitejs/plugin-react": "6.1.0",
-    "@vitejs/plugin-rsc": "0.5.34",
-    "react-server-dom-webpack": "19.2.8",
     "serve": "^14.2.6",
     "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2",
-    "vinext": "1.0.0-beta.8",
-    "vite": "8.2.2",
-    "wrangler": "4.125.0"
+    "typescript": "^7.0.2"
   },
   "engines": {
     "node": ">=24.0.0",

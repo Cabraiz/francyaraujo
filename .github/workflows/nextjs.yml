@@ -46,8 +46,6 @@ jobs:
 
       - name: Validate and build
         run: npm run check
-        env:
-          NEXT_PUBLIC_BASE_PATH: /francyaraujo
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
