@@ -544,16 +544,16 @@
 
 .hero-signature-lockup {
   position: relative;
-  display: block;
-  width: 5.6em;
+  display: inline-block;
   height: 1.18em;
+  padding-left: 0.46em;
+  white-space: nowrap;
 }
 
 .hero-signature-word {
-  position: absolute;
-  top: 0;
-  left: 0.46em;
+  position: relative;
   z-index: 1;
+  display: inline-block;
   white-space: nowrap;
 }
 
@@ -562,7 +562,7 @@
   top: 0.08em;
   left: 0;
   z-index: 0;
-  width: 5.6em;
+  width: 2.2em;
   height: 0.72em;
   overflow: visible;
   fill: none;
@@ -572,7 +572,22 @@
   stroke-width: 1.9;
 }
 
-.hero-signature-flourish path {
+.hero-signature-heart-tail {
+  display: inline-block;
+  width: 1.68em;
+  height: 0.72em;
+  margin-left: -0.2em;
+  overflow: visible;
+  fill: none;
+  stroke: #2d2723;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+  vertical-align: -0.12em;
+}
+
+.hero-signature-flourish path,
+.hero-signature-heart-tail path {
   vector-effect: non-scaling-stroke;
 }
 
@@ -806,9 +821,9 @@
     line-height: 0.82;
   }
 
-  .hero-signature-lockup,
-  .hero-signature-flourish {
-    width: 5.6em;
+  .hero-signature-heart-tail {
+    width: 1.6em;
+    margin-left: -0.18em;
   }
 
   .hero-tagline {

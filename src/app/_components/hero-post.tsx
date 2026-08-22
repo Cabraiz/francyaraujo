@@ -453,36 +453,44 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                   data-hero-copy-line
                 >
                   <span className="hero-signature-lockup">
-                    <span className="hero-signature-word">
-                      Ara<span className="hero-accented-u">u</span>jo
-                    </span>
                     <svg
                       aria-hidden="true"
                       className="hero-signature-flourish"
                       focusable="false"
-                      viewBox="0 0 340 70"
+                      viewBox="0 0 140 70"
                     >
                       <path
                         d="M7 38 C20 44 34 39 48 35 C66 30 84 32 101 35 C111 37 120 36 129 33"
                         data-hero-signature-stroke
                         pathLength="1"
                       />
-                      <path
-                        d="M207 32 C220 35 233 35 246 33"
-                        data-hero-signature-stroke
-                        pathLength="1"
-                      />
-                      <path
-                        d="M246 33 C242 28 243 22 248 21 C253 20 256 24 257 29 C259 24 263 21 268 22 C273 24 273 29 270 33 C267 38 262 42 257 46 C252 42 248 38 246 33"
-                        data-hero-signature-stroke
-                        pathLength="1"
-                      />
-                      <path
-                        d="M270 33 C289 35 314 35 339 32"
-                        data-hero-signature-stroke
-                        pathLength="1"
-                      />
                     </svg>
+
+                    <span className="hero-signature-word">
+                      Ara<span className="hero-accented-u">u</span>jo
+                      <svg
+                        aria-hidden="true"
+                        className="hero-signature-heart-tail"
+                        focusable="false"
+                        viewBox="0 0 118 70"
+                      >
+                        <path
+                          d="M1 33 C4 34 7 34 10 33"
+                          data-hero-signature-stroke
+                          pathLength="1"
+                        />
+                        <path
+                          d="M10 33 C7 28 8 23 13 22 C18 21 21 25 22 29 C24 25 28 22 33 23 C38 25 38 30 35 34 C32 39 27 43 22 47 C17 43 12 39 10 33"
+                          data-hero-signature-stroke
+                          pathLength="1"
+                        />
+                        <path
+                          d="M35 34 C57 36 84 35 117 32"
+                          data-hero-signature-stroke
+                          pathLength="1"
+                        />
+                      </svg>
+                    </span>
                   </span>
                 </span>
               </span>
