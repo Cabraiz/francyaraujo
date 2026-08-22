@@ -143,6 +143,16 @@
   white-space: nowrap;
 }
 
+.contact-ribbon__value--phone {
+  font-family: inherit;
+  font-feature-settings:
+    "lnum" 1,
+    "tnum" 1;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 .contact-ribbon__note {
   margin: 0;
   padding: 0.42rem 1.5rem;

@@ -18,7 +18,9 @@ export function ContactRibbon() {
         >
           <FaWhatsapp aria-hidden="true" className="contact-ribbon__icon" />
           <span className="contact-ribbon__label">WHATSAPP</span>
-          <span className="contact-ribbon__value">+55 88 8190-2582</span>
+          <span className="contact-ribbon__value contact-ribbon__value--phone">
+            +55 88 8190-2582
+          </span>
         </a>
 
         <a
