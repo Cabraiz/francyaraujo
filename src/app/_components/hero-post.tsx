@@ -415,7 +415,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
 
           <div className="hero-copy absolute z-40">
             <h1 aria-label="Francy Araújo" className="m-0">
-              <span className="block overflow-hidden pb-[0.08em]">
+              <span className="hero-first-mask block overflow-hidden">
                 <span
                   className="hero-name-first block text-[#7b2028]"
                   data-hero-copy-line

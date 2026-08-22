@@ -426,6 +426,11 @@
   letter-spacing: -0.045em;
 }
 
+.hero-first-mask {
+  margin-bottom: -0.18em;
+  padding-bottom: 0.28em;
+}
+
 .hero-name-signature {
   margin-left: clamp(0.35rem, 1.3vw, 1.5rem);
   font-family: "Holligate", "Brush Script MT", cursive;
