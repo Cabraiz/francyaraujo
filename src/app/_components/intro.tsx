@@ -96,9 +96,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
       data-scroll-intro
       ref={navigation}
       style={{
-        height: isDesktop
-          ? "clamp(88px, 10vh, 104px)"
-          : "clamp(96px, 12vh, 116px)",
+        height: "var(--site-header-height)",
         transition: "height 0.5s ease-in-out",
         background: "rgba(247, 242, 236, 0.94)",
         backdropFilter: "blur(18px) saturate(1.05)",

@@ -276,7 +276,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
       data-scroll-hero
       ref={hero}
     >
-      <div className="hero-stage sticky top-0 flex h-[100svh] items-center overflow-hidden">
+      <div className="hero-stage sticky flex items-center overflow-hidden">
         <div
           aria-hidden="true"
           className="absolute -inset-[8%] opacity-45"
