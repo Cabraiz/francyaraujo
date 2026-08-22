@@ -494,7 +494,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
 
           <div
             aria-hidden="true"
-            className="absolute -inset-y-1/2 left-[-16%] z-50 w-[12%] rotate-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.58),transparent)] blur-sm"
+            className="absolute -inset-y-1/2 left-[-16%] z-20 w-[12%] rotate-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.48),transparent)] blur-sm"
             data-scroll-hero-sheen
           />
           <div
