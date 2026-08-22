@@ -100,11 +100,14 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
           ? "clamp(88px, 10vh, 104px)"
           : "clamp(96px, 12vh, 116px)",
         transition: "height 0.5s ease-in-out",
-        background: "#f7f2ec",
+        background: "rgba(247, 242, 236, 0.94)",
+        backdropFilter: "blur(18px) saturate(1.05)",
+        WebkitBackdropFilter: "blur(18px) saturate(1.05)",
         border: "1px solid rgba(180, 132, 77, 0.22)",
         boxShadow: "0 5px 24px rgba(72, 48, 34, 0.12)",
-        zIndex: 2,
-        position: "relative",
+        zIndex: 1500,
+        position: "sticky",
+        top: 0,
         overflow: "hidden",
       }}
     >
@@ -114,8 +117,8 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
           position: "absolute",
           inset: 0,
           background: isDesktop
-            ? "linear-gradient(90deg, #f7f2ec 0%, #f7f2ec 32%, #f3e9de 100%)"
-            : "linear-gradient(90deg, #f7f2ec 0%, #f5ede4 100%)",
+            ? "linear-gradient(90deg, rgba(247, 242, 236, 0.96) 0%, rgba(247, 242, 236, 0.92) 32%, rgba(243, 233, 222, 0.9) 100%)"
+            : "linear-gradient(90deg, rgba(247, 242, 236, 0.96) 0%, rgba(245, 237, 228, 0.92) 100%)",
           zIndex: -1,
         }}
       />
