@@ -415,20 +415,20 @@
 .hero-ornamental-frame__corner {
   top: clamp(7px, 0.75vw, 11px);
   left: clamp(7px, 0.75vw, 11px);
-  width: clamp(4.4rem, 6.5vw, 6.5rem);
+  width: clamp(6rem, 9vw, 9rem);
   aspect-ratio: 80 / 82;
   background-image: url("/assets/blog/dynamic-routing/ornamental-corner.png");
-  opacity: 0.76;
+  opacity: 0.82;
 }
 
 .hero-ornamental-frame__flourish {
   bottom: clamp(5px, 0.7vw, 10px);
   left: clamp(7px, 0.75vw, 11px);
-  width: clamp(9rem, 17vw, 15rem);
+  width: clamp(12rem, 23vw, 20rem);
   aspect-ratio: 1;
   background-image: url("/assets/blog/dynamic-routing/ornamental-flourish.png");
   background-position: left bottom;
-  opacity: 0.64;
+  opacity: 0.72;
 }
 
 .hero-ornamental-frame__sparkle {
@@ -451,11 +451,11 @@
 
 @media (max-width: 767px) {
   .hero-ornamental-frame__corner {
-    width: 4.8rem;
+    width: 6.5rem;
   }
 
   .hero-ornamental-frame__flourish {
-    width: min(42vw, 10.25rem);
+    width: min(58vw, 14rem);
   }
 
   .hero-ornamental-frame__sparkle--upper {
