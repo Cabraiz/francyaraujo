@@ -297,14 +297,14 @@
 .hero-name-signature {
   margin-left: clamp(0.35rem, 1.3vw, 1.5rem);
   font-family: "Holligate", "Brush Script MT", cursive;
-  font-size: clamp(4rem, 7vw, 7.3rem);
+  font-size: clamp(3.6rem, 6.25vw, 6.55rem);
   font-weight: 400;
   line-height: 0.8;
   letter-spacing: 0.01em;
 }
 
 .hero-signature-mask {
-  padding-top: clamp(1.4rem, 2.2vw, 2rem);
+  padding-top: clamp(1.8rem, 2.75vw, 2.55rem);
   padding-bottom: 0;
 }
 
@@ -473,7 +473,7 @@
 
   .hero-name-signature {
     margin-left: 0;
-    font-size: clamp(3.1rem, 14vw, 4.25rem);
+    font-size: clamp(2.8rem, 12.5vw, 3.85rem);
     line-height: 0.82;
   }
 
