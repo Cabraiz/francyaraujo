@@ -416,10 +416,10 @@
 .hero-ornamental-frame__corner {
   top: clamp(7px, 0.75vw, 11px);
   left: clamp(7px, 0.75vw, 11px);
-  width: clamp(6rem, 9vw, 9rem);
+  width: clamp(7rem, 11vw, 11rem);
   aspect-ratio: 80 / 82;
   background-image: url("/assets/blog/dynamic-routing/ornamental-corner.png");
-  opacity: 0.82;
+  opacity: 0.86;
 }
 
 .hero-ornamental-frame__flourish {
@@ -452,7 +452,7 @@
 
 @media (max-width: 767px) {
   .hero-ornamental-frame__corner {
-    width: 6.5rem;
+    width: 7.5rem;
   }
 
   .hero-ornamental-frame__flourish {
