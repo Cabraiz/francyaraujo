@@ -427,8 +427,8 @@
 }
 
 .hero-first-mask {
-  margin-bottom: -0.18em;
-  padding-bottom: 0.28em;
+  margin-bottom: clamp(-3rem, -2.7vw, -1.8rem);
+  padding-bottom: clamp(2.4rem, 3.8vw, 4rem);
 }
 
 .hero-name-signature {

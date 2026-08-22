@@ -40,6 +40,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
           if (reducedMotion) {
             gsap.set("[data-hero-prelude]", { autoAlpha: 0 });
             gsap.set("[data-scroll-hero-cue]", { autoAlpha: 0 });
+            gsap.set(".hero-first-mask", { overflow: "visible" });
             return;
           }
 
@@ -210,6 +211,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               },
               0.22,
             )
+            .set(".hero-first-mask", { overflow: "visible" }, 0.72)
             .to(
               "[data-hero-signature-stroke]",
               {
