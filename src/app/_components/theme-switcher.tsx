@@ -1,19 +1,21 @@
 "use client";
 
-import { useTheme } from '../hooks/useTheme';
-import styles from './switch.module.css';
+import { useTheme } from "../hooks/useTheme";
+import styles from "./switch.module.css";
 
 export const ThemeSwitcher = () => {
-  const theme = useTheme(); // Primeiro, pegamos o objeto completo retornado pelo hook
+  const { handleModeSwitch, isClient, mode } = useTheme();
 
-  // Verificação se o hook retornou valores válidos
-  if (!theme?.isClient) return null;
-
-  const { handleModeSwitch } = theme;
+  if (!isClient) return null;
 
   return (
-    <button className={styles.switch} onClick={handleModeSwitch}>
-      Switch Theme
+    <button
+      aria-label={`Tema atual: ${mode}. Alternar tema`}
+      className={styles.switch}
+      onClick={handleModeSwitch}
+      type="button"
+    >
+      Alternar tema
     </button>
   );
 };

@@ -1,76 +1,81 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from "react";
 
-export type ColorSchemePreference = 'system' | 'dark' | 'light';
+export type ColorSchemePreference = "system" | "dark" | "light";
 
-const STORAGE_KEY = 'nextjs-blog-starter-theme';
-const DARK = 'dark';
-const LIGHT = 'light';
-const modes: ColorSchemePreference[] = ['system', 'dark', 'light'];
+const STORAGE_KEY = "francyaraujo-theme";
+const modes = ["system", "dark", "light"] as const;
 
-const setThemeOnClient = (mode: ColorSchemePreference) => {
-  const modifyTransition = () => {
-    const css = document.createElement('style');
-    css.textContent = '*,*:after,*:before{transition:none !important;}';
-    document.head.appendChild(css);
-    return () => {
-      getComputedStyle(document.body);
-      setTimeout(() => document.head.removeChild(css), 1);
-    };
-  };
+function isColorSchemePreference(
+  value: string | null,
+): value is ColorSchemePreference {
+  return value !== null && modes.some((mode) => mode === value);
+}
 
-  const restoreTransitions = modifyTransition();
+function readStoredMode(): ColorSchemePreference {
+  if (typeof window === "undefined") {
+    return "system";
+  }
+
+  const storedMode = window.localStorage.getItem(STORAGE_KEY);
+  return isColorSchemePreference(storedMode) ? storedMode : "system";
+}
+
+function subscribeToClient() {
+  return () => undefined;
+}
+
+function getClientSnapshot() {
+  return true;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+function applyTheme(mode: ColorSchemePreference) {
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDark = mode === "dark" || (mode === "system" && prefersDark);
   const classList = document.documentElement.classList;
 
-  if (mode === DARK) {
-    classList.add(DARK);
-    classList.remove(LIGHT);
-  } else {
-    classList.add(LIGHT);
-    classList.remove(DARK);
-  }
+  classList.toggle("dark", isDark);
+  classList.toggle("light", !isDark);
+  document.documentElement.dataset.mode = mode;
+  document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+}
 
-  document.documentElement.setAttribute('data-mode', mode);
-  restoreTransitions();
-};
-
-export const useTheme = () => {
-  // Estado inicial como null até que o tema seja carregado
-  const [mode, setMode] = useState<ColorSchemePreference | null>(null);
-  const [isClient, setIsClient] = useState(false);
+export function useTheme() {
+  const isClient = useSyncExternalStore(
+    subscribeToClient,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
+  const [mode, setMode] = useState<ColorSchemePreference>(readStoredMode);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsClient(true);
-      const storedMode = localStorage.getItem(STORAGE_KEY) as ColorSchemePreference;
-      if (storedMode) {
-        setMode(storedMode);
-        setThemeOnClient(storedMode);
-      } else {
-        // Se não houver um tema armazenado, usar 'system' como padrão
-        setMode('system');
-        setThemeOnClient('system');
-      }
+    if (!isClient) {
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    if (isClient && mode !== null) {
-      localStorage.setItem(STORAGE_KEY, mode);
-      setThemeOnClient(mode);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const syncTheme = () => applyTheme(mode);
+
+    window.localStorage.setItem(STORAGE_KEY, mode);
+    syncTheme();
+
+    if (mode === "system") {
+      mediaQuery.addEventListener("change", syncTheme);
+      return () => mediaQuery.removeEventListener("change", syncTheme);
     }
-  }, [mode, isClient]);
+  }, [isClient, mode]);
 
   const handleModeSwitch = () => {
-    const index = modes.indexOf(mode!); // O '!' garante que mode não seja nulo
-    setMode(modes[(index + 1) % modes.length]);
+    setMode((currentMode) => {
+      const currentIndex = modes.indexOf(currentMode);
+      return modes[(currentIndex + 1) % modes.length] ?? "system";
+    });
   };
 
-  // Fallback enquanto o modo ainda não foi carregado
-  if (mode === null) {
-    return null; // Ou pode retornar algum componente de carregamento se preferir
-  }
-
-  return { mode, handleModeSwitch, isClient };
-};
+  return { handleModeSwitch, isClient, mode };
+}

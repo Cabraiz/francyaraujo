@@ -1,9 +1,12 @@
 .switch {
   all: unset;
-  position: absolute;
+  position: fixed;
   right: 20px;
-  top: 70px;
+  top: 20px;
+  z-index: 1000;
   display: inline-block;
+  overflow: hidden;
+  font-size: 0;
   color: currentColor;
   border-radius: 50%;
   border: 1px dashed currentColor;
@@ -11,7 +14,7 @@
   --size: 24px;
   height: var(--size);
   width: var(--size);
-  transition: all 0.3s ease-in-out 0s !important;
+  transition: all 0.3s ease-in-out 0s;
 }
 
 [data-mode="system"] .switch::after {

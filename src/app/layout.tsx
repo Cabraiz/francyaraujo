@@ -1,22 +1,33 @@
-import Footer from "@/app/_components/footer";
-import { CMS_NAME, HOME_OG_IMAGE_URL } from "@/lib/constants";
+import cn from "classnames";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import cn from "classnames";
+import type { ReactNode } from "react";
+import { SmoothScroll } from "@/app/_components/smooth-scroll";
 import { ThemeSwitcher } from "./_components/theme-switcher";
 
 import "./globals.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "lenis/dist/lenis.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Francy Araujo - Cenário Da Beleza",
-  description: "F R A N C Y A R A Ú J O - Empreendedor(a). Hair stylist. Especialista em Ruivo - Pioneira em Fortaleza.",
+  title: "Francy Araújo | Beleza, estilo e confiança",
+  description:
+    "Francy Araújo, hair stylist especialista em ruivos e beleza em Fortaleza.",
   openGraph: {
-    images: [HOME_OG_IMAGE_URL],
+    title: "Francy Araújo | Beleza, estilo e confiança",
+    description: "Hair stylist especialista em ruivos e beleza em Fortaleza.",
+    images: [{ url: "/og.jpg", width: 1200, height: 630 }],
+    locale: "pt_BR",
+    type: "website",
   },
-  // Meta tags adicionais para SEO
+  twitter: {
+    card: "summary_large_image",
+    title: "Francy Araújo | Beleza, estilo e confiança",
+    description: "Hair stylist especialista em ruivos e beleza em Fortaleza.",
+    images: ["/og.jpg"],
+  },
   keywords: ["blog", "beleza", "hairstylist", "ruivo", "Fortaleza"],
   robots: "index, follow",
 };
@@ -24,10 +35,10 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <link
           rel="apple-touch-icon"
@@ -59,17 +70,24 @@ export default function RootLayout({
           content="/favicon/browserconfig.xml"
         />
         <meta name="theme-color" content="#000" />
-        <meta name="keywords" content="blog, beleza, hairstylist, ruivo, Fortaleza" />
+        <meta
+          name="keywords"
+          content="blog, beleza, hairstylist, ruivo, Fortaleza"
+        />
         <meta name="author" content="Francy Araujo" />
         <meta name="robots" content="index, follow" />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       </head>
       <body
-        className={cn(inter.className, "bg-redLight text-white dark:bg-redDark dark:text-white")}
+        className={cn(
+          inter.className,
+          "bg-redLight text-white dark:bg-redDark dark:text-white",
+        )}
       >
-        <ThemeSwitcher />
-        <div className="min-h-screen">{children}</div>
-        <Footer />
+        <SmoothScroll>
+          <ThemeSwitcher />
+          <div className="min-h-screen">{children}</div>
+        </SmoothScroll>
       </body>
     </html>
   );

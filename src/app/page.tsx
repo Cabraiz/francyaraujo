@@ -1,33 +1,26 @@
 import { HeroPost } from "@/app/_components/hero-post";
-import { SignaturePost } from "@/app/_components/signature-post";
 import { Intro } from "@/app/_components/intro";
-import { getAllPosts } from "@/lib/posts";
+import { ScrollExperience } from "@/app/_components/scroll-experience";
+import { SignaturePost } from "@/app/_components/signature-post";
 
-export default async function Index() {
-  const allPosts = getAllPosts(["title", "coverImage", "date"]);
+const brandImage = "/assets/blog/dynamic-routing/brand-emblem-transparent.png";
+const heroSalonImage =
+  "/assets/blog/dynamic-routing/hero-salon-background.webp";
+const heroPortraitImages = [
+  "/assets/blog/dynamic-routing/hero-francy-portrait.avif",
+  "/assets/blog/dynamic-routing/hero-francy-portrait-turn-15.avif",
+  "/assets/blog/dynamic-routing/hero-francy-portrait-turn-30.avif",
+] as const;
 
-  if (!allPosts || allPosts.length === 0) {
-    return <p>No posts available.</p>; // Verificação adicional para garantir que os posts estão carregados
-  }
-
-  const heroPost = allPosts[0];
-  const marcaPost = allPosts[2];
-  const salaoPost = allPosts[5];
-  const salonPost = allPosts[6];
-  const marcaSoloPost = allPosts[3];
-
+export default function Index() {
   return (
-    <main className="flex flex-col justify-start min-h-screen">
-      {/* Intro fora do Container para ocupar toda a largura */}
-      <Intro title={marcaPost.title} coverImage={marcaPost.coverImage} />
+    <ScrollExperience>
+      <Intro title="Francy Araújo" coverImage={brandImage} />
       <HeroPost
-        title={heroPost.title}
-        coverImage={heroPost.coverImage}
-        salaoImage={salaoPost.coverImage}
-        salonImage={salonPost.coverImage}
-        marcaSoloImage={marcaSoloPost.coverImage}
+        portraitImages={heroPortraitImages}
+        salonImage={heroSalonImage}
       />
       <SignaturePost />
-    </main>
+    </ScrollExperience>
   );
 }

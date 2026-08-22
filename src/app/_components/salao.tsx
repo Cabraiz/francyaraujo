@@ -1,6 +1,6 @@
 import cn from "classnames";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
   title: string;
@@ -17,12 +17,12 @@ const SalaoImage = ({ title, src, slug }: Props) => {
         "transition-shadow duration-200": slug,
       })}
       width={1300}
-      height={700} // Ajuste as dimensões conforme necessário
-      layout="responsive" // Mantém a responsividade
+      height={700}
+      sizes="100vw"
     />
   );
   return (
-    <div className="sm:mx-0 w-full overflow-hidden" style={{ height: '70vh' }}> {/* Garantindo w-full */}
+    <div className="sm:mx-0 w-full overflow-hidden" style={{ height: "70vh" }}>
       {slug ? (
         <Link href={`/posts/${slug}`} aria-label={title}>
           {image}

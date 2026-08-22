@@ -1,39 +1,41 @@
-import { getPostBySlug, getAllPosts } from "@/lib/posts";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 
-// Tipagem para os props, garantindo que params seja uma Promise ou undefined
+import { PostBody } from "@/app/_components/post-body";
+import markdownToHtml from "@/lib/markdownToHtml";
+import { getAllPosts, getPostBySlug } from "@/lib/posts";
+
 interface PageProps {
-  params?: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>;
 }
 
-// Página de Post com params como uma promessa
 export default async function PostPage({ params }: PageProps) {
-  // Resolvendo params se ele for uma Promise
-  const resolvedParams = params ? await params : undefined;
+  const { slug } = await params;
+  const post = getPostBySlug(slug, ["title", "coverImage", "content"]);
 
-  if (!resolvedParams) {
-    return <p>Invalid parameters</p>;
-  }
-
-  // Buscando os dados do post com base no slug
-  const post = await getPostBySlug(resolvedParams.slug, ["title", "coverImage"]);
-
-  // Tratamento de erro caso o post não seja encontrado
   if (!post) {
-    return <p>Post not found</p>;
+    notFound();
   }
 
-  // Renderiza a imagem e o título do post
+  const content = await markdownToHtml(post.content);
+
   return (
     <article>
       <h1>{post.title}</h1>
-      <img src={post.coverImage} alt={post.title} />
+      <Image
+        src={post.coverImage}
+        alt={post.title}
+        width={1300}
+        height={700}
+        sizes="100vw"
+      />
+      <PostBody content={content} />
     </article>
   );
 }
 
-// Função para gerar os slugs estaticamente
-export async function generateStaticParams() {
-  const posts = await getAllPosts(["slug"]);
+export function generateStaticParams() {
+  const posts = getAllPosts(["slug"]);
 
   return posts.map((post) => ({
     slug: post.slug,

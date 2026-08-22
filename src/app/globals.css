@@ -1,7 +1,503 @@
 /* globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+
+  --color-accent-1: #fafafa;
+  --color-accent-2: #eaeaea;
+  --color-accent-7: #333;
+  --color-success: #0070f3;
+  --color-cyan: #79ffe1;
+  --color-redLight: #ff6f61;
+  --color-redDark: #8b0000;
+  --color-glass-bg: rgba(255, 255, 255, 0.1);
+  --color-glass-border: rgba(255, 255, 255, 0.2);
+
+  --tracking-tighter: -0.04em;
+
+  --text-5xl: 2.5rem;
+  --text-6xl: 2.75rem;
+  --text-7xl: 4.5rem;
+  --text-8xl: 6.25rem;
+
+  --shadow-sm: 0 5px 10px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  --backdrop-blur-xs: 2px;
+  --backdrop-blur-sm: 4px;
+  --backdrop-blur-md: 6px;
+  --backdrop-blur-lg: 8px;
+  --backdrop-blur-xl: 10px;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 2000;
+  height: 3px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #fff3ef, #f7c6b9 48%, #8b0000);
+  box-shadow: 0 1px 8px rgba(139, 0, 0, 0.24);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+[data-scroll-hero-atmosphere],
+[data-scroll-hero-composition],
+[data-hero-salon],
+[data-hero-rings],
+[data-hero-waves],
+[data-hero-portrait],
+[data-scroll-hero-sheen],
+[data-scroll-signature-bg],
+[data-scroll-signature-reveal] {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.hero-salon-layer,
+.hero-portrait {
+  transition: opacity 0.45s ease-out;
+}
+
+@font-face {
+  font-family: "Clearface";
+  src: url("../../public/assets/blog/font/Clearface-Serial-Medium Regular.ttf")
+    format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+.brand-lockup {
+  display: flex;
+  width: min(100%, 30rem);
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.8rem, 1.25vw, 1.15rem);
+}
+
+.brand-emblem {
+  display: block;
+  flex: 0 0 auto;
+  height: clamp(4.4rem, 8vh, 5.3rem);
+  aspect-ratio: 0.95;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: contrast(1.08) saturate(1.08);
+}
+
+.brand-lockup-divider {
+  width: 1px;
+  height: clamp(3.4rem, 6.5vh, 4.25rem);
+  flex: 0 0 auto;
+  background: rgba(171, 120, 64, 0.34);
+}
+
+.brand-wording {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.brand-lockup-title {
+  padding-left: 0.18em;
+  color: #2f2925;
+  font-family: "Clearface", Georgia, serif;
+  font-size: clamp(1.65rem, 2vw, 2.25rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+}
+
+.brand-lockup-tagline {
+  margin-top: clamp(0.38rem, 0.65vw, 0.55rem);
+  color: #a9743d;
+  font-family: "Novecento", sans-serif;
+  font-size: clamp(0.58rem, 0.72vw, 0.7rem);
+  line-height: 1;
+  letter-spacing: clamp(0.16em, 0.24vw, 0.24em);
+  text-transform: uppercase;
+}
+
+.brand-lockup-tagline b {
+  margin-inline: 0.22em;
+  font-weight: 400;
+}
+
+@media (min-width: 1200px) {
+  .brand-lockup {
+    width: calc(100% - 2.25rem);
+    justify-content: flex-start;
+    margin-left: clamp(1.5rem, 2.2vw, 2.25rem);
+  }
+}
+
+@media (max-width: 520px) {
+  .brand-lockup {
+    width: min(94%, 25rem);
+    gap: 0.7rem;
+  }
+
+  .brand-emblem {
+    height: 4.25rem;
+  }
+
+  .brand-lockup-divider {
+    height: 3.35rem;
+  }
+
+  .brand-lockup-title {
+    font-size: clamp(1.35rem, 6.6vw, 1.7rem);
+  }
+
+  .brand-lockup-tagline {
+    font-size: clamp(0.46rem, 2.15vw, 0.56rem);
+    letter-spacing: 0.13em;
+  }
+}
+
+.hero-composition {
+  height: 100svh;
+  min-height: 640px;
+}
+
+.hero-salon-layer {
+  inset: 0 0 0 auto;
+  width: 62%;
+}
+
+.hero-salon-fade {
+  background:
+    linear-gradient(
+      90deg,
+      #f7f1e8 0%,
+      rgba(247, 241, 232, 0.82) 13%,
+      transparent 48%
+    ),
+    linear-gradient(0deg, rgba(30, 17, 12, 0.2), transparent 38%);
+}
+
+.hero-rings {
+  top: -2%;
+  right: 1%;
+  width: 56%;
+  aspect-ratio: 1;
+  transform-origin: center;
+}
+
+.hero-waves {
+  bottom: -1px;
+  left: 0;
+  z-index: 20;
+  width: 58%;
+  height: 38%;
+  pointer-events: none;
+}
+
+.hero-waves svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-portrait {
+  right: -1%;
+  bottom: 0;
+  width: 56%;
+  height: 98%;
+}
+
+.hero-portrait-frame {
+  will-change: opacity, transform;
+}
+
+.hero-portrait-frame:not([data-portrait-frame="0"]) {
+  opacity: 0;
+}
+
+.hero-copy {
+  top: 50%;
+  left: clamp(2.25rem, 6vw, 6rem);
+  width: min(43%, 560px);
+  transform: translateY(-48%);
+}
+
+.hero-prelude {
+  top: 32%;
+  left: clamp(2.25rem, 6vw, 6rem);
+  width: min(43%, 620px);
+}
+
+.hero-prelude-kicker {
+  color: #765c49;
+  font-family: "Novecento", sans-serif;
+  font-size: clamp(0.62rem, 0.78vw, 0.78rem);
+  letter-spacing: 0.3em;
+}
+
+.hero-prelude-title {
+  color: #352a25;
+  font-family: "Clearface", Georgia, serif;
+  font-size: clamp(3.8rem, 6vw, 7rem);
+  font-weight: 500;
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+}
+
+.hero-prelude-copy {
+  color: #69574b;
+  font-family: Georgia, serif;
+  font-size: clamp(0.95rem, 1.15vw, 1.25rem);
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.hero-name-first {
+  font-family: "Clearface", Georgia, serif;
+  font-size: clamp(5rem, 9vw, 9.25rem);
+  font-weight: 500;
+  line-height: 0.78;
+  letter-spacing: -0.045em;
+}
+
+.hero-name-signature {
+  margin-left: clamp(0.35rem, 1.3vw, 1.5rem);
+  font-family: "Holligate", "Brush Script MT", cursive;
+  font-size: clamp(4rem, 7vw, 7.3rem);
+  font-weight: 400;
+  line-height: 0.8;
+  letter-spacing: 0.01em;
+}
+
+.hero-signature-mask {
+  padding-top: clamp(1.4rem, 2.2vw, 2rem);
+  padding-bottom: 0;
+}
+
+.hero-signature-lockup {
+  position: relative;
+  display: block;
+  width: 5em;
+  height: 1.18em;
+}
+
+.hero-signature-word {
+  position: absolute;
+  top: 0;
+  left: 0.46em;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.hero-signature-flourish {
+  position: absolute;
+  top: 0.08em;
+  left: 0;
+  z-index: 0;
+  width: 5em;
+  height: 0.72em;
+  overflow: visible;
+  fill: none;
+  stroke: #2d2723;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.45;
+}
+
+.hero-signature-flourish path {
+  vector-effect: non-scaling-stroke;
+}
+
+.hero-accented-u {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-accented-u::after {
+  content: "´";
+  position: absolute;
+  top: -0.08em;
+  left: 52%;
+  font-family: Georgia, serif;
+  font-size: 0.34em;
+  line-height: 1;
+  transform: translateX(-50%) rotate(8deg);
+}
+
+.hero-tagline {
+  justify-content: center;
+  width: min(82%, 20rem);
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+  gap: clamp(0.55rem, 1.2vw, 1.1rem);
+  font-family: "Novecento", sans-serif;
+  font-size: clamp(0.58rem, 0.85vw, 0.82rem);
+  letter-spacing: clamp(0.18em, 0.4vw, 0.34em);
+  text-align: center;
+}
+
+.hero-tagline-ornament {
+  display: block;
+  width: min(82%, 20rem);
+  aspect-ratio: 1991 / 107;
+  margin-top: clamp(0.2rem, 0.35vw, 0.3rem);
+  overflow: visible;
+}
+
+@media (max-width: 767px) {
+  .hero-composition {
+    height: 100svh;
+    min-height: 610px;
+  }
+
+  .hero-salon-layer {
+    inset: 39% 0 0;
+    width: 100%;
+  }
+
+  .hero-salon-fade {
+    background:
+      linear-gradient(
+        180deg,
+        #f7f1e8 0%,
+        rgba(247, 241, 232, 0.68) 14%,
+        transparent 46%
+      ),
+      linear-gradient(0deg, rgba(30, 17, 12, 0.3), transparent 45%);
+  }
+
+  .hero-rings {
+    top: 28%;
+    right: -38%;
+    width: 122%;
+  }
+
+  .hero-waves {
+    bottom: 60%;
+    width: 100%;
+    height: 16%;
+    opacity: 0.48;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 16%,
+      #000 68%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 16%,
+      #000 68%,
+      transparent 100%
+    );
+  }
+
+  .hero-portrait {
+    right: -24%;
+    bottom: -3%;
+    width: 108%;
+    height: 68%;
+  }
+
+  .hero-copy {
+    top: 8%;
+    left: 7%;
+    width: 88%;
+    transform: none;
+  }
+
+  .hero-prelude {
+    top: 11%;
+    left: 7%;
+    width: 86%;
+    transform: none;
+  }
+
+  .hero-prelude-kicker {
+    font-size: 0.56rem;
+    letter-spacing: 0.24em;
+  }
+
+  .hero-prelude-title {
+    margin-top: 1.1rem;
+    font-size: clamp(3.25rem, 15.5vw, 4.4rem);
+    line-height: 0.88;
+  }
+
+  .hero-prelude-copy {
+    margin-top: 1.25rem;
+    max-width: 18rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .hero-name-first {
+    font-size: clamp(3.7rem, 17vw, 5rem);
+    line-height: 0.82;
+  }
+
+  .hero-name-signature {
+    margin-left: 0;
+    font-size: clamp(3.1rem, 14vw, 4.25rem);
+    line-height: 0.82;
+  }
+
+  .hero-signature-lockup,
+  .hero-signature-flourish {
+    width: 5em;
+  }
+
+  .hero-tagline {
+    width: min(82%, 17rem);
+    gap: 0.6rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.2em;
+  }
+
+  .hero-tagline-ornament {
+    width: min(82%, 17rem);
+    margin-top: 0.2rem;
+  }
+}
+
+[data-scroll-signature] {
+  overflow: hidden;
+}
 
 /* Efeito de vidro com brilho */
 .bg-glass {
@@ -17,13 +513,17 @@
 
 /* Animação de brilho */
 .bg-glass::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0) 70%
+  );
   animation: shimmer 3s infinite;
   z-index: 1;
 }
@@ -39,45 +539,58 @@
 }
 
 @font-face {
-  font-family: 'Novecento';
-  src: url('../../public/assets/blog/font/Novecento-WideNormal.woff2') format('woff2'),
-       url('../../public/assets/blog/font/Novecento-WideNormal.woff') format('woff');
+  font-family: "Novecento";
+  src:
+    url("../../public/assets/blog/font/Novecento-WideNormal.woff2")
+    format("woff2"),
+    url("../../public/assets/blog/font/Novecento-WideNormal.woff")
+    format("woff");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Holligate';
-  src: url('../../public/assets/blog/font/holligate-signature-demo.woff2') format('woff2'),
-       url('../../public/assets/blog/font/holligate-signature-demo.woff') format('woff');
+  font-family: "Holligate";
+  src:
+    url("../../public/assets/blog/font/holligate-signature-demo.woff2")
+    format("woff2"),
+    url("../../public/assets/blog/font/holligate-signature-demo.woff")
+    format("woff");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Elegant';
-  src: url('../../public/assets/blog/font/ELEGANT.woff2') format('woff2'),
-       url('../../public/assets/blog/font/ELEGANT.woff') format('woff');
+  font-family: "Elegant";
+  src:
+    url("../../public/assets/blog/font/ELEGANT.woff2") format("woff2"),
+    url("../../public/assets/blog/font/ELEGANT.woff") format("woff");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Thenat';
-  src: url('../../public/assets/blog/font/thenat.woff2') format('woff2'),
-       url('../../public/assets/blog/font/thenat.woff') format('woff');
+  font-family: "Thenat";
+  src:
+    url("../../public/assets/blog/font/thenat.woff2") format("woff2"),
+    url("../../public/assets/blog/font/thenat.woff") format("woff");
   font-weight: 400;
   font-style: normal;
 }
 /* Reflexo dinâmico */
 .bg-glass::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 200%;
   height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.2), transparent); /* Reflexo mais sutil */
+  background: linear-gradient(
+    115deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  ); /* Reflexo mais sutil */
   animation: reflection 12s infinite alternate; /* Loop mais suave e lento */
   z-index: 2;
   mix-blend-mode: overlay;
@@ -96,84 +609,72 @@
   }
 }
 
-/* Estilo dos itens de navegação com gradiente */
-.gradient-animation {
-  background: linear-gradient(90deg, #BFA48E, #D3C2A5, #BFA48E); /* Gradiente em tons de ouro e champagne */
-  background-size: 200% 200%;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: gradient-text 5s ease-in-out infinite; /* Efeito mais lento e elegante */
-  transition: background 0.8s ease-in-out, color 0.8s ease-in-out; /* Transição suave */
+/* Navegação alinhada à identidade visual marfim, carvão e dourado. */
+.navbar.navbar-light .navbar-nav .brand-nav-link {
   position: relative;
-  letter-spacing: 0.5em; /* Espaçamento maior entre letras */
-  font-family: 'Elegant', serif; /* Fonte mais sofisticada */
+  color: #60493b;
+  opacity: 0.9;
+  text-shadow: none;
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease;
 }
 
-/* Animação do gradiente de texto */
-@keyframes gradient-text {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Estilo dos links da navegação */
-.nav-link {
-  position: relative;
-  color: transparent; /* Deixa o gradiente visível */
-  transition: color 0.6s ease, background 0.6s ease; /* Transições mais suaves */
-}
-
-.nav-link.gradient-animation {
-  background: linear-gradient(90deg, #BFA48E, #D3C2A5, #BFA48E); /* Tons metálicos */
-  background-size: 200% 200%;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: gradient-text 5s ease-in-out infinite; /* Animação mais suave e lenta */
-}
-
-/* Efeito de sublinhado no hover */
-.nav-link::after {
-  content: '';
+.navbar.navbar-light .navbar-nav .brand-nav-link::after {
+  content: "";
   position: absolute;
   width: 0;
-  height: 3px; /* Um sublinhado um pouco mais grosso para mais ênfase */
-  background: linear-gradient(90deg, #FFFFFF, #A9A9A9); /* Gradiente de branco para cinza */
-  bottom: -6px;
+  height: 1px;
+  background: #b5854d;
+  bottom: -5px;
   left: 0;
-  transition: width 0.7s ease; /* Transição suave */
+  transition: width 0.3s ease;
 }
 
-.nav-item:hover .nav-link {
-  color: transparent;
-  background: linear-gradient(90deg, #E0E0E0, #F5F5F5, #D3D3D3); /* Gradiente de tons de cinza claro no hover */
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: gradient-text-hover 4s ease-in-out; /* Animação lenta no hover */
-  text-shadow: 0 1px 3px rgba(169, 169, 169, 0.5); /* Leve brilho cinza no hover */
+.navbar.navbar-light .navbar-nav .nav-item:hover .brand-nav-link,
+.navbar.navbar-light .navbar-nav .brand-nav-link:focus-visible {
+  color: #9a6a35;
+  opacity: 1;
+  text-shadow: none;
 }
 
-.nav-item:hover .nav-link::after {
-  width: 100%; /* Sublinhado completo no hover */
+.navbar.navbar-light .navbar-nav .nav-item:hover .brand-nav-link::after,
+.navbar.navbar-light .navbar-nav .brand-nav-link:focus-visible::after,
+.navbar.navbar-light .navbar-nav .brand-nav-link--active::after {
+  width: 100%;
 }
 
-@keyframes gradient-text-hover {
-  0% {
-    background-position: 0% 50%;
+.navbar.navbar-light .navbar-nav .brand-nav-link--active {
+  color: #2f241f;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:root {
+    scroll-behavior: auto;
   }
-  50% {
-    background-position: 100% 50%;
+
+  :root *,
+  :root *::before,
+  :root *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
   }
-  100% {
-    background-position: 0% 50%;
+
+  :root .scroll-progress {
+    transform: scaleX(1);
+  }
+
+  :root .hero-story {
+    height: auto;
+    min-height: clamp(320px, 62vw, 720px);
+  }
+
+  :root .hero-stage {
+    position: relative;
+    height: auto;
+    min-height: clamp(320px, 62vw, 720px);
   }
 }
-
