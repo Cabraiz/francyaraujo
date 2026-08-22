@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { OrnamentalFrame } from "./ornamental-frame";
 
 type Props = {
   salonImage: string;
@@ -368,6 +369,8 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               />
             </svg>
           </div>
+
+          <OrnamentalFrame />
 
           <div className="hero-prelude absolute z-30" data-hero-prelude>
             <div className="hero-prelude-kicker flex items-center gap-3 text-[#765c49]">
