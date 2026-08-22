@@ -98,11 +98,13 @@ export const SignaturePost = () => {
           SALON
         </h2>
         <p data-scroll-signature-reveal style={paragraphStyle}>
-          localizado na <span style={locationStyle}>Aldeota</span>, em{" "}
-          <span style={locationStyle}>Fortaleza</span>, oferecemos uma
-          experiência exclusiva. Realizamos cortes, colorações e tratamentos
-          modernos com atendimento personalizado. Bem-vindo ao salão, onde sua
-          beleza é prioridade.
+          Em nosso espaço, localizado na{" "}
+          <span style={locationStyle}>Rua Israel Bezerra, 46</span>, em{" "}
+          <span style={locationStyle}>Dionísio Torres, Fortaleza</span>,
+          oferecemos uma experiência exclusiva, com cortes, colorações e
+          tratamentos modernos. Os atendimentos são personalizados e realizados
+          somente com hora marcada. Manicure e depilação também estão
+          disponíveis mediante solicitação antecipada.
         </p>
       </div>
     </section>
