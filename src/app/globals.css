@@ -370,114 +370,12 @@
   position: absolute;
   inset: 0;
   z-index: 26;
-  overflow: hidden;
-  color: #b98243;
   pointer-events: none;
-}
-
-.hero-ornamental-frame__top-line,
-.hero-ornamental-frame__left-line {
-  position: absolute;
-  display: block;
-  background: currentColor;
-  opacity: 0.5;
-}
-
-.hero-ornamental-frame__top-line {
-  top: clamp(7px, 0.75vw, 12px);
-  right: clamp(7px, 0.75vw, 12px);
-  left: clamp(7px, 0.75vw, 12px);
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(185, 130, 67, 0.7),
-    rgba(185, 130, 67, 0.28) 72%,
-    transparent
-  );
-}
-
-.hero-ornamental-frame__left-line {
-  top: clamp(7px, 0.75vw, 12px);
-  bottom: 31%;
-  left: clamp(7px, 0.75vw, 12px);
-  width: 1px;
-  background: linear-gradient(
-    180deg,
-    rgba(185, 130, 67, 0.75),
-    rgba(185, 130, 67, 0.58) 72%,
-    transparent
-  );
-}
-
-.hero-ornamental-frame svg {
-  position: absolute;
-  display: block;
-  overflow: visible;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 0.85;
-}
-
-.hero-ornamental-frame path,
-.hero-ornamental-frame rect {
-  vector-effect: non-scaling-stroke;
-}
-
-.hero-ornamental-frame__corner {
-  top: clamp(7px, 0.75vw, 12px);
-  left: clamp(7px, 0.75vw, 12px);
-  width: clamp(5.25rem, 9vw, 8.5rem);
-  height: auto;
-  opacity: 0.72;
-}
-
-.hero-ornamental-frame__flourish {
-  bottom: clamp(2px, 0.5vw, 8px);
-  left: clamp(7px, 0.75vw, 12px);
-  width: clamp(10.5rem, 19vw, 17rem);
-  height: min(36%, 18rem);
-  opacity: 0.66;
-}
-
-.hero-ornamental-frame__sparkle {
-  color: #c79a61;
-  fill: rgba(199, 154, 97, 0.16);
-  stroke-width: 0.7;
-  filter: drop-shadow(0 0 7px rgba(200, 157, 103, 0.3));
-}
-
-.hero-ornamental-frame__sparkle--upper {
-  top: 17%;
-  right: 2.25%;
-  width: clamp(0.75rem, 1.1vw, 1.1rem);
-}
-
-.hero-ornamental-frame__sparkle--lower {
-  right: 1.75%;
-  bottom: 5%;
-  width: clamp(2.7rem, 4.5vw, 4.75rem);
-  opacity: 0.52;
-}
-
-@media (max-width: 767px) {
-  .hero-ornamental-frame__left-line {
-    bottom: 34%;
-  }
-
-  .hero-ornamental-frame__corner {
-    width: 5.4rem;
-  }
-
-  .hero-ornamental-frame__flourish {
-    width: min(43vw, 11rem);
-    height: 25%;
-  }
-
-  .hero-ornamental-frame__sparkle--upper {
-    top: 22%;
-  }
+  background-image: url("/assets/blog/dynamic-routing/ornamental-frame-generated.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  opacity: 0.76;
 }
 
 .hero-portrait {
