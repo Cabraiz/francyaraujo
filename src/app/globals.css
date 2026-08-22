@@ -69,6 +69,107 @@
   transform-origin: left center;
 }
 
+.contact-ribbon {
+  position: relative;
+  z-index: 1510;
+  color: #f9f1e8;
+  background:
+    linear-gradient(90deg, rgba(119, 31, 40, 0.96), rgba(70, 38, 31, 0.98)),
+    #4b2d27;
+  box-shadow: inset 0 -1px rgba(255, 235, 211, 0.13);
+}
+
+.contact-ribbon__inner {
+  display: grid;
+  width: min(100% - 3rem, 1180px);
+  margin-inline: auto;
+  grid-template-columns: 0.85fr 1.45fr 1fr;
+}
+
+.contact-ribbon__item {
+  display: flex;
+  min-width: 0;
+  padding: 0.8rem clamp(1rem, 2.1vw, 1.9rem);
+  align-items: center;
+  gap: 0.7rem;
+  color: inherit;
+  text-decoration: none;
+  border-right: 1px solid rgba(255, 236, 213, 0.16);
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.contact-ribbon__item:first-child {
+  border-left: 1px solid rgba(255, 236, 213, 0.16);
+}
+
+.contact-ribbon__item:hover,
+.contact-ribbon__item:focus-visible {
+  color: #fff8ef;
+  background: rgba(255, 244, 229, 0.08);
+}
+
+.contact-ribbon__label {
+  flex: 0 0 auto;
+  color: #dcb781;
+  font-family: "Novecento", sans-serif;
+  font-size: 0.57rem;
+  letter-spacing: 0.2em;
+}
+
+.contact-ribbon__value {
+  overflow: hidden;
+  font-family: Georgia, serif;
+  font-size: clamp(0.72rem, 0.9vw, 0.88rem);
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-ribbon__note {
+  margin: 0;
+  padding: 0.42rem 1.5rem;
+  color: rgba(255, 244, 232, 0.74);
+  background: rgba(32, 21, 18, 0.22);
+  font-family: "Novecento", sans-serif;
+  font-size: 0.54rem;
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1199px) {
+  .contact-ribbon__inner {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .contact-ribbon__inner::-webkit-scrollbar {
+    display: none;
+  }
+
+  .contact-ribbon__item {
+    min-width: max-content;
+    padding-block: 0.7rem;
+    scroll-snap-align: start;
+  }
+
+  .contact-ribbon__item:first-child {
+    border-left: 0;
+  }
+
+  .contact-ribbon__note {
+    padding-inline: 1rem;
+    font-size: 0.49rem;
+    line-height: 1.45;
+  }
+}
+
 [data-scroll-hero-atmosphere],
 [data-scroll-hero-composition],
 [data-hero-salon],

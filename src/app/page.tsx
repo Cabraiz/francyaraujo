@@ -1,3 +1,4 @@
+import { ContactRibbon } from "@/app/_components/contact-ribbon";
 import { HeroPost } from "@/app/_components/hero-post";
 import { Intro } from "@/app/_components/intro";
 import { ScrollExperience } from "@/app/_components/scroll-experience";
@@ -15,6 +16,7 @@ const heroPortraitImages = [
 export default function Index() {
   return (
     <ScrollExperience>
+      <ContactRibbon />
       <Intro title="Francy Araújo" coverImage={brandImage} />
       <HeroPost
         portraitImages={heroPortraitImages}
