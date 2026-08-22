@@ -524,11 +524,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             </div>
 
             <div className="hero-cta" data-hero-cta>
-              <p className="hero-cta__copy">
-                Realce sua melhor versão com atendimento personalizado em um
-                ambiente acolhedor e exclusivo.
-              </p>
-
               <div className="hero-cta__actions">
                 <a
                   className="hero-cta__primary"
@@ -538,10 +533,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 >
                   AGENDAR HORÁRIO
                   <span aria-hidden="true">✦</span>
-                </a>
-
-                <a className="hero-cta__secondary" href="#historia">
-                  CONHEÇA MAIS
                 </a>
               </div>
             </div>
