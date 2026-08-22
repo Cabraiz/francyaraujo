@@ -425,7 +425,7 @@
   bottom: clamp(5px, 0.7vw, 10px);
   left: clamp(7px, 0.75vw, 11px);
   width: clamp(9rem, 17vw, 15rem);
-  aspect-ratio: 165 / 136;
+  aspect-ratio: 1;
   background-image: url("/assets/blog/dynamic-routing/ornamental-flourish.png");
   background-position: left bottom;
   opacity: 0.64;
