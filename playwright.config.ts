@@ -40,6 +40,14 @@ export default defineConfig({
         viewport: { width: 412, height: 915 },
       },
     },
+    {
+      name: "tablet",
+      use: {
+        ...devices["iPad Pro 11"],
+        browserName: "chromium",
+        viewport: { width: 834, height: 1194 },
+      },
+    },
   ],
   ...(process.env.E2E_BASE_URL
     ? {}
