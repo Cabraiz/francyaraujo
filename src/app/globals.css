@@ -448,7 +448,7 @@
 .hero-signature-lockup {
   position: relative;
   display: block;
-  width: 5em;
+  width: 5.6em;
   height: 1.18em;
 }
 
@@ -465,14 +465,14 @@
   top: 0.08em;
   left: 0;
   z-index: 0;
-  width: 5em;
+  width: 5.6em;
   height: 0.72em;
   overflow: visible;
   fill: none;
   stroke: #2d2723;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.45;
+  stroke-width: 1.9;
 }
 
 .hero-signature-flourish path {
@@ -616,7 +616,7 @@
 
   .hero-signature-lockup,
   .hero-signature-flourish {
-    width: 5em;
+    width: 5.6em;
   }
 
   .hero-tagline {
