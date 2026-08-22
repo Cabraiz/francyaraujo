@@ -516,7 +516,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
 
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 z-20 h-28 bg-linear-to-b from-transparent to-redLight/45"
+          className="absolute inset-x-0 bottom-0 z-20 h-28 bg-linear-to-b from-transparent to-[#1c120e]/70"
         />
       </div>
     </section>

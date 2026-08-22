@@ -81,7 +81,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          "bg-redLight text-white dark:bg-redDark dark:text-white",
+          "bg-[#1c120e] text-white dark:bg-[#1c120e] dark:text-white",
         )}
       >
         <SmoothScroll>
