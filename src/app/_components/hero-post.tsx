@@ -79,14 +79,14 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             autoAlpha: 1,
             clipPath: "inset(0 100% 0 0)",
             scale: frameScale,
-            xPercent: 0,
+            xPercent: 1.4,
             yPercent: 0,
           });
           gsap.set("[data-portrait-frame='2']", {
             autoAlpha: 1,
             clipPath: "inset(0 100% 0 0)",
             scale: frameScale,
-            xPercent: 0,
+            xPercent: 2.2,
             yPercent: 0,
           });
 
@@ -171,6 +171,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 clipPath: "inset(0 0% 0 0)",
                 duration: 0.14,
                 ease: "power2.inOut",
+                xPercent: 0,
               },
               0.34,
             )
@@ -180,6 +181,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 clipPath: "inset(0 0% 0 0)",
                 duration: 0.14,
                 ease: "power2.inOut",
+                xPercent: 0,
               },
               0.56,
             )

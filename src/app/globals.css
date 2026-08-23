@@ -486,15 +486,6 @@
   overflow: hidden;
 }
 
-.hero-portrait::after {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  background: var(--hero-scene-fade);
-  content: "";
-  pointer-events: none;
-}
-
 .hero-scene-frame,
 .hero-portrait-frame {
   object-position: 50% 18%;

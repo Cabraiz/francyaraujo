@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("troca as personagens sem clarão ou dupla exposição", async ({ page }) => {
+test("troca recortes transparentes sobre um único salão", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -18,7 +18,7 @@ test("troca as personagens sem clarão ou dupla exposição", async ({ page }) =
     ),
   );
 
-  const initialState = await page.evaluate(() => {
+  const initialState = await page.evaluate(async () => {
     const scene = document.querySelector<HTMLImageElement>(".hero-scene-frame");
     const firstFrame = document.querySelector<HTMLImageElement>(
       '[data-portrait-frame="0"]',
@@ -29,12 +29,25 @@ test("troca as personagens sem clarão ou dupla exposição", async ({ page }) =
       throw new Error("Camadas da transição do hero não encontradas.");
     }
 
+    const canvas = document.createElement("canvas");
+    canvas.width = firstFrame.naturalWidth;
+    canvas.height = firstFrame.naturalHeight;
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+
+    if (!context) throw new Error("Canvas indisponível para validar o alpha.");
+
+    context.drawImage(firstFrame, 0, 0);
+    const cornerAlpha = context.getImageData(0, 0, 1, 1).data[3];
+
     return {
+      cornerAlpha,
       frameOpacities: [
         ...document.querySelectorAll<HTMLElement>("[data-portrait-frame]"),
       ].map((frame) => Number(getComputedStyle(frame).opacity)),
       portraitTransitionDuration: getComputedStyle(portrait).transitionDuration,
-      sameSalonScene: scene.currentSrc === firstFrame.currentSrc,
+      fixedSalonScene:
+        scene.currentSrc.includes("hero-francy-salon-background") &&
+        scene.currentSrc !== firstFrame.currentSrc,
       sheenWidthRatio:
         Number.parseFloat(
           getComputedStyle(
@@ -46,7 +59,8 @@ test("troca as personagens sem clarão ou dupla exposição", async ({ page }) =
     };
   });
 
-  expect(initialState.sameSalonScene).toBe(true);
+  expect(initialState.fixedSalonScene).toBe(true);
+  expect(initialState.cornerAlpha).toBe(0);
   expect(initialState.sheenWidthRatio).toBeLessThanOrEqual(0.07);
   expect(initialState.portraitTransitionDuration).toBe("0s");
   expect(initialState.frameOpacities).toEqual([1, 1, 1]);

@@ -6,11 +6,12 @@ import { SignaturePost } from "@/app/_components/signature-post";
 
 const brandImage = "/assets/blog/dynamic-routing/brand-emblem-transparent.png";
 const heroPortraitImages = [
-  "/assets/blog/dynamic-routing/hero-francy-sequence-left.webp",
-  "/assets/blog/dynamic-routing/hero-francy-sequence-front.webp",
-  "/assets/blog/dynamic-routing/hero-francy-sequence-right.webp",
+  "/assets/blog/dynamic-routing/hero-francy-cutout-left.webp",
+  "/assets/blog/dynamic-routing/hero-francy-cutout-front.webp",
+  "/assets/blog/dynamic-routing/hero-francy-cutout-right.webp",
 ] as const;
-const heroSalonImage = heroPortraitImages[0];
+const heroSalonImage =
+  "/assets/blog/dynamic-routing/hero-francy-salon-background.webp";
 
 export default function Index() {
   return (
