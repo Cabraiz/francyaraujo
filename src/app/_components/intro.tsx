@@ -168,7 +168,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
 
           {isDesktop && (
             <div className="col-8 d-flex h-100 items-center justify-content-end">
-              <ul className="navbar-nav mb-2 mt-2 mb-lg-0">
+              <ul className="brand-nav-list navbar-nav mb-2 mt-2 mb-lg-0">
                 {navItems.map((item) => {
                   const isActive = pathname === item.link;
                   const isBooking = item.name === "AGENDE AGORA";

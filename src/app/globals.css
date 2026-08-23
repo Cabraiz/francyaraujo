@@ -975,6 +975,10 @@
 }
 
 /* Navegação alinhada à identidade visual marfim, carvão e dourado. */
+.brand-nav-list {
+  transform: translateY(-7px);
+}
+
 .navbar.navbar-light .navbar-nav .brand-nav-link {
   position: relative;
   color: #60493b;
