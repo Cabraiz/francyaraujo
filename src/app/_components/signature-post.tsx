@@ -88,23 +88,24 @@ export const SignaturePost = () => {
 
       {/* Texto da frente */}
       <div data-scroll-signature-foreground style={foregroundTextStyle}>
-        <h2 data-scroll-signature-reveal style={subHeadingStyle}>
+        <p data-scroll-signature-reveal style={subHeadingStyle}>
           THE
-        </h2>
-        <h1 data-scroll-signature-reveal style={headingStyle}>
+        </p>
+        <h2 data-scroll-signature-reveal style={headingStyle}>
           FRANCY ARAÚJO
-        </h1>
-        <h2 data-scroll-signature-reveal style={subHeadingStyle}>
-          SALON
         </h2>
+        <p data-scroll-signature-reveal style={subHeadingStyle}>
+          SALON
+        </p>
         <p data-scroll-signature-reveal style={paragraphStyle}>
-          Em nosso espaço, localizado na{" "}
+          No espaço da cabeleireira Francy Araújo, localizado na{" "}
           <span style={locationStyle}>Rua Israel Bezerra, 46</span>, em{" "}
-          <span style={locationStyle}>Dionísio Torres, Fortaleza</span>,
-          oferecemos uma experiência exclusiva, com cortes, colorações e
-          tratamentos modernos. Os atendimentos são personalizados e realizados
-          somente com hora marcada. Manicure e depilação também estão
-          disponíveis mediante solicitação antecipada.
+          <span style={locationStyle}>Dionísio Torres, Fortaleza</span>, você
+          encontra uma experiência exclusiva de hair stylist especializada em
+          cabelos ruivos, com cortes, colorações e tratamentos modernos. Os
+          atendimentos são personalizados e realizados somente com hora marcada.
+          Manicure e depilação também estão disponíveis mediante solicitação
+          antecipada.
         </p>
       </div>
     </section>

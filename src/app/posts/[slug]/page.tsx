@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -8,6 +9,13 @@ import { getAllPosts, getPostBySlug } from "@/lib/posts";
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function PostPage({ params }: PageProps) {
   const { slug } = await params;
