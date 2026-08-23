@@ -12,6 +12,7 @@ import "lenis/dist/lenis.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://francyaraujo.com"),
   title: "Francy Araújo | Beleza, estilo e confiança",
   description:
     "Francy Araújo, hair stylist especialista em ruivos e beleza em Fortaleza.",
