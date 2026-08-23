@@ -70,18 +70,21 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
           });
           gsap.set("[data-portrait-frame='0']", {
             autoAlpha: 1,
+            clipPath: "inset(0 0% 0 0)",
             scale: frameScale,
             xPercent: 0,
             yPercent: 0,
           });
           gsap.set("[data-portrait-frame='1']", {
-            autoAlpha: 0,
+            autoAlpha: 1,
+            clipPath: "inset(0 100% 0 0)",
             scale: frameScale,
             xPercent: 0,
             yPercent: 0,
           });
           gsap.set("[data-portrait-frame='2']", {
-            autoAlpha: 0,
+            autoAlpha: 1,
+            clipPath: "inset(0 100% 0 0)",
             scale: frameScale,
             xPercent: 0,
             yPercent: 0,
@@ -163,40 +166,22 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               0.2,
             )
             .to(
-              "[data-portrait-frame='0']",
-              {
-                autoAlpha: 0,
-                duration: 0.07,
-                ease: "power2.in",
-              },
-              0.48,
-            )
-            .to(
               "[data-portrait-frame='1']",
               {
-                autoAlpha: 1,
-                duration: 0.08,
-                ease: "power2.out",
+                clipPath: "inset(0 0% 0 0)",
+                duration: 0.16,
+                ease: "power2.inOut",
               },
-              0.55,
-            )
-            .to(
-              "[data-portrait-frame='1']",
-              {
-                autoAlpha: 0,
-                duration: 0.07,
-                ease: "power2.in",
-              },
-              0.7,
+              0.46,
             )
             .to(
               "[data-portrait-frame='2']",
               {
-                autoAlpha: 1,
-                duration: 0.08,
-                ease: "power2.out",
+                clipPath: "inset(0 0% 0 0)",
+                duration: 0.16,
+                ease: "power2.inOut",
               },
-              0.77,
+              0.7,
             )
             .fromTo(
               "[data-hero-copy-line]",

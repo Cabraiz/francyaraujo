@@ -220,8 +220,7 @@
   will-change: transform;
 }
 
-.hero-salon-layer,
-.hero-portrait {
+.hero-salon-layer {
   transition: opacity 0.45s ease-out;
 }
 
@@ -332,9 +331,9 @@
   --hero-scene-fade:
     linear-gradient(
       90deg,
-      rgba(247, 241, 232, 0.98) 0%,
-      rgba(247, 241, 232, 0.92) 29%,
-      rgba(247, 241, 232, 0.52) 43%,
+      rgba(225, 208, 191, 0.86) 0%,
+      rgba(225, 208, 191, 0.72) 29%,
+      rgba(225, 208, 191, 0.34) 43%,
       transparent 59%
     ),
     linear-gradient(0deg, rgba(30, 17, 12, 0.2), transparent 38%);
@@ -503,7 +502,7 @@
 
 .hero-portrait-frame {
   transform-origin: 50% 50%;
-  will-change: opacity, transform;
+  will-change: clip-path, transform;
 }
 
 .hero-portrait-frame[data-portrait-frame="0"],
