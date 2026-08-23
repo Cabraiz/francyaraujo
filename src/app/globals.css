@@ -495,7 +495,7 @@
 }
 
 .hero-portrait-frame[data-portrait-frame="2"] {
-  transform: translate3d(14%, 0, 0) scale(0.76);
+  transform: translate3d(4%, 0, 0) scale(0.96);
 }
 
 .hero-portrait-frame:not([data-portrait-frame="0"]) {
@@ -764,7 +764,7 @@
   }
 
   .hero-portrait-frame[data-portrait-frame="2"] {
-    transform: translate3d(11%, 0, 0) scale(0.74);
+    transform: translate3d(3%, 0, 0) scale(0.94);
   }
 
   .hero-copy {

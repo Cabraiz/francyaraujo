@@ -44,8 +44,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
           const reducedMotion = Boolean(context.conditions?.reducedMotion);
           const closeScale = desktop ? 1.22 : 1.16;
           const mediumScale = desktop ? 0.96 : 0.94;
-          const distantScale = desktop ? 0.76 : 0.74;
-          const departingScale = desktop ? 0.69 : 0.68;
 
           if (reducedMotion) {
             gsap.set("[data-hero-prelude]", { autoAlpha: 0 });
@@ -85,8 +83,8 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
           });
           gsap.set("[data-portrait-frame='2']", {
             autoAlpha: 0,
-            scale: distantScale,
-            xPercent: desktop ? 14 : 11,
+            scale: mediumScale,
+            xPercent: desktop ? 4 : 3,
             yPercent: 0,
           });
 
@@ -218,16 +216,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 ease: "power2.out",
               },
               0.77,
-            )
-            .to(
-              "[data-portrait-frame='2']",
-              {
-                duration: 0.2,
-                ease: "power1.in",
-                scale: departingScale,
-                xPercent: desktop ? 19 : 15,
-              },
-              0.8,
             )
             .fromTo(
               "[data-hero-copy-line]",

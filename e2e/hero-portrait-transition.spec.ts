@@ -10,7 +10,9 @@ const transitionCheckpoints = [
   0.2, 0.48, 0.51, 0.54, 0.58, 0.64, 0.7, 0.73, 0.76, 0.8, 0.88, 0.96,
 ];
 
-test("troca as poses sem sobrepor e cria profundidade", async ({ page }) => {
+test("troca as poses sem sobrepor e alinha os dois quadros finais", async ({
+  page,
+}) => {
   await page.goto("/", { waitUntil: "networkidle" });
 
   const hero = page.locator("[data-scroll-hero]");
@@ -87,7 +89,7 @@ test("troca as poses sem sobrepor e cria profundidade", async ({ page }) => {
     ).toBeLessThanOrEqual(1);
   }
 
-  const frameScaleAt = async (progress: number, frame: string) => {
+  const frameTransformAt = async (progress: number, frame: string) => {
     const scrollTop =
       heroMetrics.top + heroMetrics.scrollableDistance * progress;
 
@@ -99,14 +101,20 @@ test("troca as poses sem sobrepor e cria profundidade", async ({ page }) => {
       .evaluate((element) => {
         const matrix = new DOMMatrix(getComputedStyle(element).transform);
 
-        return Math.hypot(matrix.a, matrix.b);
+        return {
+          scale: Math.hypot(matrix.a, matrix.b),
+          x: matrix.e,
+          y: matrix.f,
+        };
       });
   };
 
-  const closeScale = await frameScaleAt(0.32, "0");
-  const mediumScale = await frameScaleAt(0.64, "1");
-  const distantScale = await frameScaleAt(0.9, "2");
+  const close = await frameTransformAt(0.32, "0");
+  const second = await frameTransformAt(0.64, "1");
+  const third = await frameTransformAt(0.9, "2");
 
-  expect(closeScale).toBeGreaterThan(mediumScale + 0.15);
-  expect(mediumScale).toBeGreaterThan(distantScale + 0.15);
+  expect(close.scale).toBeGreaterThan(second.scale + 0.15);
+  expect(third.scale).toBeCloseTo(second.scale, 2);
+  expect(third.x).toBeCloseTo(second.x, 0);
+  expect(third.y).toBeCloseTo(second.y, 0);
 });
