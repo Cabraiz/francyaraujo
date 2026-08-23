@@ -13,11 +13,19 @@ type Props = {
   coverImage: string;
 };
 
+const whatsappNumber = "558881902582";
+const whatsappMessage = encodeURIComponent(
+  "Olá, Francy! Gostaria de agendar um horário.",
+);
+
 const navItems = [
   { name: "HOME", link: "/" },
   { name: "HISTÓRIA", link: "/story" },
   { name: "SERVIÇOS", link: "/services" },
-  { name: "AGENDE AGORA", link: "/book" },
+  {
+    name: "AGENDE AGORA",
+    link: `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`,
+  },
 ] as const;
 
 const desktopQuery = "(min-width: 1200px)";
@@ -186,6 +194,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
                         } ${isBooking ? "highlight-agenda" : ""}`}
                         href={item.link}
                         prefetch={false}
+                        rel={isBooking ? "noreferrer" : undefined}
                         style={{
                           fontFamily: "'Novecento', sans-serif",
                           fontSize: isBooking ? "1.1em" : "inherit",
@@ -194,6 +203,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
                             "color 0.3s ease, letter-spacing 0.4s ease",
                           whiteSpace: "nowrap",
                         }}
+                        target={isBooking ? "_blank" : undefined}
                       >
                         {item.name}
                       </Link>

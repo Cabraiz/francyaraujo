@@ -35,6 +35,16 @@ test("captura profissional da página inicial", async ({ page }, testInfo) => {
     page.getByRole("navigation", { name: "Navegação principal" }),
   ).toBeVisible();
 
+  if (testInfo.project.name === "desktop") {
+    const bookingLink = page.getByRole("link", { name: "AGENDE AGORA" });
+
+    await expect(bookingLink).toHaveAttribute(
+      "href",
+      "https://wa.me/558881902582?text=Ol%C3%A1%2C%20Francy!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio.",
+    );
+    await expect(bookingLink).toHaveAttribute("target", "_blank");
+  }
+
   const hero = page.locator("[data-scroll-hero]");
   const revealPosition = await hero.evaluate((element) => {
     const top = element.getBoundingClientRect().top + window.scrollY;
