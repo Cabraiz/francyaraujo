@@ -54,6 +54,17 @@ test("troca as poses sem sobrepor dois retratos", async ({ page }) => {
     await page.evaluate((top) => window.scrollTo(0, top), scrollTop);
     await page.waitForTimeout(900);
 
+    const portraitOpacity = await page
+      .locator("[data-hero-portrait]")
+      .evaluate((element) => Number(getComputedStyle(element).opacity));
+
+    if (progress >= 0.58) {
+      expect(
+        portraitOpacity,
+        `progresso ${progress}: o retrato principal ficou invisível`,
+      ).toBeGreaterThan(0.5);
+    }
+
     const states = await frames.evaluateAll(
       (images): PortraitFrameState[] =>
         images.map((image) => {
