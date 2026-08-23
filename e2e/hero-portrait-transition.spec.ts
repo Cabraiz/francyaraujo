@@ -10,7 +10,7 @@ const transitionCheckpoints = [
   0.2, 0.48, 0.51, 0.54, 0.58, 0.64, 0.7, 0.73, 0.76, 0.8, 0.88, 0.96,
 ];
 
-test("troca as poses sem sobrepor dois retratos", async ({ page }) => {
+test("troca as poses sem sobrepor e cria profundidade", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
 
   const hero = page.locator("[data-scroll-hero]");
@@ -86,4 +86,27 @@ test("troca as poses sem sobrepor dois retratos", async ({ page }) => {
       `progresso ${progress}: ${JSON.stringify(states)}`,
     ).toBeLessThanOrEqual(1);
   }
+
+  const frameScaleAt = async (progress: number, frame: string) => {
+    const scrollTop =
+      heroMetrics.top + heroMetrics.scrollableDistance * progress;
+
+    await page.evaluate((top) => window.scrollTo(0, top), scrollTop);
+    await page.waitForTimeout(900);
+
+    return page
+      .locator(`[data-portrait-frame='${frame}']`)
+      .evaluate((element) => {
+        const matrix = new DOMMatrix(getComputedStyle(element).transform);
+
+        return Math.hypot(matrix.a, matrix.b);
+      });
+  };
+
+  const closeScale = await frameScaleAt(0.32, "0");
+  const mediumScale = await frameScaleAt(0.64, "1");
+  const distantScale = await frameScaleAt(0.9, "2");
+
+  expect(closeScale).toBeGreaterThan(mediumScale + 0.15);
+  expect(mediumScale).toBeGreaterThan(distantScale + 0.15);
 });

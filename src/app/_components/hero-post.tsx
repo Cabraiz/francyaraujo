@@ -42,6 +42,10 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
         (context) => {
           const desktop = Boolean(context.conditions?.desktop);
           const reducedMotion = Boolean(context.conditions?.reducedMotion);
+          const closeScale = desktop ? 1.22 : 1.16;
+          const mediumScale = desktop ? 0.96 : 0.94;
+          const distantScale = desktop ? 0.76 : 0.74;
+          const departingScale = desktop ? 0.69 : 0.68;
 
           if (reducedMotion) {
             gsap.set("[data-hero-prelude]", { autoAlpha: 0 });
@@ -64,14 +68,27 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             autoAlpha: 0,
             clipPath: "inset(0 50% 0 50%)",
           });
-          gsap.set(
-            "[data-hero-portrait-frame]:not([data-portrait-frame='0'])",
-            {
-              autoAlpha: 0,
-              scale: 1.012,
-              xPercent: 1.2,
-            },
-          );
+          gsap.set("[data-hero-portrait-frame]", {
+            transformOrigin: "50% 100%",
+          });
+          gsap.set("[data-portrait-frame='0']", {
+            autoAlpha: 1,
+            scale: closeScale,
+            xPercent: desktop ? -4 : -3,
+            yPercent: 0,
+          });
+          gsap.set("[data-portrait-frame='1']", {
+            autoAlpha: 0,
+            scale: mediumScale,
+            xPercent: desktop ? 4 : 3,
+            yPercent: 0,
+          });
+          gsap.set("[data-portrait-frame='2']", {
+            autoAlpha: 0,
+            scale: distantScale,
+            xPercent: desktop ? 14 : 11,
+            yPercent: 0,
+          });
 
           const reveal = gsap.timeline({
             defaults: { ease: "none" },
@@ -172,8 +189,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 autoAlpha: 0,
                 duration: 0.07,
                 ease: "power2.in",
-                scale: 1.012,
-                xPercent: -1.2,
               },
               0.48,
             )
@@ -183,8 +198,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 autoAlpha: 1,
                 duration: 0.08,
                 ease: "power2.out",
-                scale: 1,
-                xPercent: 0,
               },
               0.55,
             )
@@ -194,8 +207,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 autoAlpha: 0,
                 duration: 0.07,
                 ease: "power2.in",
-                scale: 1.012,
-                xPercent: -1.2,
               },
               0.7,
             )
@@ -205,10 +216,18 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 autoAlpha: 1,
                 duration: 0.08,
                 ease: "power2.out",
-                scale: 1,
-                xPercent: 0,
               },
               0.77,
+            )
+            .to(
+              "[data-portrait-frame='2']",
+              {
+                duration: 0.2,
+                ease: "power1.in",
+                scale: departingScale,
+                xPercent: desktop ? 19 : 15,
+              },
+              0.8,
             )
             .fromTo(
               "[data-hero-copy-line]",
