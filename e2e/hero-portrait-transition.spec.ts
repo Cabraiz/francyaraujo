@@ -49,6 +49,11 @@ test("troca três poses sem sobrepor nem deslocar o enquadramento", async ({
   );
   expect(new Set(portraitSources).size).toBe(3);
 
+  const sceneSource = await page
+    .locator("[data-hero-salon] img")
+    .evaluate((image) => (image as HTMLImageElement).currentSrc);
+  expect(sceneSource).toBe(portraitSources[0]);
+
   const heroMetrics = await hero.evaluate((element) => ({
     scrollableDistance: Math.max(0, element.scrollHeight - innerHeight),
     top: element.getBoundingClientRect().top + window.scrollY,

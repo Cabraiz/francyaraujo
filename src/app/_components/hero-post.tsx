@@ -127,18 +127,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               0,
             )
             .fromTo(
-              "[data-hero-salon]",
-              { autoAlpha: 0.2, scale: 1.14, xPercent: 8 },
-              {
-                autoAlpha: 1,
-                duration: 0.78,
-                ease: "power2.out",
-                scale: 1.02,
-                xPercent: 0,
-              },
-              0.04,
-            )
-            .fromTo(
               "[data-hero-rings]",
               { autoAlpha: 0, rotation: -16, scale: 0.72 },
               {
@@ -166,17 +154,11 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               "[data-hero-portrait]",
               {
                 autoAlpha: 0,
-                scale: desktop ? 1.08 : 1.04,
-                xPercent: desktop ? 18 : 12,
-                yPercent: 7,
               },
               {
                 autoAlpha: 1,
-                duration: 0.66,
-                ease: "power3.out",
-                scale: 1,
-                xPercent: 0,
-                yPercent: 0,
+                duration: 0.2,
+                ease: "power2.out",
               },
               0.2,
             )
@@ -344,12 +326,12 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
           >
             <Image
               alt=""
-              className="object-cover"
+              className="hero-scene-frame object-cover"
               fill
               onError={() => setIsSalonLoaded(true)}
               onLoad={() => setIsSalonLoaded(true)}
               priority
-              sizes="(min-width: 768px) 62vw, 100vw"
+              sizes="100vw"
               src={salonImage}
             />
             <div
