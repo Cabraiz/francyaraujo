@@ -10,6 +10,13 @@ test("troca as personagens sem clarão ou dupla exposição", async ({ page }) =
       (image) => image.complete && image.naturalWidth > 0,
     ),
   );
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll<HTMLElement>("[data-portrait-frame]")].every(
+      (frame) =>
+        Number(getComputedStyle(frame).opacity) === 1 &&
+        getComputedStyle(frame).clipPath !== "none",
+    ),
+  );
 
   const initialState = await page.evaluate(() => {
     const scene = document.querySelector<HTMLImageElement>(".hero-scene-frame");
@@ -28,12 +35,19 @@ test("troca as personagens sem clarão ou dupla exposição", async ({ page }) =
       ].map((frame) => Number(getComputedStyle(frame).opacity)),
       portraitTransitionDuration: getComputedStyle(portrait).transitionDuration,
       sameSalonScene: scene.currentSrc === firstFrame.currentSrc,
-      sheenExists: Boolean(document.querySelector("[data-scroll-hero-sheen]")),
+      sheenWidthRatio:
+        Number.parseFloat(
+          getComputedStyle(
+            document.querySelector<HTMLElement>("[data-scroll-hero-sheen]") ??
+              document.documentElement,
+          ).width,
+        ) /
+        window.innerWidth,
     };
   });
 
   expect(initialState.sameSalonScene).toBe(true);
-  expect(initialState.sheenExists).toBe(false);
+  expect(initialState.sheenWidthRatio).toBeLessThanOrEqual(0.07);
   expect(initialState.portraitTransitionDuration).toBe("0s");
   expect(initialState.frameOpacities).toEqual([1, 1, 1]);
 

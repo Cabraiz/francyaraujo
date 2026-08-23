@@ -212,6 +212,7 @@
 [data-hero-rings],
 [data-hero-waves],
 [data-hero-portrait],
+[data-scroll-hero-sheen],
 [data-scroll-signature-bg],
 [data-scroll-signature-reveal] {
   backface-visibility: hidden;
@@ -512,6 +513,25 @@
 
 .hero-portrait-frame:not([data-portrait-frame="0"]) {
   opacity: 0;
+}
+
+.hero-sheen {
+  position: absolute;
+  z-index: 22;
+  top: -50%;
+  bottom: -50%;
+  left: -7%;
+  width: clamp(2rem, 4vw, 3.75rem);
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 252, 246, 0.38),
+    transparent
+  );
+  filter: blur(6px);
+  opacity: 0.86;
+  transform: rotate(10deg);
 }
 
 .hero-copy {

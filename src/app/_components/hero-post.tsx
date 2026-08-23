@@ -240,6 +240,16 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               0.62,
             )
             .fromTo(
+              "[data-scroll-hero-sheen]",
+              { xPercent: -200 },
+              {
+                duration: 0.32,
+                ease: "power2.inOut",
+                xPercent: 2600,
+              },
+              0.46,
+            )
+            .fromTo(
               "[data-scroll-hero-cue]",
               { autoAlpha: 1, y: 0 },
               { autoAlpha: 0, duration: 0.2, y: -14 },
@@ -314,6 +324,12 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               className="hero-salon-fade absolute inset-0"
             />
           </div>
+
+          <div
+            aria-hidden="true"
+            className="hero-sheen"
+            data-scroll-hero-sheen
+          />
 
           <div
             aria-hidden="true"
