@@ -25,6 +25,23 @@ test("troca as poses sem sobrepor dois retratos", async ({ page }) => {
     ).every((image) => image.complete && image.naturalWidth > 0),
   );
 
+  const portraitDimensions = await frames.evaluateAll((images) =>
+    images.map((image) => {
+      const portrait = image as HTMLImageElement;
+
+      return {
+        height: portrait.naturalHeight,
+        width: portrait.naturalWidth,
+      };
+    }),
+  );
+
+  expect(portraitDimensions).toEqual([
+    { height: 1402, width: 1122 },
+    { height: 1402, width: 1122 },
+    { height: 1402, width: 1122 },
+  ]);
+
   const heroMetrics = await hero.evaluate((element) => ({
     scrollableDistance: Math.max(0, element.scrollHeight - innerHeight),
     top: element.getBoundingClientRect().top + window.scrollY,
