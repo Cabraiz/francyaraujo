@@ -28,14 +28,16 @@ test("troca as personagens sem clarão ou dupla exposição", async ({ page }) =
       ].map((frame) => Number(getComputedStyle(frame).opacity)),
       portraitTransitionDuration: getComputedStyle(portrait).transitionDuration,
       sameSalonScene: scene.currentSrc === firstFrame.currentSrc,
+      sheenExists: Boolean(document.querySelector("[data-scroll-hero-sheen]")),
     };
   });
 
   expect(initialState.sameSalonScene).toBe(true);
+  expect(initialState.sheenExists).toBe(false);
   expect(initialState.portraitTransitionDuration).toBe("0s");
   expect(initialState.frameOpacities).toEqual([1, 1, 1]);
 
-  for (const progress of [0.48, 0.56, 0.72, 0.8, 0.98]) {
+  for (const progress of [0.2, 0.44, 0.58, 0.72, 0.88]) {
     await page.evaluate((ratio) => {
       const hero = document.querySelector<HTMLElement>("[data-scroll-hero]");
 
@@ -70,4 +72,29 @@ test("troca as personagens sem clarão ou dupla exposição", async ({ page }) =
     ).toBe(true);
     expect(frames[0]?.clipPath).not.toContain("100%");
   }
+
+  const sequence = [];
+
+  for (const progress of [0.12, 0.52, 0.86]) {
+    await page.evaluate((ratio) => {
+      const hero = document.querySelector<HTMLElement>("[data-scroll-hero]");
+
+      if (!hero) throw new Error("Hero não encontrado.");
+
+      window.scrollTo({
+        top: hero.offsetTop + (hero.offsetHeight - window.innerHeight) * ratio,
+      });
+    }, progress);
+    await page.waitForTimeout(850);
+
+    sequence.push(
+      await page.evaluate(() =>
+        [...document.querySelectorAll<HTMLElement>("[data-portrait-frame]")]
+          .map((frame) => getComputedStyle(frame).clipPath)
+          .findLastIndex((clipPath) => !clipPath.includes("100%")),
+      ),
+    );
+  }
+
+  expect(sequence).toEqual([0, 1, 2]);
 });

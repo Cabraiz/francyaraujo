@@ -169,19 +169,19 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               "[data-portrait-frame='1']",
               {
                 clipPath: "inset(0 0% 0 0)",
-                duration: 0.16,
+                duration: 0.14,
                 ease: "power2.inOut",
               },
-              0.46,
+              0.34,
             )
             .to(
               "[data-portrait-frame='2']",
               {
                 clipPath: "inset(0 0% 0 0)",
-                duration: 0.16,
+                duration: 0.14,
                 ease: "power2.inOut",
               },
-              0.7,
+              0.56,
             )
             .fromTo(
               "[data-hero-copy-line]",
@@ -238,16 +238,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 y: 0,
               },
               0.62,
-            )
-            .fromTo(
-              "[data-scroll-hero-sheen]",
-              { xPercent: -170 },
-              {
-                duration: 0.38,
-                ease: "power2.inOut",
-                xPercent: 300,
-              },
-              0.5,
             )
             .fromTo(
               "[data-scroll-hero-cue]",
@@ -513,11 +503,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             </div>
           </div>
 
-          <div
-            aria-hidden="true"
-            className="absolute -inset-y-1/2 left-[-16%] z-20 w-[12%] rotate-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.48),transparent)] blur-sm"
-            data-scroll-hero-sheen
-          />
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 z-50 border-y border-[#c89b68]/35"
