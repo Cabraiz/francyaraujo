@@ -8,9 +8,9 @@ const brandImage = "/assets/blog/dynamic-routing/brand-emblem-transparent.png";
 const heroSalonImage =
   "/assets/blog/dynamic-routing/hero-salon-background.webp";
 const heroPortraitImages = [
-  "/assets/blog/dynamic-routing/hero-francy-portrait.webp",
-  "/assets/blog/dynamic-routing/hero-francy-portrait-turn-15.webp",
-  "/assets/blog/dynamic-routing/hero-francy-portrait-turn-30.webp",
+  "/assets/blog/dynamic-routing/hero-francy-sequence-left.webp",
+  "/assets/blog/dynamic-routing/hero-francy-sequence-front.webp",
+  "/assets/blog/dynamic-routing/hero-francy-sequence-right.webp",
 ] as const;
 
 export default function Index() {

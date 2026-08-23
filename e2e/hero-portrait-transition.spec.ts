@@ -10,7 +10,7 @@ const transitionCheckpoints = [
   0.2, 0.48, 0.51, 0.54, 0.58, 0.64, 0.7, 0.73, 0.76, 0.8, 0.88, 0.96,
 ];
 
-test("troca as poses sem sobrepor e alinha os dois quadros finais", async ({
+test("troca três poses sem sobrepor nem deslocar o enquadramento", async ({
   page,
 }) => {
   await page.goto("/", { waitUntil: "networkidle" });
@@ -39,10 +39,15 @@ test("troca as poses sem sobrepor e alinha os dois quadros finais", async ({
   );
 
   expect(portraitDimensions).toEqual([
-    { height: 1402, width: 1122 },
-    { height: 1402, width: 1122 },
-    { height: 1402, width: 1122 },
+    { height: 1024, width: 1536 },
+    { height: 1024, width: 1536 },
+    { height: 1024, width: 1536 },
   ]);
+
+  const portraitSources = await frames.evaluateAll((images) =>
+    images.map((image) => (image as HTMLImageElement).currentSrc),
+  );
+  expect(new Set(portraitSources).size).toBe(3);
 
   const heroMetrics = await hero.evaluate((element) => ({
     scrollableDistance: Math.max(0, element.scrollHeight - innerHeight),
@@ -109,11 +114,13 @@ test("troca as poses sem sobrepor e alinha os dois quadros finais", async ({
       });
   };
 
-  const close = await frameTransformAt(0.32, "0");
+  const first = await frameTransformAt(0.32, "0");
   const second = await frameTransformAt(0.64, "1");
   const third = await frameTransformAt(0.9, "2");
 
-  expect(close.scale).toBeGreaterThan(second.scale + 0.15);
+  expect(second.scale).toBeCloseTo(first.scale, 2);
+  expect(second.x).toBeCloseTo(first.x, 0);
+  expect(second.y).toBeCloseTo(first.y, 0);
   expect(third.scale).toBeCloseTo(second.scale, 2);
   expect(third.x).toBeCloseTo(second.x, 0);
   expect(third.y).toBeCloseTo(second.y, 0);

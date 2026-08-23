@@ -42,8 +42,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
         (context) => {
           const desktop = Boolean(context.conditions?.desktop);
           const reducedMotion = Boolean(context.conditions?.reducedMotion);
-          const closeScale = desktop ? 1.22 : 1.16;
-          const mediumScale = desktop ? 0.96 : 0.94;
+          const frameScale = 1;
 
           if (reducedMotion) {
             gsap.set("[data-hero-prelude]", { autoAlpha: 0 });
@@ -67,24 +66,24 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             clipPath: "inset(0 50% 0 50%)",
           });
           gsap.set("[data-hero-portrait-frame]", {
-            transformOrigin: "50% 100%",
+            transformOrigin: "50% 50%",
           });
           gsap.set("[data-portrait-frame='0']", {
             autoAlpha: 1,
-            scale: closeScale,
-            xPercent: desktop ? -4 : -3,
+            scale: frameScale,
+            xPercent: 0,
             yPercent: 0,
           });
           gsap.set("[data-portrait-frame='1']", {
             autoAlpha: 0,
-            scale: mediumScale,
-            xPercent: desktop ? 4 : 3,
+            scale: frameScale,
+            xPercent: 0,
             yPercent: 0,
           });
           gsap.set("[data-portrait-frame='2']", {
             autoAlpha: 0,
-            scale: mediumScale,
-            xPercent: desktop ? 4 : 3,
+            scale: frameScale,
+            xPercent: 0,
             yPercent: 0,
           });
 
@@ -425,10 +424,10 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               <Image
                 alt={
                   index === 0
-                    ? "Mulher com cabelos ruivos em penteado trançado"
+                    ? "Mulher adulta com cabelos ruivos em um salão de beleza"
                     : ""
                 }
-                className="hero-portrait-frame object-contain object-bottom"
+                className="hero-portrait-frame object-cover"
                 data-hero-portrait-frame
                 data-portrait-frame={index}
                 fill
@@ -440,7 +439,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                   index === 0 ? () => setIsPortraitLoaded(true) : undefined
                 }
                 priority={index === 0}
-                sizes="(min-width: 768px) 58vw, 100vw"
+                sizes="100vw"
                 src={portraitImage}
               />
             ))}

@@ -357,6 +357,7 @@
 .hero-rings {
   top: -2%;
   right: 1%;
+  z-index: 18;
   width: 56%;
   aspect-ratio: 1;
   transform-origin: center;
@@ -475,27 +476,38 @@
 }
 
 .hero-portrait {
-  right: -1%;
-  bottom: 0;
-  width: 56%;
-  height: 98%;
+  z-index: 10;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-portrait::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(247, 241, 232, 0.98) 0%,
+    rgba(247, 241, 232, 0.92) 29%,
+    rgba(247, 241, 232, 0.52) 43%,
+    transparent 59%
+  );
+  content: "";
+  pointer-events: none;
 }
 
 .hero-portrait-frame {
-  transform-origin: 50% 100%;
+  object-position: center;
+  transform-origin: 50% 50%;
   will-change: opacity, transform;
 }
 
-.hero-portrait-frame[data-portrait-frame="0"] {
-  transform: translate3d(-4%, 0, 0) scale(1.22);
-}
-
-.hero-portrait-frame[data-portrait-frame="1"] {
-  transform: translate3d(4%, 0, 0) scale(0.96);
-}
-
+.hero-portrait-frame[data-portrait-frame="0"],
+.hero-portrait-frame[data-portrait-frame="1"],
 .hero-portrait-frame[data-portrait-frame="2"] {
-  transform: translate3d(4%, 0, 0) scale(0.96);
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 .hero-portrait-frame:not([data-portrait-frame="0"]) {
@@ -513,6 +525,12 @@
   top: 32%;
   left: clamp(2.25rem, 6vw, 6rem);
   width: min(43%, 620px);
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .hero-portrait-frame {
+    object-position: 72% center;
+  }
 }
 
 .hero-prelude-kicker {
@@ -749,22 +767,24 @@
   }
 
   .hero-portrait {
-    right: -24%;
-    bottom: -3%;
-    width: 108%;
-    height: 68%;
+    inset: 38% 0 0;
+    width: 100%;
+    height: 62%;
   }
 
-  .hero-portrait-frame[data-portrait-frame="0"] {
-    transform: translate3d(-3%, 0, 0) scale(1.16);
+  .hero-portrait::after {
+    background:
+      linear-gradient(
+        180deg,
+        #f7f1e8 0%,
+        rgba(247, 241, 232, 0.7) 13%,
+        transparent 38%
+      ),
+      linear-gradient(90deg, rgba(247, 241, 232, 0.32) 0%, transparent 48%);
   }
 
-  .hero-portrait-frame[data-portrait-frame="1"] {
-    transform: translate3d(3%, 0, 0) scale(0.94);
-  }
-
-  .hero-portrait-frame[data-portrait-frame="2"] {
-    transform: translate3d(3%, 0, 0) scale(0.94);
+  .hero-portrait-frame {
+    object-position: 72% center;
   }
 
   .hero-copy {
