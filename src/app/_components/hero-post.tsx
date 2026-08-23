@@ -68,6 +68,8 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             "[data-hero-portrait-frame]:not([data-portrait-frame='0'])",
             {
               autoAlpha: 0,
+              scale: 1.012,
+              xPercent: 1.2,
             },
           );
 
@@ -165,48 +167,48 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               0.2,
             )
             .to(
-              "[data-portrait-frame='1']",
+              "[data-portrait-frame='0']",
               {
-                autoAlpha: 1,
-                duration: 0.14,
-                ease: "power1.inOut",
-                scale: 1,
-                xPercent: 0,
+                autoAlpha: 0,
+                duration: 0.07,
+                ease: "power2.in",
+                scale: 1.012,
+                xPercent: -1.2,
               },
               0.48,
             )
             .to(
-              "[data-portrait-frame='0']",
+              "[data-portrait-frame='1']",
+              {
+                autoAlpha: 1,
+                duration: 0.08,
+                ease: "power2.out",
+                scale: 1,
+                xPercent: 0,
+              },
+              0.55,
+            )
+            .to(
+              "[data-portrait-frame='1']",
               {
                 autoAlpha: 0,
-                duration: 0.06,
-                ease: "power1.inOut",
-                scale: 1.015,
-                xPercent: -1.5,
+                duration: 0.07,
+                ease: "power2.in",
+                scale: 1.012,
+                xPercent: -1.2,
               },
-              0.61,
+              0.7,
             )
             .to(
               "[data-portrait-frame='2']",
               {
                 autoAlpha: 1,
-                duration: 0.14,
-                ease: "power1.inOut",
+                duration: 0.08,
+                ease: "power2.out",
                 scale: 1,
                 xPercent: 0,
               },
-              0.7,
-            )
-            .to(
-              "[data-portrait-frame='1']",
-              {
-                autoAlpha: 0,
-                duration: 0.06,
-                ease: "power1.inOut",
-                scale: 1.015,
-                xPercent: -1.5,
-              },
-              0.83,
+              0.77,
             )
             .fromTo(
               "[data-hero-copy-line]",
