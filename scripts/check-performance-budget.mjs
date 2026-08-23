@@ -13,7 +13,7 @@ const imageExtensions = new Set([
   ".webp",
 ]);
 const maximumImageBytes = 600 * 1024;
-const maximumTotalBytes = 2 * 1024 * 1024;
+const maximumTotalBytes = 3 * 1024 * 1024;
 const excludedFromPagePayload = new Set(["og.jpg"]);
 
 async function collectImages(directory) {
