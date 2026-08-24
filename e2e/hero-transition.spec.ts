@@ -63,7 +63,7 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
   expect(initialState.cornerAlpha).toBe(0);
   expect(initialState.sheenWidthRatio).toBeLessThanOrEqual(0.07);
   expect(initialState.portraitTransitionDuration).toBe("0s");
-  expect(initialState.frameOpacities).toEqual([1, 1, 1]);
+  expect(initialState.frameOpacities).toEqual([1, 1, 1, 1, 1]);
 
   for (const progress of [0.2, 0.44, 0.58, 0.72, 0.88]) {
     await page.evaluate((ratio) => {
@@ -103,7 +103,7 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
 
   const sequence = [];
 
-  for (const progress of [0.12, 0.52, 0.86]) {
+  for (const progress of [0.16, 0.34, 0.46, 0.58, 0.74]) {
     await page.evaluate((ratio) => {
       const hero = document.querySelector<HTMLElement>("[data-scroll-hero]");
 
@@ -124,5 +124,5 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
     );
   }
 
-  expect(sequence).toEqual([0, 1, 2]);
+  expect(sequence).toEqual([0, 1, 2, 3, 4]);
 });

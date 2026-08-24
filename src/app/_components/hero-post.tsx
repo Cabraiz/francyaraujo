@@ -42,12 +42,22 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
         (context) => {
           const desktop = Boolean(context.conditions?.desktop);
           const reducedMotion = Boolean(context.conditions?.reducedMotion);
-          const frameScale = 1;
+          const frameScale = desktop ? 1.08 : 1.12;
+          const portraitFrames = gsap.utils.toArray<HTMLElement>(
+            "[data-hero-portrait-frame]",
+            hero.current,
+          );
 
           if (reducedMotion) {
             gsap.set("[data-hero-prelude]", { autoAlpha: 0 });
             gsap.set("[data-scroll-hero-cue]", { autoAlpha: 0 });
             gsap.set(".hero-first-mask", { overflow: "visible" });
+            gsap.set(portraitFrames, { autoAlpha: 0 });
+            gsap.set(portraitFrames.at(-1) ?? [], {
+              autoAlpha: 1,
+              clipPath: "inset(0 0% 0 0)",
+              scale: frameScale,
+            });
             return;
           }
 
@@ -68,26 +78,14 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
           gsap.set("[data-hero-portrait-frame]", {
             transformOrigin: "50% 50%",
           });
-          gsap.set("[data-portrait-frame='0']", {
-            autoAlpha: 1,
-            clipPath: "inset(0 0% 0 0)",
-            scale: frameScale,
-            xPercent: 0,
-            yPercent: 0,
-          });
-          gsap.set("[data-portrait-frame='1']", {
-            autoAlpha: 1,
-            clipPath: "inset(0 100% 0 0)",
-            scale: frameScale,
-            xPercent: 1.4,
-            yPercent: 0,
-          });
-          gsap.set("[data-portrait-frame='2']", {
-            autoAlpha: 1,
-            clipPath: "inset(0 100% 0 0)",
-            scale: frameScale,
-            xPercent: 2.2,
-            yPercent: 0,
+          portraitFrames.forEach((frame, index) => {
+            gsap.set(frame, {
+              autoAlpha: 1,
+              clipPath: index === 0 ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
+              scale: frameScale,
+              xPercent: index === 0 ? 0 : 0.7 + index * 0.45,
+              yPercent: 0,
+            });
           });
 
           const reveal = gsap.timeline({
@@ -164,27 +162,22 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 ease: "power2.out",
               },
               0.2,
-            )
-            .to(
-              "[data-portrait-frame='1']",
+            );
+
+          portraitFrames.slice(1).forEach((frame, index) => {
+            reveal.to(
+              frame,
               {
                 clipPath: "inset(0 0% 0 0)",
-                duration: 0.14,
+                duration: 0.1,
                 ease: "power2.inOut",
                 xPercent: 0,
               },
-              0.34,
-            )
-            .to(
-              "[data-portrait-frame='2']",
-              {
-                clipPath: "inset(0 0% 0 0)",
-                duration: 0.14,
-                ease: "power2.inOut",
-                xPercent: 0,
-              },
-              0.56,
-            )
+              0.3 + index * 0.12,
+            );
+          });
+
+          reveal
             .fromTo(
               "[data-hero-copy-line]",
               { autoAlpha: 0, yPercent: 115 },
@@ -399,10 +392,10 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               <Image
                 alt={
                   index === 0
-                    ? "Mulher adulta com cabelos ruivos em um salão de beleza"
+                    ? "Mulher adulta iniciando uma transformação profissional dos cabelos pretos ao ruivo"
                     : ""
                 }
-                className="hero-portrait-frame object-cover"
+                className="hero-portrait-frame object-contain"
                 data-hero-portrait-frame
                 data-portrait-frame={index}
                 fill

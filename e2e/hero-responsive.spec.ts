@@ -4,13 +4,13 @@ const layouts = [
   {
     name: "desktop 720p",
     viewport: { width: 1280, height: 720 },
-    objectPosition: "50% 18%",
+    objectPosition: "72% 50%",
     maxPreludeCenterDelta: 16,
   },
   {
     name: "desktop 1080p",
     viewport: { width: 1920, height: 1080 },
-    objectPosition: "50% 18%",
+    objectPosition: "72% 50%",
     maxPreludeCenterDelta: 16,
   },
   {
@@ -52,7 +52,7 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
 
       const stageRect = stage.getBoundingClientRect();
       const preludeRect = prelude.getBoundingClientRect();
-      const imageScale = Math.max(
+      const imageScale = Math.min(
         stageRect.width / portrait.naturalWidth,
         stageRect.height / portrait.naturalHeight,
       );
@@ -66,7 +66,7 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
           (preludeRect.top + preludeRect.bottom) / 2 -
           (stageRect.top + stageRect.bottom) / 2,
         verticalImageCrop:
-          portrait.naturalHeight * imageScale - stageRect.height,
+          Math.max(0, portrait.naturalHeight * imageScale - stageRect.height),
       };
     });
 

@@ -7,10 +7,10 @@ type PortraitFrameState = {
 };
 
 const transitionCheckpoints = [
-  0.2, 0.48, 0.51, 0.54, 0.58, 0.64, 0.7, 0.73, 0.76, 0.8, 0.88, 0.96,
+  0.2, 0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66, 0.72, 0.8, 0.9,
 ];
 
-test("troca três poses sem sobrepor nem deslocar o enquadramento", async ({
+test("troca cinco fases sem crossfade nem deslocar o enquadramento", async ({
   page,
 }) => {
   await page.goto("/", { waitUntil: "networkidle" });
@@ -18,7 +18,7 @@ test("troca três poses sem sobrepor nem deslocar o enquadramento", async ({
   const hero = page.locator("[data-scroll-hero]");
   const frames = page.locator("[data-hero-portrait-frame]");
 
-  await expect(frames).toHaveCount(3);
+  await expect(frames).toHaveCount(5);
   await page.waitForFunction(() =>
     Array.from(
       document.querySelectorAll<HTMLImageElement>(
@@ -39,20 +39,23 @@ test("troca três poses sem sobrepor nem deslocar o enquadramento", async ({
   );
 
   expect(portraitDimensions).toEqual([
-    { height: 1024, width: 1536 },
-    { height: 1024, width: 1536 },
-    { height: 1024, width: 1536 },
+    { height: 1536, width: 1024 },
+    { height: 1536, width: 1024 },
+    { height: 1536, width: 1024 },
+    { height: 1536, width: 1024 },
+    { height: 1536, width: 1024 },
   ]);
 
   const portraitSources = await frames.evaluateAll((images) =>
     images.map((image) => (image as HTMLImageElement).currentSrc),
   );
-  expect(new Set(portraitSources).size).toBe(3);
+  expect(new Set(portraitSources).size).toBe(5);
 
   const sceneSource = await page
     .locator("[data-hero-salon] img")
     .evaluate((image) => (image as HTMLImageElement).currentSrc);
-  expect(sceneSource).toBe(portraitSources[0]);
+  expect(sceneSource).toContain("hero-francy-salon-background");
+  expect(portraitSources).not.toContain(sceneSource);
 
   const heroMetrics = await hero.evaluate((element) => ({
     scrollableDistance: Math.max(0, element.scrollHeight - innerHeight),
@@ -89,13 +92,24 @@ test("troca três poses sem sobrepor nem deslocar o enquadramento", async ({
           };
         }),
     );
-    const visibleFrames = states.filter(
-      ({ opacity, visibility }) => visibility !== "hidden" && opacity > 0.05,
+    expect(
+      states.every(({ opacity }) => opacity === 1),
+      `progresso ${progress}: ${JSON.stringify(states)}`,
+    ).toBe(true);
+
+    const clipPaths = await frames.evaluateAll((images) =>
+      images.map((image) => getComputedStyle(image).clipPath),
     );
+    const partiallyRevealed = clipPaths.filter((clipPath) => {
+      const rightInset = clipPath.match(/inset\([^ ]+ ([\d.]+)%/)?.[1];
+      const percentage = rightInset ? Number.parseFloat(rightInset) : 0;
+
+      return percentage > 0.5 && percentage < 99.5;
+    });
 
     expect(
-      visibleFrames.length,
-      `progresso ${progress}: ${JSON.stringify(states)}`,
+      partiallyRevealed.length,
+      `progresso ${progress}: mais de uma máscara intermediária`,
     ).toBeLessThanOrEqual(1);
   }
 
@@ -119,14 +133,21 @@ test("troca três poses sem sobrepor nem deslocar o enquadramento", async ({
       });
   };
 
-  const first = await frameTransformAt(0.32, "0");
-  const second = await frameTransformAt(0.64, "1");
-  const third = await frameTransformAt(0.9, "2");
+  const transforms = [];
 
-  expect(second.scale).toBeCloseTo(first.scale, 2);
-  expect(second.x).toBeCloseTo(first.x, 0);
-  expect(second.y).toBeCloseTo(first.y, 0);
-  expect(third.scale).toBeCloseTo(second.scale, 2);
-  expect(third.x).toBeCloseTo(second.x, 0);
-  expect(third.y).toBeCloseTo(second.y, 0);
+  for (const [progress, frame] of [
+    [0.2, "0"],
+    [0.42, "1"],
+    [0.54, "2"],
+    [0.66, "3"],
+    [0.84, "4"],
+  ] as const) {
+    transforms.push(await frameTransformAt(progress, frame));
+  }
+
+  for (const transform of transforms.slice(1)) {
+    expect(transform.scale).toBeCloseTo(transforms[0]?.scale ?? 0, 2);
+    expect(transform.x).toBeCloseTo(transforms[0]?.x ?? 0, 0);
+    expect(transform.y).toBeCloseTo(transforms[0]?.y ?? 0, 0);
+  }
 });

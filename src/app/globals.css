@@ -486,20 +486,18 @@
   overflow: hidden;
 }
 
-.hero-scene-frame,
-.hero-portrait-frame {
+.hero-scene-frame {
   object-position: 50% 18%;
 }
 
 .hero-portrait-frame {
+  object-position: 72% center;
   transform-origin: 50% 50%;
   will-change: clip-path, transform;
 }
 
-.hero-portrait-frame[data-portrait-frame="0"],
-.hero-portrait-frame[data-portrait-frame="1"],
-.hero-portrait-frame[data-portrait-frame="2"] {
-  transform: translate3d(0, 0, 0) scale(1);
+.hero-portrait-frame[data-portrait-frame] {
+  transform: translate3d(0, 0, 0) scale(1.08);
 }
 
 .hero-portrait-frame:not([data-portrait-frame="0"]) {
@@ -545,7 +543,6 @@
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
-  .hero-scene-frame,
   .hero-portrait-frame {
     object-position: 72% center;
   }
@@ -788,7 +785,6 @@
     );
   }
 
-  .hero-scene-frame,
   .hero-portrait-frame {
     object-position: 72% center;
   }
