@@ -6,6 +6,8 @@ const layouts = [
     viewport: { width: 1280, height: 720 },
     objectPosition: "50% 10%",
     expectedHeaderHeight: 75,
+    expectedSceneScale: 1,
+    maxHeroNameSize: 77,
     maxPreludeCenterDelta: 16,
   },
   {
@@ -13,6 +15,8 @@ const layouts = [
     viewport: { width: 1920, height: 1080 },
     objectPosition: "50% 10%",
     expectedHeaderHeight: 88,
+    expectedSceneScale: 1,
+    maxHeroNameSize: 97,
     maxPreludeCenterDelta: 16,
   },
   {
@@ -20,6 +24,8 @@ const layouts = [
     viewport: { width: 834, height: 1194 },
     objectPosition: "50% 10%",
     expectedHeaderHeight: 99,
+    expectedSceneScale: 1.28,
+    maxHeroNameSize: 81,
     maxPreludeCenterDelta: null,
   },
 ] as const;
@@ -51,6 +57,12 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
       const navigation = document.querySelector<HTMLElement>(
         '[aria-label="Navegação principal"]',
       );
+      const heroCopy = document.querySelector<HTMLElement>(".hero-copy");
+      const heroName = document.querySelector<HTMLElement>(".hero-name-first");
+      const heroSignature = document.querySelector<HTMLElement>(
+        ".hero-signature-lockup",
+      );
+      const heroTagline = document.querySelector<HTMLElement>(".hero-tagline");
       const ritual = Array.from(
         document.querySelectorAll<HTMLElement>(".hero-prelude-title span"),
       ).find((element) => element.textContent?.includes("um ritual"));
@@ -58,7 +70,20 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
         ".hero-prelude-copy",
       );
 
-      if (!(stage && prelude && portrait && navigation && ritual && preludeCopy)) {
+      if (
+        !(
+          stage &&
+          prelude &&
+          portrait &&
+          navigation &&
+          ritual &&
+          preludeCopy &&
+          heroCopy &&
+          heroName &&
+          heroSignature &&
+          heroTagline
+        )
+      ) {
         throw new Error("Hero responsivo não encontrado.");
       }
 
@@ -69,6 +94,9 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
         stageRect.height / portrait.naturalHeight,
       );
       const portraitStyle = getComputedStyle(portrait);
+      const portraitMatrix = new DOMMatrix(portraitStyle.transform);
+      const heroCopyRect = heroCopy.getBoundingClientRect();
+      const signatureRect = heroSignature.getBoundingClientRect();
       const ritualRange = document.createRange();
       ritualRange.selectNodeContents(ritual);
       const copyRange = document.createRange();
@@ -80,7 +108,19 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
           document.documentElement.scrollWidth -
           document.documentElement.clientWidth,
         headerHeight: navigation.getBoundingClientRect().height,
+        heroCopyWidth: heroCopyRect.width,
+        heroNameSize: Number.parseFloat(getComputedStyle(heroName).fontSize),
+        heroSignatureOverflow: Math.max(
+          0,
+          signatureRect.right - heroCopyRect.right,
+        ),
+        heroTaglineLineCount: new Set(
+          Array.from(heroTagline.children, (element) =>
+            Math.round((element as HTMLElement).offsetTop),
+          ),
+        ).size,
         objectPosition: portraitStyle.objectPosition,
+        sceneScale: Math.hypot(portraitMatrix.a, portraitMatrix.b),
         ritualWidth: ritualRange.getBoundingClientRect().width,
         preludeCopyWidth: preludeCopy.getBoundingClientRect().width,
         preludeCopyBorderLeft: Number.parseFloat(copyStyle.borderLeftWidth),
@@ -97,6 +137,17 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
     });
 
     expect(metrics.objectPosition, layout.name).toBe(layout.objectPosition);
+    expect(metrics.sceneScale, layout.name).toBeCloseTo(
+      layout.expectedSceneScale,
+      2,
+    );
+    expect(metrics.heroNameSize, `${layout.name}: nome grande demais`).toBeLessThanOrEqual(
+      layout.maxHeroNameSize,
+    );
+    expect(metrics.heroSignatureOverflow, `${layout.name}: assinatura fora dos 100%`).toBeLessThanOrEqual(
+      1,
+    );
+    expect(metrics.heroTaglineLineCount, `${layout.name}: slogan quebrou linha`).toBe(1);
     expect(
       Math.abs(metrics.preludeCopyWidth - metrics.ritualWidth),
       `${layout.name}: subtítulo precisa ter a largura de "um ritual."`,

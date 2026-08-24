@@ -43,7 +43,7 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
         (context) => {
           const desktop = Boolean(context.conditions?.desktop);
           const reducedMotion = Boolean(context.conditions?.reducedMotion);
-          const frameScale = 1.28;
+          const frameScale = desktop ? 1 : 1.28;
           const sceneFrames = gsap.utils.toArray<HTMLElement>(
             "[data-hero-scene-frame]",
             hero.current,
@@ -470,7 +470,7 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
               </span>
             </h1>
 
-            <p className="hero-tagline flex flex-wrap items-center text-[#4f4136]">
+            <p className="hero-tagline flex items-center text-[#4f4136]">
               <span data-hero-tagline-item>BELEZA</span>
               <span aria-hidden="true" data-hero-tagline-item>
                 •

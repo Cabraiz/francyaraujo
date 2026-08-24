@@ -156,5 +156,9 @@ test("revela cinco cenas com wipe diagonal sem apagar o fundo nem deslocar o enq
     expect(transform.y).toBeCloseTo(transforms[0]?.y ?? 0, 0);
   }
 
-  expect(transforms[0]?.scale).toBeCloseTo(1.28, 2);
+  const expectedScale = await page.evaluate(() =>
+    innerWidth >= 1200 ? 1 : 1.28,
+  );
+
+  expect(transforms[0]?.scale).toBeCloseTo(expectedScale, 2);
 });
