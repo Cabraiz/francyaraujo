@@ -44,6 +44,7 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
           const desktop = Boolean(context.conditions?.desktop);
           const reducedMotion = Boolean(context.conditions?.reducedMotion);
           const frameScale = desktop ? 1 : 1.28;
+          const frameYPercent = desktop ? 0 : 5;
           const sceneFrames = gsap.utils.toArray<HTMLElement>(
             "[data-hero-scene-frame]",
             hero.current,
@@ -61,7 +62,7 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
               autoAlpha: 1,
               clipPath: diagonalClipVisible,
               scale: frameScale,
-              yPercent: 5,
+              yPercent: frameYPercent,
             });
             gsap.set(transitionBeam ?? [], { autoAlpha: 0 });
             return;
@@ -94,7 +95,7 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
               clipPath: index === 0 ? diagonalClipVisible : diagonalClipHidden,
               scale: frameScale,
               xPercent: index === 0 ? 0 : 0.7 + index * 0.45,
-              yPercent: 5,
+              yPercent: frameYPercent,
             });
           });
 

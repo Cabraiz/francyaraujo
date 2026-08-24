@@ -63,6 +63,7 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
         ".hero-signature-lockup",
       );
       const heroTagline = document.querySelector<HTMLElement>(".hero-tagline");
+      const heroWaves = document.querySelector<HTMLElement>(".hero-waves");
       const ritual = Array.from(
         document.querySelectorAll<HTMLElement>(".hero-prelude-title span"),
       ).find((element) => element.textContent?.includes("um ritual"));
@@ -81,7 +82,8 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
           heroCopy &&
           heroName &&
           heroSignature &&
-          heroTagline
+          heroTagline &&
+          heroWaves
         )
       ) {
         throw new Error("Hero responsivo não encontrado.");
@@ -95,8 +97,11 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
       );
       const portraitStyle = getComputedStyle(portrait);
       const portraitMatrix = new DOMMatrix(portraitStyle.transform);
+      const portraitRect = portrait.getBoundingClientRect();
       const heroCopyRect = heroCopy.getBoundingClientRect();
       const signatureRect = heroSignature.getBoundingClientRect();
+      const wavesRect = heroWaves.getBoundingClientRect();
+      const wavesStyle = getComputedStyle(heroWaves);
       const ritualRange = document.createRange();
       ritualRange.selectNodeContents(ritual);
       const copyRange = document.createRange();
@@ -104,6 +109,11 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
       const copyStyle = getComputedStyle(preludeCopy);
 
       return {
+        scrollbarWidth: getComputedStyle(document.documentElement).scrollbarWidth,
+        webkitScrollbarDisplay: getComputedStyle(
+          document.documentElement,
+          "::-webkit-scrollbar",
+        ).display,
         horizontalOverflow:
           document.documentElement.scrollWidth -
           document.documentElement.clientWidth,
@@ -119,7 +129,10 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
             Math.round((element as HTMLElement).offsetTop),
           ),
         ).size,
+        heroWavesMask: wavesStyle.maskImage,
+        heroWavesWidthRatio: wavesRect.width / stageRect.width,
         objectPosition: portraitStyle.objectPosition,
+        sceneTopGap: Math.max(0, portraitRect.top - stageRect.top),
         sceneScale: Math.hypot(portraitMatrix.a, portraitMatrix.b),
         ritualWidth: ritualRange.getBoundingClientRect().width,
         preludeCopyWidth: preludeCopy.getBoundingClientRect().width,
@@ -137,6 +150,17 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
     });
 
     expect(metrics.objectPosition, layout.name).toBe(layout.objectPosition);
+    expect(
+      metrics.sceneTopGap,
+      `${layout.name}: faixa vazia entre header e fotografia`,
+    ).toBeLessThanOrEqual(1);
+    expect(metrics.scrollbarWidth, `${layout.name}: scrollbar visível`).toBe(
+      "none",
+    );
+    expect(
+      metrics.webkitScrollbarDisplay,
+      `${layout.name}: scrollbar WebKit visível`,
+    ).toBe("none");
     expect(metrics.sceneScale, layout.name).toBeCloseTo(
       layout.expectedSceneScale,
       2,
@@ -148,6 +172,14 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
       1,
     );
     expect(metrics.heroTaglineLineCount, `${layout.name}: slogan quebrou linha`).toBe(1);
+    expect(
+      metrics.heroWavesMask,
+      `${layout.name}: ondas sem dissolução lateral`,
+    ).toContain("90deg");
+    expect(
+      metrics.heroWavesWidthRatio,
+      `${layout.name}: ondas com largura incorreta`,
+    ).toBeCloseTo(0.64, 2);
     expect(
       Math.abs(metrics.preludeCopyWidth - metrics.ritualWidth),
       `${layout.name}: subtítulo precisa ter a largura de "um ritual."`,
