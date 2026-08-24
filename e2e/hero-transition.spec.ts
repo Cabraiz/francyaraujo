@@ -12,9 +12,7 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
   );
   await page.waitForFunction(() =>
     [...document.querySelectorAll<HTMLElement>("[data-portrait-frame]")].every(
-      (frame) =>
-        Number(getComputedStyle(frame).opacity) === 1 &&
-        getComputedStyle(frame).clipPath !== "none",
+      (frame) => getComputedStyle(frame).clipPath !== "none",
     ),
   );
 
@@ -63,7 +61,7 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
   expect(initialState.cornerAlpha).toBe(0);
   expect(initialState.sheenWidthRatio).toBeLessThanOrEqual(0.07);
   expect(initialState.portraitTransitionDuration).toBe("0s");
-  expect(initialState.frameOpacities).toEqual([1, 1, 1, 1, 1]);
+  expect(initialState.frameOpacities).toEqual([1, 0, 0, 0, 0]);
 
   for (const progress of [0.2, 0.44, 0.58, 0.72, 0.88]) {
     await page.evaluate((ratio) => {
@@ -87,18 +85,14 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
       ),
     );
 
+    const visibleFrames = frames.filter(
+      (frame) => frame.opacity > 0.5 && frame.visibility === "visible",
+    );
+
     expect(
-      frames[0],
-      `quadro base ausente no progresso ${progress}`,
-    ).toMatchObject({
-      opacity: 1,
-      visibility: "visible",
-    });
-    expect(
-      frames.every((frame) => frame.opacity === 1),
-      `opacidade abriu um clarão no progresso ${progress}`,
-    ).toBe(true);
-    expect(frames[0]?.clipPath).not.toContain("100%");
+      visibleFrames.length,
+      `personagens sobrepostas no progresso ${progress}`,
+    ).toBeLessThanOrEqual(1);
   }
 
   const sequence = [];
@@ -118,8 +112,8 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
     sequence.push(
       await page.evaluate(() =>
         [...document.querySelectorAll<HTMLElement>("[data-portrait-frame]")]
-          .map((frame) => getComputedStyle(frame).clipPath)
-          .findLastIndex((clipPath) => !clipPath.includes("100%")),
+          .map((frame) => Number(getComputedStyle(frame).opacity))
+          .findLastIndex((opacity) => opacity > 0.5),
       ),
     );
   }

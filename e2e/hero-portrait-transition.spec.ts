@@ -93,9 +93,9 @@ test("troca cinco fases sem crossfade nem deslocar o enquadramento", async ({
         }),
     );
     expect(
-      states.every(({ opacity }) => opacity === 1),
+      states.filter(({ opacity }) => opacity > 0.5).length,
       `progresso ${progress}: ${JSON.stringify(states)}`,
-    ).toBe(true);
+    ).toBe(1);
 
     const clipPaths = await frames.evaluateAll((images) =>
       images.map((image) => getComputedStyle(image).clipPath),

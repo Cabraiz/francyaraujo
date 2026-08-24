@@ -80,7 +80,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
           });
           portraitFrames.forEach((frame, index) => {
             gsap.set(frame, {
-              autoAlpha: 1,
+              autoAlpha: index === 0 ? 1 : 0,
               clipPath: index === 0 ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
               scale: frameScale,
               xPercent: index === 0 ? 0 : 0.7 + index * 0.45,
@@ -165,16 +165,22 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             );
 
           portraitFrames.slice(1).forEach((frame, index) => {
-            reveal.to(
-              frame,
-              {
-                clipPath: "inset(0 0% 0 0)",
-                duration: 0.1,
-                ease: "power2.inOut",
-                xPercent: 0,
-              },
-              0.3 + index * 0.12,
-            );
+            const transitionStart = 0.3 + index * 0.12;
+            const previousFrame = portraitFrames[index];
+
+            reveal
+              .set(previousFrame ?? [], { autoAlpha: 0 }, transitionStart)
+              .set(frame, { autoAlpha: 1 }, transitionStart)
+              .to(
+                frame,
+                {
+                  clipPath: "inset(0 0% 0 0)",
+                  duration: 0.1,
+                  ease: "power2.inOut",
+                  xPercent: 0,
+                },
+                transitionStart,
+              );
           });
 
           reveal
