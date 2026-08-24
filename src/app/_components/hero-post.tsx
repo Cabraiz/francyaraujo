@@ -4,10 +4,13 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { FaWhatsapp } from "react-icons/fa6";
 import { OrnamentalFrame } from "./ornamental-frame";
 
 type Props = {
+  mobileSceneImages: readonly [string, ...string[]];
   sceneImages: readonly [string, ...string[]];
 };
 
@@ -24,29 +27,67 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP, ScrollTrigger);
 }
 
-export function HeroPost({ sceneImages }: Readonly<Props>) {
+export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
   const hero = useRef<HTMLElement>(null);
-  const [isSceneLoaded, setIsSceneLoaded] = useState(false);
+  const [isContactRibbonVisible, setIsContactRibbonVisible] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDesktopSceneLoaded, setIsDesktopSceneLoaded] = useState(false);
+  const [isMobileSceneLoaded, setIsMobileSceneLoaded] = useState(false);
+
+  useEffect(() => {
+    const contactRibbon =
+      document.querySelector<HTMLElement>(".contact-ribbon");
+
+    if (!contactRibbon) {
+      setIsContactRibbonVisible(false);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsContactRibbonVisible(entry?.isIntersecting ?? false),
+      { threshold: 0.01 },
+    );
+
+    observer.observe(contactRibbon);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [isMobileMenuOpen]);
 
   useGSAP(
     () => {
-      if (!hero.current) return;
+      if (!hero.current || !isDesktopSceneLoaded) return;
 
       const media = gsap.matchMedia();
 
       media.add(
         {
           desktop: "(min-width: 1200px)",
+          scrollDriven: "(min-width: 768px)",
           motionAllowed: "(prefers-reduced-motion: no-preference)",
           reducedMotion: "(prefers-reduced-motion: reduce)",
         },
         (context) => {
+          const scrollDriven = Boolean(context.conditions?.scrollDriven);
+
+          if (!scrollDriven) return;
+
           const desktop = Boolean(context.conditions?.desktop);
           const reducedMotion = Boolean(context.conditions?.reducedMotion);
           const frameScale = desktop ? 1 : 1.28;
           const frameYPercent = desktop ? 0 : 5;
           const sceneFrames = gsap.utils.toArray<HTMLElement>(
-            "[data-hero-scene-frame]",
+            '[data-hero-scene-frame="desktop"]',
             hero.current,
           );
           const transitionBeam = hero.current?.querySelector<HTMLElement>(
@@ -82,7 +123,7 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
             autoAlpha: 0,
             clipPath: "inset(0 50% 0 50%)",
           });
-          gsap.set("[data-hero-scene-frame]", {
+          gsap.set('[data-hero-scene-frame="desktop"]', {
             transformOrigin: "50% 50%",
           });
           gsap.set(transitionBeam ?? [], {
@@ -275,14 +316,127 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
 
       return () => media.revert();
     },
-    { scope: hero },
+    {
+      dependencies: [isDesktopSceneLoaded],
+      revertOnUpdate: true,
+      scope: hero,
+    },
+  );
+
+  useGSAP(
+    () => {
+      if (!hero.current || !isMobileSceneLoaded) return;
+
+      const media = gsap.matchMedia();
+
+      media.add(
+        {
+          mobile: "(max-width: 767px)",
+          reducedMotion: "(prefers-reduced-motion: reduce)",
+        },
+        (context) => {
+          if (!context.conditions?.mobile) return;
+
+          const frames = gsap.utils.toArray<HTMLElement>(
+            "[data-hero-mobile-scene-frame]",
+            hero.current,
+          );
+          const transitionBeam = hero.current?.querySelector<HTMLElement>(
+            "[data-hero-transition-beam]",
+          );
+          const firstFrame = frames[0];
+
+          if (!firstFrame) return;
+
+          gsap.set(frames, {
+            autoAlpha: 0,
+            clipPath: diagonalClipHidden,
+            transformOrigin: "50% 50%",
+            zIndex: 1,
+          });
+          gsap.set(transitionBeam ?? [], {
+            autoAlpha: 0,
+            xPercent: -180,
+          });
+
+          if (context.conditions?.reducedMotion) {
+            gsap.set(frames.at(-1) ?? [], {
+              autoAlpha: 1,
+              clipPath: diagonalClipVisible,
+            });
+            return;
+          }
+
+          gsap.set(firstFrame, {
+            autoAlpha: 1,
+            clipPath: diagonalClipVisible,
+            zIndex: 2,
+          });
+
+          const sequence = gsap.timeline();
+          const orderedFrames = frames.slice(1);
+
+          orderedFrames.forEach((frame, index) => {
+            const previousFrame = frames[index] ?? frames.at(-1) ?? firstFrame;
+
+            sequence
+              .set(previousFrame, { zIndex: 1 }, index === 0 ? 2.8 : ">+=2.8")
+              .set(
+                frame,
+                {
+                  autoAlpha: 1,
+                  clipPath: diagonalClipHidden,
+                  zIndex: 2,
+                },
+                "<",
+              )
+              .set(
+                transitionBeam ?? [],
+                { autoAlpha: 0.72, xPercent: -180 },
+                "<",
+              )
+              .to(
+                frame,
+                {
+                  clipPath: diagonalClipVisible,
+                  duration: 0.9,
+                  ease: "power2.inOut",
+                },
+                "<",
+              )
+              .to(
+                transitionBeam ?? [],
+                {
+                  duration: 0.9,
+                  ease: "power2.inOut",
+                  xPercent: 3800,
+                },
+                "<",
+              )
+              .set(previousFrame, { autoAlpha: 0 }, ">")
+              .set(transitionBeam ?? [], { autoAlpha: 0 }, "<");
+          });
+
+          return () => sequence.kill();
+        },
+      );
+
+      return () => media.revert();
+    },
+    {
+      dependencies: [isMobileSceneLoaded],
+      revertOnUpdate: true,
+      scope: hero,
+    },
   );
 
   return (
     <section
-      aria-busy={!isSceneLoaded}
+      aria-busy={!(isDesktopSceneLoaded || isMobileSceneLoaded)}
       aria-label="Apresentação Francy Araújo"
-      className="hero-story relative h-[170svh] min-h-[900px] overflow-clip bg-[#1c120e]"
+      className={`hero-story relative h-[170svh] min-h-[900px] overflow-clip bg-[#1c120e] ${
+        isContactRibbonVisible ? "hero-story--contact-visible" : ""
+      }`}
       data-scroll-hero
       ref={hero}
     >
@@ -315,7 +469,7 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
           className="hero-composition relative z-10 w-full overflow-hidden bg-[#f7f1e8]"
           data-scroll-hero-composition
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_20%,#fffaf4_0%,#f7f1e8_47%,#ead8c3_100%)]" />
+          <div className="hero-composition-base absolute inset-0 bg-[radial-gradient(circle_at_16%_20%,#fffaf4_0%,#f7f1e8_47%,#ead8c3_100%)]" />
 
           <div
             aria-hidden="true"
@@ -383,9 +537,9 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
           </div>
 
           <div
-            className="hero-scene-sequence absolute"
+            className="hero-scene-sequence hero-scene-sequence--desktop absolute"
             data-hero-sequence
-            style={{ opacity: isSceneLoaded ? 1 : 0 }}
+            style={{ opacity: isDesktopSceneLoaded ? 1 : 0 }}
           >
             {sceneImages.map((sceneImage, index) => (
               <Image
@@ -395,12 +549,16 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
                     : ""
                 }
                 className="hero-sequence-frame object-cover"
-                data-hero-scene-frame
+                data-hero-scene-frame="desktop"
                 data-scene-frame={index}
                 fill
                 key={sceneImage}
-                onError={index === 0 ? () => setIsSceneLoaded(true) : undefined}
-                onLoad={index === 0 ? () => setIsSceneLoaded(true) : undefined}
+                onError={
+                  index === 0 ? () => setIsDesktopSceneLoaded(true) : undefined
+                }
+                onLoad={
+                  index === 0 ? () => setIsDesktopSceneLoaded(true) : undefined
+                }
                 priority={index === 0}
                 sizes="100vw"
                 src={sceneImage}
@@ -410,6 +568,141 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
               aria-hidden="true"
               className="hero-sequence-fade absolute inset-0"
             />
+          </div>
+
+          <div
+            className="hero-scene-sequence hero-scene-sequence--mobile absolute"
+            style={{ opacity: isMobileSceneLoaded ? 1 : 0 }}
+          >
+            {mobileSceneImages.map((sceneImage, index) => (
+              <Image
+                alt={
+                  index === 0
+                    ? "Close de mulher adulta durante uma transformação profissional dos cabelos pretos ao ruivo"
+                    : ""
+                }
+                className="hero-sequence-frame hero-mobile-sequence-frame object-cover"
+                data-hero-mobile-scene-frame
+                data-mobile-scene-frame={index}
+                fill
+                key={sceneImage}
+                onError={
+                  index === 0 ? () => setIsMobileSceneLoaded(true) : undefined
+                }
+                onLoad={
+                  index === 0 ? () => setIsMobileSceneLoaded(true) : undefined
+                }
+                priority={index === 0}
+                sizes="100vw"
+                src={sceneImage}
+              />
+            ))}
+            <div
+              aria-hidden="true"
+              className="hero-sequence-fade absolute inset-0"
+            />
+          </div>
+
+          <div
+            className={`hero-mobile-shell ${
+              isMobileMenuOpen ? "hero-mobile-shell--menu-open" : ""
+            }`}
+          >
+            <header className="hero-mobile-topbar">
+              <div className="hero-mobile-brand">
+                <span>FRANCY ARAÚJO</span>
+                <small>BELEZA · ESTILO · CONFIANÇA</small>
+              </div>
+
+              <button
+                aria-expanded={isMobileMenuOpen}
+                aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+                className="hero-mobile-menu-button"
+                onClick={() => setIsMobileMenuOpen((open) => !open)}
+                type="button"
+              >
+                <span className="hero-mobile-menu-line hero-mobile-menu-line--first" />
+                <span className="hero-mobile-menu-line hero-mobile-menu-line--middle" />
+                <span className="hero-mobile-menu-line hero-mobile-menu-line--last" />
+              </button>
+            </header>
+
+            {isMobileMenuOpen ? (
+              <nav
+                aria-label="Navegação para celular"
+                className="hero-mobile-menu"
+              >
+                <Link
+                  href="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  prefetch={false}
+                >
+                  INÍCIO
+                </Link>
+                <Link
+                  href="/#historia"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  prefetch={false}
+                >
+                  HISTÓRIA
+                </Link>
+                <Link
+                  href="/#servicos"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  prefetch={false}
+                >
+                  SERVIÇOS
+                </Link>
+                <a
+                  href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  AGENDAR HORÁRIO
+                </a>
+              </nav>
+            ) : null}
+
+            <div className="hero-mobile-content">
+              <h2>
+                <span>Seu ritual.</span>
+                <span>Seu momento.</span>
+                <span className="hero-mobile-content__accent">
+                  Sua essência.
+                </span>
+              </h2>
+              <p>
+                Especialista em ruivos, cortes e tratamentos com atendimento
+                personalizado.
+              </p>
+
+              <a
+                className="hero-mobile-booking"
+                href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                rel="noreferrer"
+                target="_blank"
+              >
+                AGENDAR HORÁRIO
+                <FaWhatsapp aria-hidden="true" />
+              </a>
+            </div>
+
+            <div className="hero-mobile-footer">
+              <Link
+                className="hero-mobile-services-link"
+                href="/#servicos"
+                prefetch={false}
+              >
+                <span>CONHEÇA OS SERVIÇOS</span>
+                <span
+                  aria-hidden="true"
+                  className="hero-mobile-services-link__arrow"
+                >
+                  ⌄
+                </span>
+              </Link>
+            </div>
           </div>
 
           <div className="hero-copy absolute z-40">
@@ -521,13 +814,13 @@ export function HeroPost({ sceneImages }: Readonly<Props>) {
 
         <div
           aria-hidden="true"
-          className="absolute bottom-24 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3 text-[#ead7c0] md:bottom-20"
+          className="hero-scroll-cue absolute bottom-24 left-1/2 z-20 flex flex-col items-center gap-3 text-[#ead7c0] md:bottom-20"
           data-scroll-hero-cue
         >
-          <span className="whitespace-nowrap text-[10px] tracking-[0.38em] md:text-xs">
+          <span className="hero-scroll-cue__label whitespace-nowrap text-[10px] tracking-[0.38em] md:text-xs">
             ROLE PARA REVELAR
           </span>
-          <span className="h-12 w-px bg-linear-to-b from-[#c9955b] to-transparent" />
+          <span className="hero-scroll-cue__line h-12 w-px bg-linear-to-b from-[#c9955b] to-transparent" />
         </div>
 
         <div

@@ -100,62 +100,23 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
   return (
     <nav
       aria-label="Navegação principal"
-      className="navbar navbar-expand-lg navbar-light fade-in py-0"
+      className="brand-header navbar navbar-expand-lg navbar-light fade-in py-0"
       data-scroll-intro
       ref={navigation}
       style={{
         height: "var(--site-header-height)",
         transition: "height 0.5s ease-in-out",
-        background: "rgba(247, 242, 236, 0.94)",
         backdropFilter: "blur(18px) saturate(1.05)",
         WebkitBackdropFilter: "blur(18px) saturate(1.05)",
-        border: "1px solid rgba(180, 132, 77, 0.22)",
-        boxShadow: "0 5px 24px rgba(72, 48, 34, 0.12)",
         zIndex: 1500,
         position: "sticky",
         top: 0,
         overflow: "hidden",
       }}
     >
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: isDesktop
-            ? "linear-gradient(90deg, rgba(247, 242, 236, 0.96) 0%, rgba(247, 242, 236, 0.92) 32%, rgba(243, 233, 222, 0.9) 100%)"
-            : "linear-gradient(90deg, rgba(247, 242, 236, 0.96) 0%, rgba(245, 237, 228, 0.92) 100%)",
-          zIndex: -1,
-        }}
-      />
-
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(115deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0) 42%, rgba(184, 137, 82, 0.06))",
-          opacity: 0.75,
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "90%",
-          height: "70%",
-          background: "rgba(255, 255, 255, 0.16)",
-          borderRadius: "50%",
-          filter: "blur(30px)",
-          pointerEvents: "none",
-        }}
-      />
+      <div aria-hidden="true" className="brand-header__base" />
+      <div aria-hidden="true" className="brand-header__mantle" />
+      <div aria-hidden="true" className="brand-header__bloom" />
 
       <div aria-hidden="true" className="particles" />
 
@@ -190,7 +151,7 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
                       rel={isBooking ? "noreferrer" : undefined}
                       style={{
                         fontFamily: "'Novecento', sans-serif",
-                        fontSize: isBooking ? "1.1em" : "inherit",
+                        fontSize: isBooking ? "0.77rem" : "0.7rem",
                         letterSpacing: "0.4em",
                         transition: "color 0.3s ease, letter-spacing 0.4s ease",
                         whiteSpace: "nowrap",

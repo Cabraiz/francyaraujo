@@ -10,8 +10,6 @@ type Props = {
   children: ReactNode;
 };
 
-const showDevelopmentProgress = process.env.NODE_ENV === "development";
-
 if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP, ScrollTrigger);
 }
@@ -33,27 +31,6 @@ export function ScrollExperience({ children }: Readonly<Props>) {
         },
         (context) => {
           const { desktop, reducedMotion } = context.conditions ?? {};
-          if (showDevelopmentProgress) {
-            const progress = "[data-scroll-progress]";
-
-            gsap.set(progress, { scaleX: 0, transformOrigin: "left center" });
-
-            if (reducedMotion) {
-              gsap.set(progress, { scaleX: 1 });
-            } else {
-              gsap.to(progress, {
-                ease: "none",
-                scaleX: 1,
-                scrollTrigger: {
-                  end: "bottom bottom",
-                  scrub: 0.15,
-                  start: "top top",
-                  trigger: root.current,
-                },
-              });
-            }
-          }
-
           if (reducedMotion) return;
 
           gsap.fromTo(
@@ -84,6 +61,121 @@ export function ScrollExperience({ children }: Readonly<Props>) {
             },
             y: desktop ? 28 : 18,
           });
+
+          const footer = root.current?.querySelector<HTMLElement>(
+            "[data-scroll-footer]",
+          );
+
+          if (!footer) return;
+
+          const footerIdentity = footer.querySelector<HTMLElement>(
+            "[data-scroll-footer-identity]",
+          );
+          const footerCopy = footer.querySelector<HTMLElement>(
+            "[data-scroll-footer-copy]",
+          );
+          const footerMetrics = gsap.utils.toArray<HTMLElement>(
+            ".cabraiz-credit__metric",
+            footer,
+          );
+          const footerCta = footer.querySelector<HTMLElement>(
+            "[data-scroll-footer-cta]",
+          );
+          const footerSignature = footer.querySelector<HTMLElement>(
+            "[data-scroll-footer-signature]",
+          );
+          const footerGlow = footer.querySelector<HTMLElement>(
+            "[data-scroll-footer-glow]",
+          );
+
+          const footerReveal = gsap.timeline({
+            defaults: { ease: "power2.out" },
+            scrollTrigger: {
+              end: () => {
+                const footerHeight = footer.offsetHeight;
+                const finishBuffer = Math.min(18, footerHeight * 0.08);
+                const finishLine =
+                  ((window.innerHeight - footerHeight + finishBuffer) /
+                    window.innerHeight) *
+                  100;
+
+                return `top ${gsap.utils.clamp(0, 94, finishLine)}%`;
+              },
+              invalidateOnRefresh: true,
+              scrub: 0.65,
+              start: "top 96%",
+              trigger: footer,
+            },
+          });
+
+          footerReveal
+            .fromTo(
+              footer,
+              {
+                clipPath: "inset(0 0 16% 0 round 1.4rem)",
+                filter: "saturate(0.72) brightness(0.78)",
+              },
+              {
+                clipPath: "inset(0 0 0% 0 round 0rem)",
+                filter: "saturate(1) brightness(1)",
+              },
+              0,
+            )
+            .fromTo(
+              footerGlow,
+              { autoAlpha: 0, scale: 0.62 },
+              { autoAlpha: 1, scale: 1, duration: 0.92 },
+              0,
+            )
+            .fromTo(
+              footerIdentity,
+              { autoAlpha: 0, force3D: true, x: desktop ? -82 : -46 },
+              { autoAlpha: 1, duration: 0.68, force3D: true, x: 0 },
+              0.08,
+            )
+            .fromTo(
+              footerCopy,
+              { autoAlpha: 0, force3D: true, y: 26 },
+              { autoAlpha: 1, duration: 0.6, force3D: true, y: 0 },
+              0.2,
+            )
+            .fromTo(
+              footerMetrics,
+              { autoAlpha: 0, force3D: true, y: 12 },
+              {
+                autoAlpha: 1,
+                duration: 0.42,
+                force3D: true,
+                stagger: 0.045,
+                y: 0,
+              },
+              0.28,
+            )
+            .fromTo(
+              footerCta,
+              {
+                autoAlpha: 0,
+                force3D: true,
+                scale: 0.96,
+                x: desktop ? 76 : 0,
+                y: desktop ? 0 : 22,
+              },
+              {
+                autoAlpha: 1,
+                duration: 0.64,
+                force3D: true,
+                scale: 1,
+                x: 0,
+                y: 0,
+              },
+              0.3,
+            )
+            .fromTo(
+              footerSignature,
+              { autoAlpha: 0, force3D: true, y: 14 },
+              { autoAlpha: 1, duration: 0.42, force3D: true, y: 0 },
+              0.48,
+            );
         },
       );
 
@@ -96,13 +188,6 @@ export function ScrollExperience({ children }: Readonly<Props>) {
 
   return (
     <main ref={root} className="flex min-h-screen flex-col justify-start">
-      {showDevelopmentProgress ? (
-        <div
-          aria-hidden="true"
-          className="scroll-progress"
-          data-scroll-progress
-        />
-      ) : null}
       {children}
     </main>
   );

@@ -4,8 +4,9 @@ export const SignaturePost = () => {
   const containerStyle: CSSProperties = {
     position: "relative",
     width: "100%",
-    height: "48vh",
-    display: "flex",
+    minHeight: "max(48vh, 25rem)",
+    padding: "clamp(2rem, 5vh, 3.5rem) clamp(1.25rem, 4vw, 3rem)",
+    boxSizing: "border-box",
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
@@ -39,10 +40,10 @@ export const SignaturePost = () => {
     maxWidth: "1200px",
     textAlign: "center", // Centraliza o texto horizontalmente
     display: "flex",
+    width: "100%",
     flexDirection: "column",
     justifyContent: "center", // Centraliza verticalmente
     alignItems: "center",
-    height: "100%", // Garante que o conteúdo ocupe toda a altura disponível
   };
 
   const headingStyle: CSSProperties = {
@@ -81,7 +82,12 @@ export const SignaturePost = () => {
   };
 
   return (
-    <section data-scroll-signature id="historia" style={containerStyle}>
+    <section
+      className="signature-post"
+      data-scroll-signature
+      id="historia"
+      style={containerStyle}
+    >
       {/* Texto de fundo grande */}
       <div data-scroll-signature-bg style={backgroundTextStyle}>
         Francy Araujo
