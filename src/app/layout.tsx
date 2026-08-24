@@ -11,10 +11,22 @@ import "lenis/dist/lenis.css";
 
 const inter = Inter({ subsets: ["latin"] });
 const siteUrl = "https://francyaraujo.com";
-const siteTitle =
-  "Francy Araújo | Cabeleireira e especialista em ruivos em Fortaleza";
+const instagramUrl = "https://www.instagram.com/francyaraujocenario/";
+const mapUrl =
+  "https://www.google.com/maps/search/?api=1&query=Rua+Israel+Bezerra%2C+46%2C+Dion%C3%ADsio+Torres%2C+Fortaleza";
+const whatsappUrl =
+  "https://wa.me/558881902582?text=Ol%C3%A1%2C%20Francy!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio.";
+const siteTitle = "Francy Araújo | Cabeleireira e Ruivos em Fortaleza";
 const siteDescription =
-  "Francy Araújo é cabeleireira e hair stylist especialista em ruivos, cortes, colorações e tratamentos em Dionísio Torres, Fortaleza. Agende pelo WhatsApp.";
+  "Cabeleireira e especialista em ruivos em Fortaleza. Cortes, colorações e tratamentos em Dionísio Torres. Agende com Francy Araújo.";
+
+const salonServices = [
+  "Cortes de cabelo",
+  "Coloração e ruivos",
+  "Tratamentos capilares",
+  "Manicure",
+  "Depilação",
+] as const;
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -27,8 +39,12 @@ const structuredData = {
       description: siteDescription,
       url: siteUrl,
       image: `${siteUrl}/og.jpg`,
+      logo: `${siteUrl}/favicon/android-chrome-512x512.png?v=4`,
+      slogan: "Beleza • Estilo • Confiança",
       telephone: "+55 88 8190-2582",
       priceRange: "$$",
+      currenciesAccepted: "BRL",
+      hasMap: mapUrl,
       address: {
         "@type": "PostalAddress",
         streetAddress: "Rua Israel Bezerra, 46",
@@ -46,30 +62,40 @@ const structuredData = {
           name: "Dionísio Torres",
         },
       ],
-      sameAs: ["https://www.instagram.com/francyaraujocenario/"],
+      sameAs: [instagramUrl],
+      employee: { "@id": `${siteUrl}/#francy-araujo` },
       contactPoint: {
         "@type": "ContactPoint",
         telephone: "+55 88 8190-2582",
         contactType: "appointments",
         availableLanguage: "Portuguese",
+        url: whatsappUrl,
       },
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Serviços de beleza",
-        itemListElement: [
-          "Cortes de cabelo",
-          "Coloração e ruivos",
-          "Tratamentos capilares",
-          "Manicure",
-          "Depilação",
-        ].map((name) => ({
+        itemListElement: salonServices.map((name) => ({
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
             name,
+            areaServed: "Fortaleza, CE",
+            provider: { "@id": `${siteUrl}/#salao` },
           },
         })),
       },
+    },
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#francy-araujo`,
+      name: "Francy Araújo",
+      jobTitle: "Cabeleireira e especialista em ruivos",
+      description:
+        "Hair stylist especializada em cabelos ruivos, cortes, colorações e tratamentos em Fortaleza.",
+      url: siteUrl,
+      image: `${siteUrl}/og.jpg`,
+      sameAs: [instagramUrl],
+      worksFor: { "@id": `${siteUrl}/#salao` },
     },
     {
       "@type": "WebSite",
@@ -79,6 +105,23 @@ const structuredData = {
       description: siteDescription,
       inLanguage: "pt-BR",
       publisher: { "@id": `${siteUrl}/#salao` },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/#pagina-inicial`,
+      url: siteUrl,
+      name: siteTitle,
+      description: siteDescription,
+      inLanguage: "pt-BR",
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      about: { "@id": `${siteUrl}/#salao` },
+      mainEntity: { "@id": `${siteUrl}/#salao` },
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/og.jpg`,
+        width: 1200,
+        height: 630,
+      },
     },
   ],
 };
@@ -122,6 +165,8 @@ export const metadata: Metadata = {
     "hair stylist em Fortaleza",
     "especialista em ruivos Fortaleza",
     "salão de beleza Dionísio Torres",
+    "cabeleireira Dionísio Torres",
+    "ruivo acobreado Fortaleza",
     "cortes",
     "coloração",
     "tratamentos capilares",
@@ -157,22 +202,22 @@ export default function RootLayout({
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="/favicon/apple-touch-icon.png?v=2"
+          href="/favicon/apple-touch-icon.png?v=4"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="/favicon/favicon-32x32.png?v=2"
+          href="/favicon/favicon-32x32.png?v=4"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="/favicon/favicon-16x16.png?v=2"
+          href="/favicon/favicon-16x16.png?v=4"
         />
-        <link rel="manifest" href="/favicon/site.webmanifest?v=2" />
-        <link rel="shortcut icon" href="/favicon/favicon.ico?v=2" />
+        <link rel="manifest" href="/favicon/site.webmanifest?v=4" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico?v=4" />
         <meta name="msapplication-TileColor" content="#8b1721" />
         <meta
           name="msapplication-config"

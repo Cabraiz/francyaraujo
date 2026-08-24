@@ -10,6 +10,8 @@ type Props = {
   children: ReactNode;
 };
 
+const showDevelopmentProgress = process.env.NODE_ENV === "development";
+
 if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP, ScrollTrigger);
 }
@@ -31,25 +33,28 @@ export function ScrollExperience({ children }: Readonly<Props>) {
         },
         (context) => {
           const { desktop, reducedMotion } = context.conditions ?? {};
-          const progress = "[data-scroll-progress]";
+          if (showDevelopmentProgress) {
+            const progress = "[data-scroll-progress]";
 
-          gsap.set(progress, { scaleX: 0, transformOrigin: "left center" });
+            gsap.set(progress, { scaleX: 0, transformOrigin: "left center" });
 
-          if (reducedMotion) {
-            gsap.set(progress, { scaleX: 1 });
-            return;
+            if (reducedMotion) {
+              gsap.set(progress, { scaleX: 1 });
+            } else {
+              gsap.to(progress, {
+                ease: "none",
+                scaleX: 1,
+                scrollTrigger: {
+                  end: "bottom bottom",
+                  scrub: 0.15,
+                  start: "top top",
+                  trigger: root.current,
+                },
+              });
+            }
           }
 
-          gsap.to(progress, {
-            ease: "none",
-            scaleX: 1,
-            scrollTrigger: {
-              end: "bottom bottom",
-              scrub: 0.15,
-              start: "top top",
-              trigger: root.current,
-            },
-          });
+          if (reducedMotion) return;
 
           gsap.fromTo(
             "[data-scroll-signature-bg]",
@@ -91,11 +96,13 @@ export function ScrollExperience({ children }: Readonly<Props>) {
 
   return (
     <main ref={root} className="flex min-h-screen flex-col justify-start">
-      <div
-        aria-hidden="true"
-        className="scroll-progress"
-        data-scroll-progress
-      />
+      {showDevelopmentProgress ? (
+        <div
+          aria-hidden="true"
+          className="scroll-progress"
+          data-scroll-progress
+        />
+      ) : null}
       {children}
     </main>
   );

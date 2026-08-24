@@ -6,7 +6,7 @@ test("publica sinais técnicos e locais de SEO", async ({ page, request }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
   await expect(page).toHaveTitle(
-    "Francy Araújo | Cabeleireira e especialista em ruivos em Fortaleza",
+    "Francy Araújo | Cabeleireira e Ruivos em Fortaleza",
   );
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
@@ -14,7 +14,7 @@ test("publica sinais técnicos e locais de SEO", async ({ page, request }) => {
   );
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     "content",
-    /cabeleireira.*ruivos.*Dionísio Torres.*Fortaleza/i,
+    /cabeleireira.*ruivos.*Fortaleza.*Dionísio Torres.*Francy Araújo/i,
   );
   await expect(page.locator("h1")).toHaveCount(1);
 
@@ -28,6 +28,12 @@ test("publica sinais técnicos e locais de SEO", async ({ page, request }) => {
   };
   const salon = structuredData["@graph"].find(
     (item) => item["@type"] === "HairSalon",
+  );
+  const person = structuredData["@graph"].find(
+    (item) => item["@type"] === "Person",
+  );
+  const webpage = structuredData["@graph"].find(
+    (item) => item["@type"] === "WebPage",
   );
 
   expect(salon).toMatchObject({
@@ -44,10 +50,33 @@ test("publica sinais técnicos e locais de SEO", async ({ page, request }) => {
     addressRegion: "CE",
     addressCountry: "BR",
   });
+  expect(salon?.contactPoint).toMatchObject({
+    telephone: "+55 88 8190-2582",
+    url: expect.stringContaining("https://wa.me/558881902582"),
+  });
+  expect(person).toMatchObject({
+    name: "Francy Araújo",
+    jobTitle: "Cabeleireira e especialista em ruivos",
+    worksFor: { "@id": `${siteUrl}/#salao` },
+  });
+  expect(webpage).toMatchObject({
+    url: siteUrl,
+    about: { "@id": `${siteUrl}/#salao` },
+    mainEntity: { "@id": `${siteUrl}/#salao` },
+  });
+
+  await expect(page.locator('a[href="/#historia"]')).toHaveCount(1);
+  await expect(page.locator('a[href="/#servicos"]')).toHaveCount(1);
+  await expect(page.locator("#historia")).toHaveCount(1);
+  await expect(page.locator("#servicos")).toHaveCount(1);
 
   const robots = await request.get("/robots.txt");
   expect(robots.ok()).toBeTruthy();
-  await expect(robots.text()).resolves.toContain(
+  const robotsText = await robots.text();
+  expect(robotsText).toMatch(/User-Agent: OAI-SearchBot\s+Allow: \//);
+  expect(robotsText).toMatch(/User-Agent: ChatGPT-User\s+Allow: \//);
+  expect(robotsText).toMatch(/User-Agent: \*\s+Allow: \//);
+  expect(robotsText).toContain(
     "Sitemap: https://francyaraujo.com/sitemap.xml",
   );
 

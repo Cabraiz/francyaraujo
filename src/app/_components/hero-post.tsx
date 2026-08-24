@@ -8,8 +8,7 @@ import { useRef, useState } from "react";
 import { OrnamentalFrame } from "./ornamental-frame";
 
 type Props = {
-  salonImage: string;
-  portraitImages: readonly string[];
+  sceneImages: readonly [string, ...string[]];
 };
 
 const whatsappNumber = "558881902582";
@@ -17,15 +16,17 @@ const whatsappMessage = encodeURIComponent(
   "Olá, Francy! Gostaria de agendar um horário.",
 );
 
+const diagonalClipHidden = "polygon(0 0, -12% 0, -32% 100%, 0 100%)";
+const diagonalClipVisible = "polygon(0 0, 132% 0, 112% 100%, 0 100%)";
+const sceneTransitionDuration = 0.1;
+
 if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP, ScrollTrigger);
 }
 
-export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
+export function HeroPost({ sceneImages }: Readonly<Props>) {
   const hero = useRef<HTMLElement>(null);
-  const [isSalonLoaded, setIsSalonLoaded] = useState(false);
-  const [isPortraitLoaded, setIsPortraitLoaded] = useState(false);
-  const isReady = isSalonLoaded && isPortraitLoaded;
+  const [isSceneLoaded, setIsSceneLoaded] = useState(false);
 
   useGSAP(
     () => {
@@ -42,22 +43,27 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
         (context) => {
           const desktop = Boolean(context.conditions?.desktop);
           const reducedMotion = Boolean(context.conditions?.reducedMotion);
-          const frameScale = desktop ? 1.08 : 1.12;
-          const portraitFrames = gsap.utils.toArray<HTMLElement>(
-            "[data-hero-portrait-frame]",
+          const frameScale = 1.28;
+          const sceneFrames = gsap.utils.toArray<HTMLElement>(
+            "[data-hero-scene-frame]",
             hero.current,
+          );
+          const transitionBeam = hero.current?.querySelector<HTMLElement>(
+            "[data-hero-transition-beam]",
           );
 
           if (reducedMotion) {
             gsap.set("[data-hero-prelude]", { autoAlpha: 0 });
             gsap.set("[data-scroll-hero-cue]", { autoAlpha: 0 });
             gsap.set(".hero-first-mask", { overflow: "visible" });
-            gsap.set(portraitFrames, { autoAlpha: 0 });
-            gsap.set(portraitFrames.at(-1) ?? [], {
+            gsap.set(sceneFrames, { autoAlpha: 0 });
+            gsap.set(sceneFrames.at(-1) ?? [], {
               autoAlpha: 1,
-              clipPath: "inset(0 0% 0 0)",
+              clipPath: diagonalClipVisible,
               scale: frameScale,
+              yPercent: 5,
             });
+            gsap.set(transitionBeam ?? [], { autoAlpha: 0 });
             return;
           }
 
@@ -75,16 +81,20 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             autoAlpha: 0,
             clipPath: "inset(0 50% 0 50%)",
           });
-          gsap.set("[data-hero-portrait-frame]", {
+          gsap.set("[data-hero-scene-frame]", {
             transformOrigin: "50% 50%",
           });
-          portraitFrames.forEach((frame, index) => {
+          gsap.set(transitionBeam ?? [], {
+            autoAlpha: 0,
+            xPercent: -180,
+          });
+          sceneFrames.forEach((frame, index) => {
             gsap.set(frame, {
               autoAlpha: index === 0 ? 1 : 0,
-              clipPath: index === 0 ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
+              clipPath: index === 0 ? diagonalClipVisible : diagonalClipHidden,
               scale: frameScale,
               xPercent: index === 0 ? 0 : 0.7 + index * 0.45,
-              yPercent: 0,
+              yPercent: 5,
             });
           });
 
@@ -150,36 +160,47 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
                 yPercent: 0,
               },
               0,
-            )
-            .fromTo(
-              "[data-hero-portrait]",
-              {
-                autoAlpha: 0,
-              },
-              {
-                autoAlpha: 1,
-                duration: 0.2,
-                ease: "power2.out",
-              },
-              0.2,
             );
 
-          portraitFrames.slice(1).forEach((frame, index) => {
+          sceneFrames.slice(1).forEach((frame, index) => {
             const transitionStart = 0.3 + index * 0.12;
-            const previousFrame = portraitFrames[index];
+            const previousFrame = sceneFrames[index];
 
             reveal
-              .set(previousFrame ?? [], { autoAlpha: 0 }, transitionStart)
               .set(frame, { autoAlpha: 1 }, transitionStart)
+              .set(
+                transitionBeam ?? [],
+                { autoAlpha: 1, xPercent: -180 },
+                transitionStart,
+              )
               .to(
                 frame,
                 {
-                  clipPath: "inset(0 0% 0 0)",
-                  duration: 0.1,
-                  ease: "power2.inOut",
+                  clipPath: diagonalClipVisible,
+                  duration: sceneTransitionDuration,
+                  ease: "none",
                   xPercent: 0,
                 },
                 transitionStart,
+              )
+              .to(
+                transitionBeam ?? [],
+                {
+                  duration: sceneTransitionDuration,
+                  ease: "none",
+                  xPercent: 3800,
+                },
+                transitionStart,
+              )
+              .set(
+                previousFrame ?? [],
+                { autoAlpha: 0 },
+                transitionStart + sceneTransitionDuration,
+              )
+              .set(
+                transitionBeam ?? [],
+                { autoAlpha: 0 },
+                transitionStart + sceneTransitionDuration,
               );
           });
 
@@ -241,16 +262,6 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               0.62,
             )
             .fromTo(
-              "[data-scroll-hero-sheen]",
-              { xPercent: -200 },
-              {
-                duration: 0.32,
-                ease: "power2.inOut",
-                xPercent: 2600,
-              },
-              0.46,
-            )
-            .fromTo(
               "[data-scroll-hero-cue]",
               { autoAlpha: 1, y: 0 },
               { autoAlpha: 0, duration: 0.2, y: -14 },
@@ -268,7 +279,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
 
   return (
     <section
-      aria-busy={!isReady}
+      aria-busy={!isSceneLoaded}
       aria-label="Apresentação Francy Araújo"
       className="hero-story relative h-[170svh] min-h-[900px] overflow-clip bg-[#1c120e]"
       data-scroll-hero
@@ -286,7 +297,7 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
             fill
             priority
             sizes="110vw"
-            src={salonImage}
+            src={sceneImages[0]}
           />
         </div>
 
@@ -306,30 +317,9 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_20%,#fffaf4_0%,#f7f1e8_47%,#ead8c3_100%)]" />
 
           <div
-            className="hero-salon-layer absolute overflow-hidden"
-            data-hero-salon
-            style={{ opacity: isSalonLoaded ? 1 : 0 }}
-          >
-            <Image
-              alt=""
-              className="hero-scene-frame object-cover"
-              fill
-              onError={() => setIsSalonLoaded(true)}
-              onLoad={() => setIsSalonLoaded(true)}
-              priority
-              sizes="100vw"
-              src={salonImage}
-            />
-            <div
-              aria-hidden="true"
-              className="hero-salon-fade absolute inset-0"
-            />
-          </div>
-
-          <div
             aria-hidden="true"
             className="hero-sheen"
-            data-scroll-hero-sheen
+            data-hero-transition-beam
           />
 
           <div
@@ -384,39 +374,41 @@ export function HeroPost({ salonImage, portraitImages }: Readonly<Props>) {
               <span className="block">começa com</span>
               <span className="block text-[#7b2028]">um ritual.</span>
             </h2>
-            <p className="hero-prelude-copy mt-6 max-w-md text-[#69574b]">
-              Cuidado, técnica e identidade antes mesmo do espelho revelar.
-            </p>
+            <div className="hero-prelude-copy-lockup mt-6">
+              <p className="hero-prelude-copy text-[#69574b]">
+                Cuidado, técnica e identidade antes mesmo do espelho revelar.
+              </p>
+            </div>
           </div>
 
           <div
-            className="hero-portrait absolute"
-            data-hero-portrait
-            style={{ opacity: isPortraitLoaded ? 1 : 0 }}
+            className="hero-scene-sequence absolute"
+            data-hero-sequence
+            style={{ opacity: isSceneLoaded ? 1 : 0 }}
           >
-            {portraitImages.map((portraitImage, index) => (
+            {sceneImages.map((sceneImage, index) => (
               <Image
                 alt={
                   index === 0
                     ? "Mulher adulta iniciando uma transformação profissional dos cabelos pretos ao ruivo"
                     : ""
                 }
-                className="hero-portrait-frame object-contain"
-                data-hero-portrait-frame
-                data-portrait-frame={index}
+                className="hero-sequence-frame object-cover"
+                data-hero-scene-frame
+                data-scene-frame={index}
                 fill
-                key={portraitImage}
-                onError={
-                  index === 0 ? () => setIsPortraitLoaded(true) : undefined
-                }
-                onLoad={
-                  index === 0 ? () => setIsPortraitLoaded(true) : undefined
-                }
+                key={sceneImage}
+                onError={index === 0 ? () => setIsSceneLoaded(true) : undefined}
+                onLoad={index === 0 ? () => setIsSceneLoaded(true) : undefined}
                 priority={index === 0}
                 sizes="100vw"
-                src={portraitImage}
+                src={sceneImage}
               />
             ))}
+            <div
+              aria-hidden="true"
+              className="hero-sequence-fade absolute inset-0"
+            />
           </div>
 
           <div className="hero-copy absolute z-40">

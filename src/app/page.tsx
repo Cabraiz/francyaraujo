@@ -5,25 +5,20 @@ import { ScrollExperience } from "@/app/_components/scroll-experience";
 import { SignaturePost } from "@/app/_components/signature-post";
 
 const brandImage = "/assets/blog/dynamic-routing/brand-emblem-transparent.png";
-const heroPortraitImages = [
-  "/assets/blog/dynamic-routing/hero-francy-transform-01-black.webp",
-  "/assets/blog/dynamic-routing/hero-francy-transform-02-brown.webp",
-  "/assets/blog/dynamic-routing/hero-francy-transform-03-auburn.webp",
-  "/assets/blog/dynamic-routing/hero-francy-transform-04-copper.webp",
-  "/assets/blog/dynamic-routing/hero-francy-transform-05-red.webp",
+const heroSceneImages = [
+  "/assets/blog/dynamic-routing/hero-francy-scene-01-black.webp",
+  "/assets/blog/dynamic-routing/hero-francy-scene-02-chocolate.webp",
+  "/assets/blog/dynamic-routing/hero-francy-scene-03-auburn.webp",
+  "/assets/blog/dynamic-routing/hero-francy-scene-04-copper.webp",
+  "/assets/blog/dynamic-routing/hero-francy-scene-05-red.webp",
 ] as const;
-const heroSalonImage =
-  "/assets/blog/dynamic-routing/hero-francy-salon-background.webp";
 
 export default function Index() {
   return (
     <ScrollExperience>
       <ContactRibbon />
       <Intro title="Francy Araújo" coverImage={brandImage} />
-      <HeroPost
-        portraitImages={heroPortraitImages}
-        salonImage={heroSalonImage}
-      />
+      <HeroPost sceneImages={heroSceneImages} />
       <SignaturePost />
     </ScrollExperience>
   );

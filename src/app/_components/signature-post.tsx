@@ -11,6 +11,7 @@ export const SignaturePost = () => {
     textAlign: "center",
     flexDirection: "column",
     backgroundColor: "#FF6F61",
+    scrollMarginTop: "var(--site-header-height)",
   };
 
   const backgroundTextStyle: CSSProperties = {
@@ -80,7 +81,7 @@ export const SignaturePost = () => {
   };
 
   return (
-    <section data-scroll-signature style={containerStyle}>
+    <section data-scroll-signature id="historia" style={containerStyle}>
       {/* Texto de fundo grande */}
       <div data-scroll-signature-bg style={backgroundTextStyle}>
         Francy Araujo
@@ -97,7 +98,14 @@ export const SignaturePost = () => {
         <p data-scroll-signature-reveal style={subHeadingStyle}>
           SALON
         </p>
-        <p data-scroll-signature-reveal style={paragraphStyle}>
+        <p
+          data-scroll-signature-reveal
+          id="servicos"
+          style={{
+            ...paragraphStyle,
+            scrollMarginTop: "var(--site-header-height)",
+          }}
+        >
           No espaço da cabeleireira Francy Araújo, localizado na{" "}
           <span style={locationStyle}>Rua Israel Bezerra, 46</span>, em{" "}
           <span style={locationStyle}>Dionísio Torres, Fortaleza</span>, você

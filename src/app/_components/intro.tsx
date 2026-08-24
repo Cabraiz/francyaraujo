@@ -20,8 +20,8 @@ const whatsappMessage = encodeURIComponent(
 
 const navItems = [
   { name: "HOME", link: "/" },
-  { name: "HISTÓRIA", link: "/story" },
-  { name: "SERVIÇOS", link: "/services" },
+  { name: "HISTÓRIA", link: "/#historia" },
+  { name: "SERVIÇOS", link: "/#servicos" },
   {
     name: "AGENDE AGORA",
     link: `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`,
@@ -160,59 +160,50 @@ export function Intro({ title, coverImage }: Readonly<Props>) {
       <div aria-hidden="true" className="particles" />
 
       <div className="container-fluid d-flex h-100 items-center justify-center px-0">
-        <div
-          className={`row h-100 w-100 items-center ${
-            isDesktop ? "justify-content-between" : "justify-content-center"
-          }`}
-        >
+        <div className="row h-100 w-100 items-center justify-content-center justify-content-xl-between">
           <div
-            className={`col-${isDesktop ? "4" : "12"} d-flex h-100 items-center justify-content-${
-              isDesktop ? "start" : "center"
-            }`}
+            className="col-12 col-xl-4 d-flex h-100 items-center justify-content-center justify-content-xl-start"
             data-scroll-brand
           >
             <MarcaImage title={title} src={coverImage} />
           </div>
 
-          {isDesktop && (
-            <div className="col-8 d-flex h-100 items-center justify-content-end">
-              <ul className="brand-nav-list navbar-nav mb-2 mt-2 mb-lg-0">
-                {navItems.map((item) => {
-                  const isActive = pathname === item.link;
-                  const isBooking = item.name === "AGENDE AGORA";
+          <div className="col-8 d-none h-100 items-center justify-content-end d-xl-flex">
+            <ul className="brand-nav-list navbar-nav mb-2 mt-2 mb-lg-0">
+              {navItems.map((item) => {
+                const isActive = pathname === item.link;
+                const isBooking = item.name === "AGENDE AGORA";
 
-                  return (
-                    <li
-                      className="nav-item mx-3"
-                      data-scroll-nav-item
-                      key={item.name}
+                return (
+                  <li
+                    className="nav-item mx-3"
+                    data-scroll-nav-item
+                    key={item.name}
+                  >
+                    <Link
+                      aria-current={isActive ? "page" : undefined}
+                      className={`nav-link brand-nav-link ${
+                        isActive ? "brand-nav-link--active" : ""
+                      } ${isBooking ? "highlight-agenda" : ""}`}
+                      href={item.link}
+                      prefetch={false}
+                      rel={isBooking ? "noreferrer" : undefined}
+                      style={{
+                        fontFamily: "'Novecento', sans-serif",
+                        fontSize: isBooking ? "1.1em" : "inherit",
+                        letterSpacing: "0.4em",
+                        transition: "color 0.3s ease, letter-spacing 0.4s ease",
+                        whiteSpace: "nowrap",
+                      }}
+                      target={isBooking ? "_blank" : undefined}
                     >
-                      <Link
-                        aria-current={isActive ? "page" : undefined}
-                        className={`nav-link brand-nav-link ${
-                          isActive ? "brand-nav-link--active" : ""
-                        } ${isBooking ? "highlight-agenda" : ""}`}
-                        href={item.link}
-                        prefetch={false}
-                        rel={isBooking ? "noreferrer" : undefined}
-                        style={{
-                          fontFamily: "'Novecento', sans-serif",
-                          fontSize: isBooking ? "1.1em" : "inherit",
-                          letterSpacing: "0.4em",
-                          transition:
-                            "color 0.3s ease, letter-spacing 0.4s ease",
-                          whiteSpace: "nowrap",
-                        }}
-                        target={isBooking ? "_blank" : undefined}
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          )}
+                      {item.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </nav>

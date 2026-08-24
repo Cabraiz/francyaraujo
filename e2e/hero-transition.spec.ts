@@ -1,29 +1,30 @@
 import { expect, test } from "@playwright/test";
 
-test("troca recortes transparentes sobre um único salão", async ({ page }) => {
+test("troca fotografias completas com cenário e luz coerentes", async ({
+  page,
+}) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
   await page.waitForFunction(() =>
-    [...document.querySelectorAll<HTMLImageElement>("[data-portrait-frame]")].every(
+    [...document.querySelectorAll<HTMLImageElement>("[data-scene-frame]")].every(
       (image) => image.complete && image.naturalWidth > 0,
     ),
   );
   await page.waitForFunction(() =>
-    [...document.querySelectorAll<HTMLElement>("[data-portrait-frame]")].every(
+    [...document.querySelectorAll<HTMLElement>("[data-scene-frame]")].every(
       (frame) => getComputedStyle(frame).clipPath !== "none",
     ),
   );
 
   const initialState = await page.evaluate(async () => {
-    const scene = document.querySelector<HTMLImageElement>(".hero-scene-frame");
     const firstFrame = document.querySelector<HTMLImageElement>(
-      '[data-portrait-frame="0"]',
+      '[data-scene-frame="0"]',
     );
-    const portrait = document.querySelector<HTMLElement>("[data-hero-portrait]");
+    const sequence = document.querySelector<HTMLElement>("[data-hero-sequence]");
 
-    if (!(scene && firstFrame && portrait)) {
+    if (!(firstFrame && sequence)) {
       throw new Error("Camadas da transição do hero não encontradas.");
     }
 
@@ -40,27 +41,34 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
     return {
       cornerAlpha,
       frameOpacities: [
-        ...document.querySelectorAll<HTMLElement>("[data-portrait-frame]"),
+        ...document.querySelectorAll<HTMLElement>("[data-scene-frame]"),
       ].map((frame) => Number(getComputedStyle(frame).opacity)),
-      portraitTransitionDuration: getComputedStyle(portrait).transitionDuration,
-      fixedSalonScene:
-        scene.currentSrc.includes("hero-francy-salon-background") &&
-        scene.currentSrc !== firstFrame.currentSrc,
-      sheenWidthRatio:
+      fullCompositeFrame: firstFrame.currentSrc.includes("hero-francy-scene"),
+      sequenceTransitionDuration: getComputedStyle(sequence).transitionDuration,
+      beamOpacity: Number(
+        getComputedStyle(
+          document.querySelector<HTMLElement>(
+            "[data-hero-transition-beam]",
+          ) ?? document.documentElement,
+        ).opacity,
+      ),
+      beamWidthRatio:
         Number.parseFloat(
           getComputedStyle(
-            document.querySelector<HTMLElement>("[data-scroll-hero-sheen]") ??
-              document.documentElement,
+            document.querySelector<HTMLElement>(
+              "[data-hero-transition-beam]",
+            ) ?? document.documentElement,
           ).width,
         ) /
         window.innerWidth,
     };
   });
 
-  expect(initialState.fixedSalonScene).toBe(true);
-  expect(initialState.cornerAlpha).toBe(0);
-  expect(initialState.sheenWidthRatio).toBeLessThanOrEqual(0.07);
-  expect(initialState.portraitTransitionDuration).toBe("0s");
+  expect(initialState.fullCompositeFrame).toBe(true);
+  expect(initialState.cornerAlpha).toBe(255);
+  expect(initialState.beamOpacity).toBe(0);
+  expect(initialState.beamWidthRatio).toBeLessThanOrEqual(0.05);
+  expect(initialState.sequenceTransitionDuration).toBe("0s");
   expect(initialState.frameOpacities).toEqual([1, 0, 0, 0, 0]);
 
   for (const progress of [0.2, 0.44, 0.58, 0.72, 0.88]) {
@@ -76,7 +84,7 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
     await page.waitForTimeout(850);
 
     const frames = await page.evaluate(() =>
-      [...document.querySelectorAll<HTMLElement>("[data-portrait-frame]")].map(
+      [...document.querySelectorAll<HTMLElement>("[data-scene-frame]")].map(
         (frame) => ({
           clipPath: getComputedStyle(frame).clipPath,
           opacity: Number(getComputedStyle(frame).opacity),
@@ -91,8 +99,69 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
 
     expect(
       visibleFrames.length,
-      `personagens sobrepostas no progresso ${progress}`,
-    ).toBeLessThanOrEqual(1);
+      `wipe sem cena de base no progresso ${progress}`,
+    ).toBeGreaterThanOrEqual(1);
+    expect(
+      visibleFrames.length,
+      `mais de duas cenas no wipe ${progress}`,
+    ).toBeLessThanOrEqual(2);
+  }
+
+  for (const progress of [0.35, 0.47, 0.59, 0.71]) {
+    await page.evaluate((ratio) => {
+      const hero = document.querySelector<HTMLElement>("[data-scroll-hero]");
+
+      if (!hero) throw new Error("Hero não encontrado.");
+
+      window.scrollTo({
+        top: hero.offsetTop + (hero.offsetHeight - window.innerHeight) * ratio,
+      });
+    }, progress);
+    await page.waitForTimeout(850);
+
+    const wipeState = await page.evaluate(() => {
+      const visibleFrames = [
+        ...document.querySelectorAll<HTMLElement>("[data-scene-frame]"),
+      ]
+        .map((frame) => {
+          const style = getComputedStyle(frame);
+
+          return {
+            clipPath: style.clipPath,
+            opacity: Number(style.opacity),
+            visibility: style.visibility,
+          };
+        })
+        .filter(
+          (frame) => frame.opacity > 0.5 && frame.visibility === "visible",
+        );
+      const beam = document.querySelector<HTMLElement>(
+        "[data-hero-transition-beam]",
+      );
+
+      return {
+        beamOpacity: beam ? Number(getComputedStyle(beam).opacity) : 0,
+        boundaryPositions: visibleFrames.map((frame) => {
+          const match = frame.clipPath.match(
+            /polygon\([^,]+,\s*(-?[\d.]+)%/,
+          );
+
+          return match?.[1] ? Number.parseFloat(match[1]) : null;
+        }),
+        visibleFrameCount: visibleFrames.length,
+      };
+    });
+
+    expect(wipeState.visibleFrameCount, `wipe no progresso ${progress}`).toBe(2);
+    expect(wipeState.beamOpacity, `feixe no progresso ${progress}`).toBeGreaterThan(
+      0.1,
+    );
+    expect(
+      wipeState.boundaryPositions.some(
+        (position) => position !== null && position > -12 && position < 132,
+      ),
+      `máscara diagonal não progrediu em ${progress}`,
+    ).toBe(true);
   }
 
   const sequence = [];
@@ -111,7 +180,7 @@ test("troca recortes transparentes sobre um único salão", async ({ page }) => 
 
     sequence.push(
       await page.evaluate(() =>
-        [...document.querySelectorAll<HTMLElement>("[data-portrait-frame]")]
+        [...document.querySelectorAll<HTMLElement>("[data-scene-frame]")]
           .map((frame) => Number(getComputedStyle(frame).opacity))
           .findLastIndex((opacity) => opacity > 0.5),
       ),

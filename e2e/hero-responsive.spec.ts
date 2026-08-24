@@ -4,19 +4,22 @@ const layouts = [
   {
     name: "desktop 720p",
     viewport: { width: 1280, height: 720 },
-    objectPosition: "72% 50%",
+    objectPosition: "50% 10%",
+    expectedHeaderHeight: 75,
     maxPreludeCenterDelta: 16,
   },
   {
     name: "desktop 1080p",
     viewport: { width: 1920, height: 1080 },
-    objectPosition: "72% 50%",
+    objectPosition: "50% 10%",
+    expectedHeaderHeight: 88,
     maxPreludeCenterDelta: 16,
   },
   {
     name: "tablet",
     viewport: { width: 834, height: 1194 },
-    objectPosition: "72% 50%",
+    objectPosition: "50% 10%",
+    expectedHeaderHeight: 99,
     maxPreludeCenterDelta: null,
   },
 ] as const;
@@ -31,7 +34,7 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
     });
     await page.waitForFunction(() => {
       const portrait = document.querySelector<HTMLImageElement>(
-        '[data-portrait-frame="0"]',
+        '[data-scene-frame="0"]',
       );
 
       return portrait?.complete && portrait.naturalWidth > 0;
@@ -43,10 +46,19 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
         "[data-hero-prelude]",
       );
       const portrait = document.querySelector<HTMLImageElement>(
-        '[data-portrait-frame="0"]',
+        '[data-scene-frame="0"]',
+      );
+      const navigation = document.querySelector<HTMLElement>(
+        '[aria-label="Navegação principal"]',
+      );
+      const ritual = Array.from(
+        document.querySelectorAll<HTMLElement>(".hero-prelude-title span"),
+      ).find((element) => element.textContent?.includes("um ritual"));
+      const preludeCopy = document.querySelector<HTMLElement>(
+        ".hero-prelude-copy",
       );
 
-      if (!(stage && prelude && portrait)) {
+      if (!(stage && prelude && portrait && navigation && ritual && preludeCopy)) {
         throw new Error("Hero responsivo não encontrado.");
       }
 
@@ -56,12 +68,26 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
         stageRect.width / portrait.naturalWidth,
         stageRect.height / portrait.naturalHeight,
       );
+      const portraitStyle = getComputedStyle(portrait);
+      const ritualRange = document.createRange();
+      ritualRange.selectNodeContents(ritual);
+      const copyRange = document.createRange();
+      copyRange.selectNodeContents(preludeCopy);
+      const copyStyle = getComputedStyle(preludeCopy);
 
       return {
         horizontalOverflow:
           document.documentElement.scrollWidth -
           document.documentElement.clientWidth,
-        objectPosition: getComputedStyle(portrait).objectPosition,
+        headerHeight: navigation.getBoundingClientRect().height,
+        objectPosition: portraitStyle.objectPosition,
+        ritualWidth: ritualRange.getBoundingClientRect().width,
+        preludeCopyWidth: preludeCopy.getBoundingClientRect().width,
+        preludeCopyBorderLeft: Number.parseFloat(copyStyle.borderLeftWidth),
+        preludeCopyLineCount: new Set(
+          Array.from(copyRange.getClientRects(), (rect) => Math.round(rect.top)),
+        ).size,
+        sceneAspectRatio: portrait.naturalWidth / portrait.naturalHeight,
         preludeCenterDelta:
           (preludeRect.top + preludeRect.bottom) / 2 -
           (stageRect.top + stageRect.bottom) / 2,
@@ -71,7 +97,26 @@ test("mantém o enquadramento responsivo do hero", async ({ page }) => {
     });
 
     expect(metrics.objectPosition, layout.name).toBe(layout.objectPosition);
+    expect(
+      Math.abs(metrics.preludeCopyWidth - metrics.ritualWidth),
+      `${layout.name}: subtítulo precisa ter a largura de "um ritual."`,
+    ).toBeLessThanOrEqual(1);
+    expect(
+      metrics.preludeCopyBorderLeft,
+      `${layout.name}: traço vertical ausente`,
+    ).toBe(1);
+    expect(
+      metrics.preludeCopyLineCount,
+      `${layout.name}: subtítulo precisa ocupar duas linhas`,
+    ).toBe(2);
+    expect(metrics.headerHeight, layout.name).toBeCloseTo(
+      layout.expectedHeaderHeight,
+      0,
+    );
     expect(metrics.horizontalOverflow, layout.name).toBeLessThanOrEqual(1);
+    expect(metrics.sceneAspectRatio, `${layout.name}: cena fora do formato`).toBe(
+      1.5,
+    );
 
     if (layout.maxPreludeCenterDelta !== null) {
       expect(
