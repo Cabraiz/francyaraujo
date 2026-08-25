@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { CSSProperties } from "react";
 
 export const SignaturePost = () => {
@@ -5,14 +6,13 @@ export const SignaturePost = () => {
     position: "relative",
     width: "100%",
     minHeight: "max(48vh, 25rem)",
-    padding: "clamp(2rem, 5vh, 3.5rem) clamp(1.25rem, 4vw, 3rem)",
+    padding: 0,
     boxSizing: "border-box",
-    justifyContent: "center",
-    alignItems: "center",
     textAlign: "center",
-    flexDirection: "column",
-    backgroundColor: "#FF6F61",
+    backgroundColor: "#f3dfd7",
     scrollMarginTop: "var(--site-header-height)",
+    overflow: "hidden",
+    isolation: "isolate",
   };
 
   const backgroundTextStyle: CSSProperties = {
@@ -22,7 +22,7 @@ export const SignaturePost = () => {
     transform: "translateY(-50%)",
     fontFamily: "Holligate, sans-serif",
     fontSize: "14vw",
-    color: "rgba(0, 0, 0, 0.07)",
+    color: "rgba(140, 38, 53, 0.075)",
     zIndex: 1,
     whiteSpace: "nowrap",
     width: "100%",
@@ -36,11 +36,11 @@ export const SignaturePost = () => {
     position: "relative",
     zIndex: 2,
     fontFamily: "Times New Roman, serif",
-    color: "black",
+    color: "#5f4542",
     maxWidth: "1200px",
     textAlign: "center", // Centraliza o texto horizontalmente
     display: "flex",
-    width: "100%",
+    width: "min(100%, 68rem)",
     flexDirection: "column",
     justifyContent: "center", // Centraliza verticalmente
     alignItems: "center",
@@ -55,6 +55,7 @@ export const SignaturePost = () => {
     letterSpacing: "15px",
     wordWrap: "break-word",
     lineHeight: "40px",
+    color: "#963847",
   };
 
   const subHeadingStyle: CSSProperties = {
@@ -62,23 +63,24 @@ export const SignaturePost = () => {
     fontFamily: "Arial, sans-serif",
     letterSpacing: "7px",
     wordWrap: "break-word",
+    color: "#963847",
   };
 
   const paragraphStyle: CSSProperties = {
-    fontSize: "16px",
-    fontFamily: "Thenat, sans-serif",
-    marginTop: "1vh",
-    maxWidth: "90%",
+    fontSize: "clamp(0.98rem, 1.05vw, 1.08rem)",
+    fontFamily: 'Georgia, "Times New Roman", serif',
+    marginTop: "clamp(1.25rem, 2.5vh, 2rem)",
+    maxWidth: "52rem",
     wordWrap: "break-word",
-    letterSpacing: "3px",
-    wordSpacing: "4px",
-    lineHeight: "35px",
+    letterSpacing: "0.01em",
+    wordSpacing: "normal",
+    lineHeight: 1.75,
     textAlign: "center",
   };
 
   const locationStyle: CSSProperties = {
     fontWeight: "bold",
-    color: "black",
+    color: "#762a38",
   };
 
   return (
@@ -93,8 +95,22 @@ export const SignaturePost = () => {
         Francy Araujo
       </div>
 
+      <div className="signature-post__scene" aria-hidden="true">
+        <Image
+          src="/assets/blog/dynamic-routing/signature-salon-niche-v1.avif"
+          alt=""
+          fill
+          sizes="(min-width: 1100px) 22vw, (min-width: 768px) 30vw, 0px"
+          className="signature-post__scene-image"
+        />
+      </div>
+
       {/* Texto da frente */}
-      <div data-scroll-signature-foreground style={foregroundTextStyle}>
+      <div
+        className="signature-post__content"
+        data-scroll-signature-foreground
+        style={foregroundTextStyle}
+      >
         <p data-scroll-signature-reveal style={subHeadingStyle}>
           THE
         </p>

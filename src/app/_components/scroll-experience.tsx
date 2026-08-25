@@ -26,12 +26,28 @@ export function ScrollExperience({ children }: Readonly<Props>) {
       media.add(
         {
           desktop: "(min-width: 1200px)",
+          pinnedGallery: "(min-width: 768px)",
           motionAllowed: "(prefers-reduced-motion: no-preference)",
           reducedMotion: "(prefers-reduced-motion: reduce)",
         },
         (context) => {
-          const { desktop, reducedMotion } = context.conditions ?? {};
-          if (reducedMotion) return;
+          const { desktop, pinnedGallery, reducedMotion } =
+            context.conditions ?? {};
+
+          const instagram = root.current?.querySelector<HTMLElement>(
+            "[data-scroll-instagram]",
+          );
+          const instagramFlips = instagram
+            ? gsap.utils.toArray<HTMLElement>(
+                "[data-scroll-instagram-flip]",
+                instagram,
+              )
+            : [];
+
+          if (reducedMotion) {
+            gsap.set(instagramFlips, { rotationY: 180 });
+            return;
+          }
 
           gsap.fromTo(
             "[data-scroll-signature-bg]",
@@ -61,10 +77,6 @@ export function ScrollExperience({ children }: Readonly<Props>) {
             },
             y: desktop ? 28 : 18,
           });
-
-          const instagram = root.current?.querySelector<HTMLElement>(
-            "[data-scroll-instagram]",
-          );
 
           if (instagram) {
             const instagramCopy = instagram.querySelector<HTMLElement>(
@@ -110,6 +122,62 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                 },
               },
             );
+
+            gsap.set(instagramFlips, {
+              force3D: true,
+              rotationY: 0,
+              transformOrigin: "50% 50%",
+            });
+
+            const transformation = gsap.timeline({
+              defaults: {
+                ease: "power2.inOut",
+              },
+              scrollTrigger: pinnedGallery
+                ? {
+                    anticipatePin: 1,
+                    end: () => `+=${Math.max(window.innerHeight * 1.9, 1400)}`,
+                    invalidateOnRefresh: true,
+                    onLeave: () => gsap.set(instagramFlips, { rotationY: 180 }),
+                    onLeaveBack: () =>
+                      gsap.set(instagramFlips, { rotationY: 0 }),
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: 0.32,
+                    start: "top top",
+                    trigger: instagram,
+                  }
+                : {
+                    end: () =>
+                      `+=${Math.max(
+                        instagram.offsetHeight * 0.55,
+                        window.innerHeight * 0.65,
+                      )}`,
+                    invalidateOnRefresh: true,
+                    onLeave: () => gsap.set(instagramFlips, { rotationY: 180 }),
+                    onLeaveBack: () =>
+                      gsap.set(instagramFlips, { rotationY: 0 }),
+                    scrub: 0.28,
+                    start: "top 72%",
+                    trigger: instagram,
+                  },
+            });
+
+            transformation.to({}, { duration: 0.35 });
+
+            instagramFlips.forEach((flip, index) => {
+              transformation.to(
+                flip,
+                {
+                  duration: 0.9,
+                  force3D: true,
+                  rotationY: 180,
+                },
+                index === 0 ? ">" : "-=0.28",
+              );
+            });
+
+            transformation.to({}, { duration: 0.06 });
           }
 
           const footer = root.current?.querySelector<HTMLElement>(

@@ -225,7 +225,39 @@ html::-webkit-scrollbar {
 }
 
 .signature-post {
-  display: flex;
+  display: grid;
+  grid-template-columns: clamp(15rem, 23vw, 20rem) minmax(0, 1fr);
+  border-block: 1px solid rgba(162, 91, 82, 0.16);
+}
+
+.signature-post__scene {
+  position: relative;
+  z-index: 2;
+  min-height: inherit;
+  overflow: hidden;
+  border-right: 1px solid rgba(162, 91, 82, 0.2);
+}
+
+.signature-post__scene-image {
+  object-fit: cover;
+  object-position: center 58%;
+  filter: saturate(0.92) contrast(0.98);
+}
+
+.signature-post__content {
+  min-width: 0;
+  box-sizing: border-box;
+  padding: clamp(2.25rem, 5vw, 5rem) clamp(1.5rem, 5vw, 5.5rem);
+}
+
+@media (min-width: 768px) and (max-width: 1100px) {
+  .signature-post {
+    grid-template-columns: minmax(13rem, 30vw) minmax(0, 1fr);
+  }
+
+  .signature-post__content {
+    padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2.5rem);
+  }
 }
 
 @font-face {
@@ -1662,6 +1694,9 @@ html::-webkit-scrollbar {
   aspect-ratio: 4 / 5;
   isolation: isolate;
   overflow: hidden;
+  perspective: 70rem;
+  pointer-events: none;
+  user-select: none;
   color: #fff;
   background: #352a25;
   border: 0.42rem solid #fffaf4;
@@ -1672,11 +1707,27 @@ html::-webkit-scrollbar {
   rotate: var(--fan-rotate);
   translate: var(--fan-x) var(--fan-y);
   transform-origin: 50% 115%;
-  transition:
-    box-shadow 260ms ease,
-    filter 260ms ease,
-    rotate 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    translate 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.instagram-fan__card-inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.instagram-fan__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #352a25;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.instagram-fan__face--after {
+  transform: rotateY(180deg);
 }
 
 .instagram-fan__card:nth-child(1) {
@@ -1714,25 +1765,14 @@ html::-webkit-scrollbar {
   z-index: 1;
 }
 
-.instagram-fan__card:hover,
-.instagram-fan__card:focus-visible {
-  z-index: 12;
-  filter: saturate(1.08) contrast(1.03);
-  box-shadow:
-    0 2rem 4rem rgba(61, 38, 27, 0.32),
-    0 0 0 1px rgba(181, 133, 77, 0.62);
-  rotate: 0deg;
-  translate: var(--fan-x) calc(var(--fan-y) - 1.25rem);
-}
-
 .instagram-fan__image {
-  z-index: -2;
+  z-index: 0;
   object-fit: cover;
 }
 
 .instagram-fan__shine {
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   inset: 0;
   background:
     linear-gradient(180deg, transparent 45%, rgba(23, 12, 8, 0.86) 100%),
@@ -1741,6 +1781,7 @@ html::-webkit-scrollbar {
 
 .instagram-fan__meta {
   position: absolute;
+  z-index: 2;
   right: 0.8rem;
   bottom: 0.75rem;
   left: 0.8rem;
@@ -1762,17 +1803,6 @@ html::-webkit-scrollbar {
   letter-spacing: 0.14em;
 }
 
-.instagram-fan__meta strong {
-  font-size: 1rem;
-  letter-spacing: 0.06em;
-}
-
-.instagram-fan__date {
-  padding-bottom: 0.18rem;
-  opacity: 0.76;
-  white-space: nowrap;
-}
-
 .instagram-fan__play {
   display: grid;
   width: 1.75rem;
@@ -1786,6 +1816,23 @@ html::-webkit-scrollbar {
   width: 0.52rem;
   height: 0.52rem;
   transform: translateX(0.05rem);
+}
+
+.instagram-fan__meta strong {
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+
+.instagram-fan__date {
+  padding-bottom: 0.18rem;
+  opacity: 0.76;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .instagram-showcase {
+    min-height: 100svh;
+  }
 }
 
 @media (max-width: 767px) {
@@ -1844,10 +1891,12 @@ html::-webkit-scrollbar {
     translate: 0 0;
     scroll-snap-align: center;
   }
+}
 
-  .instagram-fan__card:hover,
-  .instagram-fan__card:focus-visible {
-    translate: 0 -0.35rem;
+@media (prefers-reduced-motion: reduce) {
+  .instagram-fan__card-inner {
+    transform: rotateY(180deg);
+    will-change: auto;
   }
 }
 
@@ -1905,6 +1954,11 @@ html::-webkit-scrollbar {
   grid-template-columns: max-content max-content minmax(0, 1fr);
   gap: clamp(1.25rem, 3vw, 3.25rem);
   align-items: center;
+  pointer-events: none;
+}
+
+.cabraiz-credit__inner a {
+  pointer-events: auto;
 }
 
 .cabraiz-credit__proof {
@@ -2043,14 +2097,14 @@ html::-webkit-scrollbar {
 .cabraiz-credit__speech-balloon {
   position: absolute;
   top: calc(50% + 0.6rem);
-  right: -1.3rem;
+  right: -2.8rem;
   z-index: 4;
   display: grid;
   width: 21.5625rem;
   height: 4.4375rem;
   padding: 0.52rem 0.9rem 0.52rem 3.9rem;
   visibility: hidden;
-  grid-template-columns: 0.8fr 1.2fr 1.15fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   opacity: 0;
   color: #0a0a09;
   background:
