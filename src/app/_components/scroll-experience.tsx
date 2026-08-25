@@ -62,6 +62,56 @@ export function ScrollExperience({ children }: Readonly<Props>) {
             y: desktop ? 28 : 18,
           });
 
+          const instagram = root.current?.querySelector<HTMLElement>(
+            "[data-scroll-instagram]",
+          );
+
+          if (instagram) {
+            const instagramCopy = instagram.querySelector<HTMLElement>(
+              "[data-scroll-instagram-copy]",
+            );
+            const instagramCards = gsap.utils.toArray<HTMLElement>(
+              "[data-scroll-instagram-card]",
+              instagram,
+            );
+
+            gsap.fromTo(
+              instagramCopy,
+              { autoAlpha: 0, y: desktop ? 34 : 22 },
+              {
+                autoAlpha: 1,
+                duration: 0.72,
+                ease: "power3.out",
+                scrollTrigger: {
+                  once: true,
+                  start: "top 84%",
+                  trigger: instagram,
+                },
+                y: 0,
+              },
+            );
+
+            gsap.fromTo(
+              instagramCards,
+              {
+                autoAlpha: 0,
+                clipPath: "inset(18% 12% 12% 12% round 0.35rem)",
+              },
+              {
+                autoAlpha: 1,
+                clipPath: "inset(0% 0% 0% 0% round 0.35rem)",
+                duration: 0.78,
+                ease: "power3.out",
+                stagger: 0.08,
+                scrollTrigger: {
+                  once: true,
+                  start: "top 78%",
+                  trigger: instagram,
+                },
+              },
+            );
+          }
+
           const footer = root.current?.querySelector<HTMLElement>(
             "[data-scroll-footer]",
           );

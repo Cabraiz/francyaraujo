@@ -20,8 +20,8 @@ const whatsappMessage = encodeURIComponent(
 
 const navItems = [
   { name: "HOME", link: "/" },
-  { name: "HISTÓRIA", link: "/#historia" },
   { name: "SERVIÇOS", link: "/#servicos" },
+  { name: "HISTÓRIA", link: "/#historia" },
   {
     name: "AGENDE AGORA",
     link: `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`,

@@ -33,6 +33,21 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDesktopSceneLoaded, setIsDesktopSceneLoaded] = useState(false);
   const [isMobileSceneLoaded, setIsMobileSceneLoaded] = useState(false);
+  const [mobileFramesToRender, setMobileFramesToRender] = useState(1);
+  const [loadedMobileFrameCount, setLoadedMobileFrameCount] = useState(0);
+  const isMobileSequenceReady =
+    loadedMobileFrameCount >= mobileSceneImages.length;
+
+  const handleMobileFrameSettled = (index: number) => {
+    if (index === 0) setIsMobileSceneLoaded(true);
+
+    setLoadedMobileFrameCount((loadedCount) =>
+      Math.max(loadedCount, index + 1),
+    );
+    setMobileFramesToRender((renderedCount) =>
+      Math.min(mobileSceneImages.length, Math.max(renderedCount, index + 2)),
+    );
+  };
 
   useEffect(() => {
     const contactRibbon =
@@ -73,6 +88,7 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
       media.add(
         {
           desktop: "(min-width: 1200px)",
+          shortDesktop: "(min-width: 1200px) and (max-height: 800px)",
           scrollDriven: "(min-width: 768px)",
           motionAllowed: "(prefers-reduced-motion: no-preference)",
           reducedMotion: "(prefers-reduced-motion: reduce)",
@@ -83,8 +99,10 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
           if (!scrollDriven) return;
 
           const desktop = Boolean(context.conditions?.desktop);
+          const shortDesktop = Boolean(context.conditions?.shortDesktop);
           const reducedMotion = Boolean(context.conditions?.reducedMotion);
-          const frameScale = desktop ? 1 : 1.28;
+          const frameScale = desktop ? (shortDesktop ? 1.04 : 1) : 1.28;
+          const frameXPercent = desktop ? 4.5 : 0;
           const frameYPercent = desktop ? 0 : 5;
           const sceneFrames = gsap.utils.toArray<HTMLElement>(
             '[data-hero-scene-frame="desktop"]',
@@ -103,6 +121,7 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
               autoAlpha: 1,
               clipPath: diagonalClipVisible,
               scale: frameScale,
+              xPercent: frameXPercent,
               yPercent: frameYPercent,
             });
             gsap.set(transitionBeam ?? [], { autoAlpha: 0 });
@@ -135,7 +154,7 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
               autoAlpha: index === 0 ? 1 : 0,
               clipPath: index === 0 ? diagonalClipVisible : diagonalClipHidden,
               scale: frameScale,
-              xPercent: index === 0 ? 0 : 0.7 + index * 0.45,
+              xPercent: frameXPercent + (index === 0 ? 0 : 0.7 + index * 0.45),
               yPercent: frameYPercent,
             });
           });
@@ -325,7 +344,7 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
 
   useGSAP(
     () => {
-      if (!hero.current || !isMobileSceneLoaded) return;
+      if (!hero.current || !isMobileSequenceReady) return;
 
       const media = gsap.matchMedia();
 
@@ -375,12 +394,20 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
 
           const sequence = gsap.timeline();
           const orderedFrames = frames.slice(1);
+          const mobileSequenceSpeed = 1.5;
+          const frameHoldDuration = 2.8 / mobileSequenceSpeed;
+          const transitionDuration = 0.9 / mobileSequenceSpeed;
+          const finalFrameHoldDuration = frameHoldDuration * 2;
 
           orderedFrames.forEach((frame, index) => {
             const previousFrame = frames[index] ?? frames.at(-1) ?? firstFrame;
 
             sequence
-              .set(previousFrame, { zIndex: 1 }, index === 0 ? 2.8 : ">+=2.8")
+              .set(
+                previousFrame,
+                { zIndex: 1 },
+                index === 0 ? frameHoldDuration : `>+=${frameHoldDuration}`,
+              )
               .set(
                 frame,
                 {
@@ -399,7 +426,7 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
                 frame,
                 {
                   clipPath: diagonalClipVisible,
-                  duration: 0.9,
+                  duration: transitionDuration,
                   ease: "power2.inOut",
                 },
                 "<",
@@ -407,7 +434,7 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
               .to(
                 transitionBeam ?? [],
                 {
-                  duration: 0.9,
+                  duration: transitionDuration,
                   ease: "power2.inOut",
                   xPercent: 3800,
                 },
@@ -417,6 +444,12 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
               .set(transitionBeam ?? [], { autoAlpha: 0 }, "<");
           });
 
+          sequence.to(frames.at(-1) ?? firstFrame, {
+            autoAlpha: 1,
+            duration: finalFrameHoldDuration,
+            ease: "none",
+          });
+
           return () => sequence.kill();
         },
       );
@@ -424,7 +457,7 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
       return () => media.revert();
     },
     {
-      dependencies: [isMobileSceneLoaded],
+      dependencies: [isMobileSequenceReady],
       revertOnUpdate: true,
       scope: hero,
     },
@@ -450,7 +483,6 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
             alt=""
             className="object-cover blur-[34px] saturate-75"
             fill
-            priority
             sizes="110vw"
             src={sceneImages[0]}
           />
@@ -559,7 +591,6 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
                 onLoad={
                   index === 0 ? () => setIsDesktopSceneLoaded(true) : undefined
                 }
-                priority={index === 0}
                 sizes="100vw"
                 src={sceneImage}
               />
@@ -570,33 +601,38 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
             />
           </div>
 
-          <div
-            className="hero-scene-sequence hero-scene-sequence--mobile absolute"
-            style={{ opacity: isMobileSceneLoaded ? 1 : 0 }}
-          >
-            {mobileSceneImages.map((sceneImage, index) => (
-              <Image
-                alt={
-                  index === 0
-                    ? "Close de mulher adulta durante uma transformação profissional dos cabelos pretos ao ruivo"
-                    : ""
-                }
-                className="hero-sequence-frame hero-mobile-sequence-frame object-cover"
-                data-hero-mobile-scene-frame
-                data-mobile-scene-frame={index}
-                fill
-                key={sceneImage}
-                onError={
-                  index === 0 ? () => setIsMobileSceneLoaded(true) : undefined
-                }
-                onLoad={
-                  index === 0 ? () => setIsMobileSceneLoaded(true) : undefined
-                }
-                priority={index === 0}
-                sizes="100vw"
-                src={sceneImage}
-              />
-            ))}
+          <div className="hero-scene-sequence hero-scene-sequence--mobile absolute">
+            <div
+              aria-hidden="true"
+              className={`hero-mobile-image-skeleton ${
+                isMobileSceneLoaded ? "hero-mobile-image-skeleton--hidden" : ""
+              }`}
+            />
+            {mobileSceneImages
+              .slice(0, mobileFramesToRender)
+              .map((sceneImage, index) => (
+                <Image
+                  alt={
+                    index === 0
+                      ? "Close de mulher adulta durante uma transformação profissional dos cabelos pretos ao ruivo"
+                      : ""
+                  }
+                  className="hero-sequence-frame hero-mobile-sequence-frame object-cover"
+                  data-hero-mobile-scene-frame
+                  data-mobile-scene-frame={index}
+                  fill
+                  key={sceneImage}
+                  onError={() => handleMobileFrameSettled(index)}
+                  onLoad={() => handleMobileFrameSettled(index)}
+                  priority={index === 0}
+                  sizes="100vw"
+                  src={sceneImage}
+                  style={{
+                    opacity: index === 0 ? 1 : 0,
+                    zIndex: index === 0 ? 2 : 1,
+                  }}
+                />
+              ))}
             <div
               aria-hidden="true"
               className="hero-sequence-fade absolute inset-0"
@@ -640,18 +676,18 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
                   INÍCIO
                 </Link>
                 <Link
-                  href="/#historia"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  prefetch={false}
-                >
-                  HISTÓRIA
-                </Link>
-                <Link
                   href="/#servicos"
                   onClick={() => setIsMobileMenuOpen(false)}
                   prefetch={false}
                 >
                   SERVIÇOS
+                </Link>
+                <Link
+                  href="/#historia"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  prefetch={false}
+                >
+                  HISTÓRIA
                 </Link>
                 <a
                   href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
@@ -825,7 +861,7 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
 
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 z-20 h-28 bg-linear-to-b from-transparent to-[#1c120e]/70"
+          className="hero-stage-bottom-fade absolute inset-x-0 bottom-0 z-20 h-28 bg-linear-to-b from-transparent to-[#1c120e]/70"
         />
       </div>
     </section>

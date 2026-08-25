@@ -451,7 +451,7 @@ html::-webkit-scrollbar {
   left: clamp(7px, 0.75vw, 11px);
   width: clamp(7rem, 11vw, 11rem);
   aspect-ratio: 80 / 82;
-  background-image: url("/assets/blog/dynamic-routing/ornamental-corner.png");
+  background-image: url("/assets/blog/dynamic-routing/ornamental-corner.svg");
   opacity: 0.86;
 }
 
@@ -518,7 +518,7 @@ html::-webkit-scrollbar {
 
 @media (min-width: 1200px) {
   .hero-sequence-frame[data-scene-frame] {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(4.5%, 0, 0) scale(1);
   }
 }
 
@@ -564,16 +564,6 @@ html::-webkit-scrollbar {
 
 .hero-story--contact-visible .hero-prelude {
   top: 20%;
-}
-
-@media (min-width: 1200px) and (max-height: 800px) {
-  .hero-prelude {
-    top: 24%;
-  }
-
-  .hero-story--contact-visible .hero-prelude {
-    top: 17%;
-  }
 }
 
 .hero-prelude-kicker {
@@ -1129,17 +1119,17 @@ html::-webkit-scrollbar {
     --hero-scene-fade:
       linear-gradient(
         90deg,
-        rgba(22, 10, 7, 0.78) 0%,
-        rgba(27, 13, 9, 0.58) 34%,
-        rgba(27, 13, 9, 0.18) 62%,
+        rgba(22, 10, 7, 0.62) 0%,
+        rgba(27, 13, 9, 0.43) 34%,
+        rgba(27, 13, 9, 0.1) 62%,
         transparent 82%
       ),
       linear-gradient(
         180deg,
-        rgba(18, 9, 7, 0.34) 0%,
+        rgba(18, 9, 7, 0.2) 0%,
         transparent 30%,
         transparent 68%,
-        rgba(14, 7, 5, 0.54) 100%
+        rgba(14, 7, 5, 0.36) 100%
       );
 
     height: 100%;
@@ -1167,7 +1157,43 @@ html::-webkit-scrollbar {
     height: 100%;
   }
 
+  .hero-mobile-image-skeleton {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 1;
+    background:
+      radial-gradient(
+        circle at 82% 34%,
+        rgba(194, 123, 79, 0.5),
+        transparent 34%
+      ),
+      linear-gradient(120deg, #1d0d09 0%, #4a2419 54%, #28110c 100%);
+    pointer-events: none;
+    transition: opacity 320ms ease;
+  }
+
+  .hero-mobile-image-skeleton::after {
+    position: absolute;
+    inset: -20% -65%;
+    background: linear-gradient(
+      105deg,
+      transparent 38%,
+      rgba(255, 235, 211, 0.18) 50%,
+      transparent 62%
+    );
+    animation: hero-mobile-skeleton-sweep 1.45s ease-in-out infinite;
+    content: "";
+    transform: translateX(-32%);
+  }
+
+  .hero-mobile-image-skeleton--hidden {
+    opacity: 0;
+  }
+
   .hero-mobile-sequence-frame {
+    filter: brightness(1.16) saturate(1.04) contrast(0.98);
     object-position: center;
     transform: translate3d(0, 0, 0) scale(1);
   }
@@ -1380,6 +1406,10 @@ html::-webkit-scrollbar {
     pointer-events: auto;
   }
 
+  .hero-stage-bottom-fade {
+    display: none;
+  }
+
   .hero-mobile-footer::before {
     position: absolute;
     right: 0;
@@ -1442,6 +1472,16 @@ html::-webkit-scrollbar {
   }
 }
 
+@keyframes hero-mobile-skeleton-sweep {
+  0% {
+    transform: translateX(-32%);
+  }
+
+  100% {
+    transform: translateX(32%);
+  }
+}
+
 @media (max-width: 767px) and (max-height: 620px) {
   .hero-mobile-topbar {
     padding-top: 1rem;
@@ -1477,6 +1517,338 @@ html::-webkit-scrollbar {
 
 [data-scroll-signature] {
   overflow: hidden;
+}
+
+.instagram-showcase {
+  position: relative;
+  min-height: clamp(41rem, 68vw, 55rem);
+  padding: clamp(4rem, 7vw, 7rem) clamp(1.25rem, 5vw, 6rem) 3rem;
+  isolation: isolate;
+  overflow: hidden;
+  color: #352a25;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 25%),
+    radial-gradient(circle at 50% 112%, rgba(123, 32, 40, 0.2), transparent 42%),
+    #f4eadf;
+  border-top: 1px solid rgba(181, 133, 77, 0.42);
+  scroll-margin-top: var(--site-header-height);
+}
+
+.instagram-showcase::before,
+.instagram-showcase::after {
+  position: absolute;
+  z-index: -1;
+  top: clamp(1rem, 2vw, 2rem);
+  width: min(34vw, 28rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(181, 133, 77, 0.7));
+  content: "";
+}
+
+.instagram-showcase::before {
+  left: 0;
+}
+
+.instagram-showcase::after {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.instagram-showcase__halo {
+  position: absolute;
+  z-index: -1;
+  top: 38%;
+  left: 50%;
+  width: min(86vw, 78rem);
+  aspect-ratio: 2.6 / 1;
+  border: 1px solid rgba(181, 133, 77, 0.22);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2.4rem rgba(255, 255, 255, 0.08),
+    0 0 0 5rem rgba(181, 133, 77, 0.045);
+  transform: translate(-50%, -50%);
+}
+
+.instagram-showcase__header {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  width: min(100%, 78rem);
+  margin-inline: auto;
+  align-items: end;
+  grid-template-columns: minmax(0, 1.4fr) minmax(17rem, 0.6fr);
+  gap: clamp(2rem, 5vw, 6rem);
+}
+
+.instagram-showcase__eyebrow {
+  margin: 0 0 1rem;
+  color: #8a603e;
+  font-family: "Novecento", sans-serif;
+  font-size: clamp(0.58rem, 0.68vw, 0.72rem);
+  letter-spacing: 0.28em;
+}
+
+.instagram-showcase__header h2 {
+  max-width: 14ch;
+  margin: 0;
+  color: #352a25;
+  font-family: "Clearface", Georgia, serif;
+  font-size: clamp(3rem, 5.3vw, 6rem);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+}
+
+.instagram-showcase__header h2 span {
+  color: #7b2028;
+}
+
+.instagram-showcase__intro {
+  display: grid;
+  gap: 1.4rem;
+  padding-bottom: 0.35rem;
+}
+
+.instagram-showcase__intro p {
+  margin: 0;
+  color: #6c594c;
+  font-family: Georgia, serif;
+  font-size: clamp(0.9rem, 1.05vw, 1.08rem);
+  font-style: italic;
+  line-height: 1.65;
+}
+
+.instagram-showcase__intro a {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 2.75rem;
+  padding: 0.15rem 1.15rem 0;
+  align-items: center;
+  gap: 0.65rem;
+  color: #fff8ef;
+  background: #7b2028;
+  font-family: "Novecento", sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-decoration: none;
+  transition:
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.instagram-showcase__intro a:hover,
+.instagram-showcase__intro a:focus-visible {
+  background: #941f2a;
+  transform: translateY(-2px);
+}
+
+.instagram-showcase__intro svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.instagram-fan {
+  position: relative;
+  width: min(100%, 82rem);
+  height: clamp(25rem, 35vw, 34rem);
+  margin: clamp(2.25rem, 4vw, 4.5rem) auto 0;
+}
+
+.instagram-fan__card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: clamp(11rem, 15vw, 15.75rem);
+  aspect-ratio: 4 / 5;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff;
+  background: #352a25;
+  border: 0.42rem solid #fffaf4;
+  border-radius: 0.35rem;
+  box-shadow:
+    0 1.5rem 3rem rgba(61, 38, 27, 0.24),
+    0 0 0 1px rgba(181, 133, 77, 0.34);
+  rotate: var(--fan-rotate);
+  translate: var(--fan-x) var(--fan-y);
+  transform-origin: 50% 115%;
+  transition:
+    box-shadow 260ms ease,
+    filter 260ms ease,
+    rotate 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.instagram-fan__card:nth-child(1) {
+  --fan-x: calc(-50% - clamp(19rem, 22vw, 27rem));
+  --fan-y: 3rem;
+  --fan-rotate: -10deg;
+  z-index: 1;
+}
+
+.instagram-fan__card:nth-child(2) {
+  --fan-x: calc(-50% - clamp(9.5rem, 11vw, 13.5rem));
+  --fan-y: 1.35rem;
+  --fan-rotate: -5deg;
+  z-index: 2;
+}
+
+.instagram-fan__card:nth-child(3) {
+  --fan-x: -50%;
+  --fan-y: 0;
+  --fan-rotate: 0deg;
+  z-index: 3;
+}
+
+.instagram-fan__card:nth-child(4) {
+  --fan-x: calc(-50% + clamp(9.5rem, 11vw, 13.5rem));
+  --fan-y: 1.35rem;
+  --fan-rotate: 5deg;
+  z-index: 2;
+}
+
+.instagram-fan__card:nth-child(5) {
+  --fan-x: calc(-50% + clamp(19rem, 22vw, 27rem));
+  --fan-y: 3rem;
+  --fan-rotate: 10deg;
+  z-index: 1;
+}
+
+.instagram-fan__card:hover,
+.instagram-fan__card:focus-visible {
+  z-index: 12;
+  filter: saturate(1.08) contrast(1.03);
+  box-shadow:
+    0 2rem 4rem rgba(61, 38, 27, 0.32),
+    0 0 0 1px rgba(181, 133, 77, 0.62);
+  rotate: 0deg;
+  translate: var(--fan-x) calc(var(--fan-y) - 1.25rem);
+}
+
+.instagram-fan__image {
+  z-index: -2;
+  object-fit: cover;
+}
+
+.instagram-fan__shine {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 45%, rgba(23, 12, 8, 0.86) 100%),
+    linear-gradient(125deg, rgba(255, 255, 255, 0.2), transparent 28%);
+}
+
+.instagram-fan__meta {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.75rem;
+  left: 0.8rem;
+  display: grid;
+  align-items: end;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.6rem;
+  font-family: "Novecento", sans-serif;
+}
+
+.instagram-fan__meta > span:first-child {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.instagram-fan__meta small,
+.instagram-fan__date {
+  font-size: 0.46rem;
+  letter-spacing: 0.14em;
+}
+
+.instagram-fan__meta strong {
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+
+.instagram-fan__date {
+  padding-bottom: 0.18rem;
+  opacity: 0.76;
+  white-space: nowrap;
+}
+
+.instagram-fan__play {
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+}
+
+.instagram-fan__play svg {
+  width: 0.52rem;
+  height: 0.52rem;
+  transform: translateX(0.05rem);
+}
+
+@media (max-width: 767px) {
+  .instagram-showcase {
+    min-height: auto;
+    padding: 3.5rem 0 3.75rem;
+  }
+
+  .instagram-showcase__header {
+    width: calc(100% - 2.5rem);
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .instagram-showcase__header h2 {
+    max-width: 10ch;
+    font-size: clamp(2.85rem, 14vw, 4rem);
+  }
+
+  .instagram-showcase__intro {
+    gap: 1.15rem;
+  }
+
+  .instagram-showcase__intro p {
+    max-width: 31rem;
+    font-size: 0.9rem;
+  }
+
+  .instagram-fan {
+    display: flex;
+    width: 100%;
+    height: auto;
+    margin-top: 2.25rem;
+    padding: 1rem 1.25rem 2rem;
+    overflow-x: auto;
+    gap: 0.85rem;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    scroll-padding-inline: 1.25rem;
+    scroll-snap-type: x mandatory;
+  }
+
+  .instagram-fan::-webkit-scrollbar {
+    display: none;
+  }
+
+  .instagram-fan__card,
+  .instagram-fan__card:nth-child(n) {
+    position: relative;
+    top: auto;
+    left: auto;
+    z-index: 1;
+    width: min(76vw, 18rem);
+    flex: 0 0 min(76vw, 18rem);
+    rotate: 0deg;
+    translate: 0 0;
+    scroll-snap-align: center;
+  }
+
+  .instagram-fan__card:hover,
+  .instagram-fan__card:focus-visible {
+    translate: 0 -0.35rem;
+  }
 }
 
 .cabraiz-credit {
@@ -1670,13 +2042,13 @@ html::-webkit-scrollbar {
 
 .cabraiz-credit__speech-balloon {
   position: absolute;
-  top: 50%;
+  top: calc(50% + 0.6rem);
   right: -1.3rem;
   z-index: 4;
   display: grid;
-  width: 18.75rem;
+  width: 21.5625rem;
   height: 4.4375rem;
-  padding: 0.52rem 0.78rem 0.52rem 3.4rem;
+  padding: 0.52rem 0.9rem 0.52rem 3.9rem;
   visibility: hidden;
   grid-template-columns: 0.8fr 1.2fr 1.15fr;
   opacity: 0;
@@ -1737,11 +2109,11 @@ html::-webkit-scrollbar {
 }
 
 .cabraiz-credit__speech-balloon a:first-child::before {
-  left: -3.4rem;
+  left: -3.9rem;
 }
 
 .cabraiz-credit__speech-balloon a:last-child::before {
-  right: -0.78rem;
+  right: -0.9rem;
 }
 
 .cabraiz-credit__speech-balloon a:hover,
@@ -2187,11 +2559,10 @@ html::-webkit-scrollbar {
 
 @font-face {
   font-family: "Thenat";
-  src:
-    url("../../public/assets/blog/font/thenat.woff2") format("woff2"),
-    url("../../public/assets/blog/font/thenat.woff") format("woff");
+  src: url("../../public/assets/blog/font/thenat.woff") format("woff");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 /* Reflexo dinâmico */
 .bg-glass::after {
@@ -2381,5 +2752,39 @@ html::-webkit-scrollbar {
     position: relative;
     height: auto;
     min-height: clamp(320px, 62vw, 720px);
+  }
+}
+
+@media (min-width: 1200px) and (max-height: 800px) {
+  .hero-sequence-frame[data-scene-frame] {
+    transform: translate3d(4.5%, 0, 0) scale(1.04);
+  }
+
+  .hero-prelude {
+    top: 24%;
+  }
+
+  .hero-prelude-title,
+  .hero-prelude-copy-lockup {
+    --hero-prelude-title-size: clamp(3.4rem, 5vw, 4.35rem);
+  }
+
+  .hero-prelude-copy {
+    font-size: 0.86rem;
+    line-height: 1.45;
+  }
+
+  .hero-story--contact-visible .hero-prelude {
+    top: 12.5%;
+  }
+
+  .hero-story--contact-visible .hero-prelude-title,
+  .hero-story--contact-visible .hero-prelude-copy-lockup {
+    --hero-prelude-title-size: clamp(2.9rem, 4.25vw, 3.7rem);
+  }
+
+  .hero-story--contact-visible .hero-prelude-copy {
+    font-size: 0.73rem;
+    line-height: 1.4;
   }
 }

@@ -106,7 +106,6 @@ export const SignaturePost = () => {
         </p>
         <p
           data-scroll-signature-reveal
-          id="servicos"
           style={{
             ...paragraphStyle,
             scrollMarginTop: "var(--site-header-height)",
