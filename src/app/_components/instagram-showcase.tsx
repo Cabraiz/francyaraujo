@@ -73,49 +73,58 @@ export function InstagramShowcase() {
             key={post.afterImage}
           >
             <div
-              aria-hidden="true"
-              className="instagram-fan__card-inner"
-              data-scroll-instagram-flip
+              className="instagram-fan__card-stage"
+              data-scroll-instagram-stage
             >
-              <div className="instagram-fan__face instagram-fan__face--before">
-                <Image
-                  alt=""
-                  className="instagram-fan__image"
-                  fill
-                  sizes="(max-width: 767px) 78vw, (max-width: 1199px) 19vw, 16vw"
-                  src={post.beforeImage}
-                />
-                <span className="instagram-fan__shine" />
-                <span className="instagram-fan__meta">
-                  <span>
-                    <small>ANTES</small>
-                    <strong>{String(index + 1).padStart(2, "0")}</strong>
+              <div
+                aria-hidden="true"
+                className="instagram-fan__card-inner"
+                data-scroll-instagram-flip
+              >
+                <div className="instagram-fan__face instagram-fan__face--before">
+                  <span className="instagram-fan__subject-frame">
+                    <Image
+                      alt=""
+                      className="instagram-fan__image instagram-fan__image--portrait instagram-fan__image--subject"
+                      fill
+                      sizes="(max-width: 767px) 82vw, (max-width: 1199px) 19vw, 16vw"
+                      src={post.beforeImage}
+                    />
                   </span>
-                  <span className="instagram-fan__date">COR NATURAL</span>
-                  <span className="instagram-fan__play">
-                    <FaPlay />
+                  <span className="instagram-fan__shine" />
+                  <span className="instagram-fan__meta">
+                    <span>
+                      <small>ANTES</small>
+                      <strong>{String(index + 1).padStart(2, "0")}</strong>
+                    </span>
+                    <span className="instagram-fan__date">COR NATURAL</span>
+                    <span className="instagram-fan__play">
+                      <FaPlay />
+                    </span>
                   </span>
-                </span>
-              </div>
-              <div className="instagram-fan__face instagram-fan__face--after">
-                <Image
-                  alt=""
-                  className="instagram-fan__image"
-                  fill
-                  sizes="(max-width: 767px) 78vw, (max-width: 1199px) 19vw, 16vw"
-                  src={post.afterImage}
-                />
-                <span className="instagram-fan__shine" />
-                <span className="instagram-fan__meta">
-                  <span>
-                    <small>RUIVO</small>
-                    <strong>{String(index + 1).padStart(2, "0")}</strong>
+                </div>
+                <div className="instagram-fan__face instagram-fan__face--after">
+                  <span className="instagram-fan__subject-frame">
+                    <Image
+                      alt=""
+                      className="instagram-fan__image instagram-fan__image--expanded instagram-fan__image--subject"
+                      fill
+                      sizes="(max-width: 767px) 100vw, (max-width: 1199px) 19vw, 16vw"
+                      src={post.afterImage}
+                    />
                   </span>
-                  <span className="instagram-fan__date">RESULTADO</span>
-                  <span className="instagram-fan__play">
-                    <FaPlay />
+                  <span className="instagram-fan__shine" />
+                  <span className="instagram-fan__meta">
+                    <span>
+                      <small>RUIVO</small>
+                      <strong>{String(index + 1).padStart(2, "0")}</strong>
+                    </span>
+                    <span className="instagram-fan__date">RESULTADO</span>
+                    <span className="instagram-fan__play">
+                      <FaPlay />
+                    </span>
                   </span>
-                </span>
+                </div>
               </div>
             </div>
           </article>

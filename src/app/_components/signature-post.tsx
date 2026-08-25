@@ -21,14 +21,12 @@ export const SignaturePost = () => {
     left: 0,
     transform: "translateY(-50%)",
     fontFamily: "Holligate, sans-serif",
-    fontSize: "14vw",
+    fontSize: "clamp(6rem, 15cqw, 12rem)",
     color: "rgba(140, 38, 53, 0.075)",
     zIndex: 1,
     whiteSpace: "nowrap",
     width: "100%",
     textAlign: "center",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
     pointerEvents: "none",
   };
 
@@ -90,52 +88,90 @@ export const SignaturePost = () => {
       id="historia"
       style={containerStyle}
     >
-      {/* Texto de fundo grande */}
-      <div data-scroll-signature-bg style={backgroundTextStyle}>
-        Francy Araujo
-      </div>
-
       <div className="signature-post__scene" aria-hidden="true">
         <Image
-          src="/assets/blog/dynamic-routing/signature-salon-niche-v1.avif"
+          src="/assets/blog/dynamic-routing/signature-architecture-v2.avif"
           alt=""
           fill
           sizes="(min-width: 1100px) 22vw, (min-width: 768px) 30vw, 0px"
           className="signature-post__scene-image"
+          data-scroll-signature-architecture
         />
+
+        <div
+          className="signature-post__scene-layer signature-post__scene-layer--table"
+          data-scroll-signature-table
+        >
+          <Image
+            alt=""
+            className="signature-post__scene-object"
+            fill
+            sizes="(min-width: 768px) 9vw, 0px"
+            src="/assets/blog/dynamic-routing/signature-table-v1.webp"
+          />
+        </div>
+
+        <div
+          className="signature-post__scene-layer signature-post__scene-layer--vase"
+          data-scroll-signature-vase
+        >
+          <Image
+            alt=""
+            className="signature-post__scene-object"
+            fill
+            sizes="(min-width: 768px) 14vw, 0px"
+            src="/assets/blog/dynamic-routing/signature-vase-v1.webp"
+          />
+        </div>
+
+        <div
+          className="signature-post__scene-layer signature-post__scene-layer--chair"
+          data-scroll-signature-chair
+        >
+          <Image
+            alt=""
+            className="signature-post__scene-object"
+            fill
+            sizes="(min-width: 768px) 16vw, 0px"
+            src="/assets/blog/dynamic-routing/signature-chair-v1.webp"
+          />
+        </div>
       </div>
 
-      {/* Texto da frente */}
-      <div
-        className="signature-post__content"
-        data-scroll-signature-foreground
-        style={foregroundTextStyle}
-      >
-        <p data-scroll-signature-reveal style={subHeadingStyle}>
-          THE
-        </p>
-        <h2 data-scroll-signature-reveal style={headingStyle}>
-          FRANCY ARAÚJO
-        </h2>
-        <p data-scroll-signature-reveal style={subHeadingStyle}>
-          SALON
-        </p>
-        <p
-          data-scroll-signature-reveal
-          style={{
-            ...paragraphStyle,
-            scrollMarginTop: "var(--site-header-height)",
-          }}
-        >
-          No espaço da cabeleireira Francy Araújo, localizado na{" "}
-          <span style={locationStyle}>Rua Israel Bezerra, 46</span>, em{" "}
-          <span style={locationStyle}>Dionísio Torres, Fortaleza</span>, você
-          encontra uma experiência exclusiva de hair stylist especializada em
-          cabelos ruivos, com cortes, colorações e tratamentos modernos. Os
-          atendimentos são personalizados e realizados somente com hora marcada.
-          Manicure e depilação também estão disponíveis mediante solicitação
-          antecipada.
-        </p>
+      <div className="signature-post__content" data-scroll-signature-panel>
+        {/* Assinatura limitada ao painel direito */}
+        <div data-scroll-signature-bg style={backgroundTextStyle}>
+          Francy Araujo
+        </div>
+
+        {/* Texto da frente */}
+        <div data-scroll-signature-foreground style={foregroundTextStyle}>
+          <p data-scroll-signature-reveal style={subHeadingStyle}>
+            THE
+          </p>
+          <h2 data-scroll-signature-reveal style={headingStyle}>
+            FRANCY ARAÚJO
+          </h2>
+          <p data-scroll-signature-reveal style={subHeadingStyle}>
+            SALON
+          </p>
+          <p
+            data-scroll-signature-reveal
+            style={{
+              ...paragraphStyle,
+              scrollMarginTop: "var(--site-header-height)",
+            }}
+          >
+            No espaço da cabeleireira Francy Araújo, localizado na{" "}
+            <span style={locationStyle}>Rua Israel Bezerra, 46</span>, em{" "}
+            <span style={locationStyle}>Dionísio Torres, Fortaleza</span>, você
+            encontra uma experiência exclusiva de hair stylist especializada em
+            cabelos ruivos, com cortes, colorações e tratamentos modernos. Os
+            atendimentos são personalizados e realizados somente com hora
+            marcada. Manicure e depilação também estão disponíveis mediante
+            solicitação antecipada.
+          </p>
+        </div>
       </div>
     </section>
   );

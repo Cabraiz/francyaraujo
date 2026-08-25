@@ -3,6 +3,7 @@ import { Footer } from "@/app/_components/footer";
 import { HeroPost } from "@/app/_components/hero-post";
 import { InstagramShowcase } from "@/app/_components/instagram-showcase";
 import { Intro } from "@/app/_components/intro";
+import { MobilePortfolioTransition } from "@/app/_components/mobile-portfolio-transition";
 import { ScrollExperience } from "@/app/_components/scroll-experience";
 import { SignaturePost } from "@/app/_components/signature-post";
 
@@ -36,6 +37,7 @@ export default function Index() {
         mobileSceneImages={mobileHeroSceneImages}
         sceneImages={activeHeroSceneImages}
       />
+      <MobilePortfolioTransition />
       <InstagramShowcase />
       <SignaturePost />
       <Footer />

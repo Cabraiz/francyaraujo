@@ -7,11 +7,8 @@ type Props = {
 
 const MarcaImage = ({ title, src }: Props) => {
   return (
-    <div
-      aria-label={`Marca Francy Araújo — ${title}`}
-      className="brand-lockup"
-      role="img"
-    >
+    <a className="brand-lockup" href="#topo">
+      <span className="visually-hidden">{title}: voltar ao topo</span>
       <span
         aria-hidden="true"
         className="brand-emblem"
@@ -24,7 +21,7 @@ const MarcaImage = ({ title, src }: Props) => {
           Beleza <b>•</b> Estilo <b>•</b> Confiança
         </span>
       </span>
-    </div>
+    </a>
   );
 };
 

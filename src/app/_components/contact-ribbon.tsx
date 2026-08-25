@@ -8,7 +8,11 @@ const whatsappMessage = encodeURIComponent(
 
 export function ContactRibbon() {
   return (
-    <aside aria-label="Informações de contato" className="contact-ribbon">
+    <aside
+      aria-label="Informações de contato"
+      className="contact-ribbon"
+      id="topo"
+    >
       <div className="contact-ribbon__inner">
         <a
           className="contact-ribbon__item"

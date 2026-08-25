@@ -450,7 +450,9 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
             ease: "none",
           });
 
-          return () => sequence.kill();
+          return () => {
+            sequence.kill();
+          };
         },
       );
 
@@ -585,6 +587,7 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
                 data-scene-frame={index}
                 fill
                 key={sceneImage}
+                loading={index === 0 ? "eager" : "lazy"}
                 onError={
                   index === 0 ? () => setIsDesktopSceneLoaded(true) : undefined
                 }
@@ -722,22 +725,6 @@ export function HeroPost({ mobileSceneImages, sceneImages }: Readonly<Props>) {
                 AGENDAR HORÁRIO
                 <FaWhatsapp aria-hidden="true" />
               </a>
-            </div>
-
-            <div className="hero-mobile-footer">
-              <Link
-                className="hero-mobile-services-link"
-                href="/#servicos"
-                prefetch={false}
-              >
-                <span>CONHEÇA OS SERVIÇOS</span>
-                <span
-                  aria-hidden="true"
-                  className="hero-mobile-services-link__arrow"
-                >
-                  ⌄
-                </span>
-              </Link>
             </div>
           </div>
 

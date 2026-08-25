@@ -20,21 +20,29 @@ export function ScrollExperience({ children }: Readonly<Props>) {
   useGSAP(
     () => {
       if (!root.current) return;
+      const scrollRoot = root.current;
 
       const media = gsap.matchMedia();
 
       media.add(
         {
           desktop: "(min-width: 1200px)",
+          mobile: "(max-width: 767px)",
           pinnedGallery: "(min-width: 768px)",
+          signatureVisible: "(min-width: 768px)",
           motionAllowed: "(prefers-reduced-motion: no-preference)",
           reducedMotion: "(prefers-reduced-motion: reduce)",
         },
         (context) => {
-          const { desktop, pinnedGallery, reducedMotion } =
-            context.conditions ?? {};
+          const {
+            desktop,
+            mobile,
+            pinnedGallery,
+            reducedMotion,
+            signatureVisible,
+          } = context.conditions ?? {};
 
-          const instagram = root.current?.querySelector<HTMLElement>(
+          const instagram = scrollRoot.querySelector<HTMLElement>(
             "[data-scroll-instagram]",
           );
           const instagramFlips = instagram
@@ -49,79 +57,629 @@ export function ScrollExperience({ children }: Readonly<Props>) {
             return;
           }
 
-          gsap.fromTo(
-            "[data-scroll-signature-bg]",
-            { x: () => window.innerWidth * -0.04 },
-            {
-              ease: "none",
+          const signature = scrollRoot.querySelector<HTMLElement>(
+            "[data-scroll-signature]",
+          );
+
+          if (signature && signatureVisible) {
+            const signatureBackground = signature.querySelector<HTMLElement>(
+              "[data-scroll-signature-bg]",
+            );
+            const signatureArchitecture = signature.querySelector<HTMLElement>(
+              "[data-scroll-signature-architecture]",
+            );
+            const signatureTable = signature.querySelector<HTMLElement>(
+              "[data-scroll-signature-table]",
+            );
+            const signatureVase = signature.querySelector<HTMLElement>(
+              "[data-scroll-signature-vase]",
+            );
+            const signatureChair = signature.querySelector<HTMLElement>(
+              "[data-scroll-signature-chair]",
+            );
+            const signaturePanel = signature.querySelector<HTMLElement>(
+              "[data-scroll-signature-panel]",
+            );
+            const signatureReveal = gsap.utils.toArray<HTMLElement>(
+              "[data-scroll-signature-reveal]",
+              signature,
+            );
+
+            const signatureTimeline = gsap.timeline({
+              defaults: { ease: "power2.out" },
+              scrollTrigger: {
+                end: "top 28%",
+                invalidateOnRefresh: true,
+                refreshPriority: -1,
+                scrub: 0.72,
+                start: "top 92%",
+                trigger: signature,
+              },
+            });
+
+            signatureTimeline
+              .fromTo(
+                signatureArchitecture,
+                { force3D: true, scale: 1.08, xPercent: -3 },
+                { force3D: true, scale: 1, xPercent: 0 },
+                0,
+              )
+              .fromTo(
+                signaturePanel,
+                {
+                  autoAlpha: 0.7,
+                  clipPath: "inset(0 8% 0 8%)",
+                  force3D: true,
+                  y: 18,
+                },
+                {
+                  autoAlpha: 1,
+                  clipPath: "inset(0 0% 0 0%)",
+                  force3D: true,
+                  y: 0,
+                },
+                0.04,
+              )
+              .fromTo(
+                signatureTable,
+                {
+                  autoAlpha: 0.35,
+                  force3D: true,
+                  rotation: -3,
+                  x: -18,
+                  y: 26,
+                },
+                {
+                  autoAlpha: 1,
+                  force3D: true,
+                  rotation: 0,
+                  x: 0,
+                  y: 0,
+                },
+                0.08,
+              )
+              .fromTo(
+                signatureVase,
+                {
+                  autoAlpha: 0.22,
+                  force3D: true,
+                  rotation: -4,
+                  x: -14,
+                  y: 42,
+                },
+                {
+                  autoAlpha: 1,
+                  force3D: true,
+                  rotation: 0,
+                  x: 0,
+                  y: 0,
+                },
+                0.14,
+              )
+              .fromTo(
+                signatureChair,
+                {
+                  autoAlpha: 0.28,
+                  force3D: true,
+                  rotation: 2,
+                  scale: 0.91,
+                  x: 26,
+                  y: 32,
+                },
+                {
+                  autoAlpha: 1,
+                  force3D: true,
+                  rotation: 0,
+                  scale: 1,
+                  x: 0,
+                  y: 0,
+                },
+                0.18,
+              )
+              .fromTo(
+                signatureReveal,
+                { autoAlpha: 0, force3D: true, y: desktop ? 24 : 16 },
+                {
+                  autoAlpha: 1,
+                  force3D: true,
+                  stagger: 0.07,
+                  y: 0,
+                },
+                0.2,
+              );
+
+            gsap.fromTo(
+              signatureBackground,
+              { x: () => window.innerWidth * -0.035 },
+              {
+                ease: "none",
+                scrollTrigger: {
+                  end: "bottom top",
+                  invalidateOnRefresh: true,
+                  refreshPriority: -1,
+                  scrub: 0.4,
+                  start: "top bottom",
+                  trigger: signature,
+                },
+                x: () => window.innerWidth * 0.035,
+              },
+            );
+          }
+
+          const mobileTransition = scrollRoot.querySelector<HTMLElement>(
+            "[data-scroll-mobile-portfolio-transition]",
+          );
+
+          if (mobileTransition && mobile) {
+            const transitionPanel = mobileTransition.querySelector<HTMLElement>(
+              "[data-mobile-transition-panel]",
+            );
+            const transitionContent =
+              mobileTransition.querySelector<HTMLElement>(
+                "[data-mobile-transition-content]",
+              );
+            const transitionBotanical =
+              mobileTransition.querySelector<HTMLElement>(
+                "[data-mobile-transition-botanical]",
+              );
+            const transitionTitleLines = gsap.utils.toArray<HTMLElement>(
+              "[data-mobile-transition-title-line]",
+              mobileTransition,
+            );
+            const transitionDivider =
+              mobileTransition.querySelector<HTMLElement>(
+                "[data-mobile-transition-divider]",
+              );
+            const transitionTagline =
+              mobileTransition.querySelector<HTMLElement>(
+                "[data-mobile-transition-tagline]",
+              );
+            const transitionSparkle =
+              mobileTransition.querySelector<HTMLElement>(
+                "[data-mobile-transition-sparkle]",
+              );
+            const transitionCurve = mobileTransition.querySelector<HTMLElement>(
+              "[data-mobile-transition-curve]",
+            );
+            const transitionScrollLink =
+              mobileTransition.querySelector<HTMLElement>(
+                "[data-mobile-transition-scroll-link]",
+              );
+
+            const mobileTransitionTimeline = gsap.timeline({
+              defaults: { ease: "power3.out" },
               scrollTrigger: {
                 end: "bottom top",
                 invalidateOnRefresh: true,
-                scrub: 0.4,
-                start: "top bottom",
-                trigger: "[data-scroll-signature]",
+                scrub: 0.85,
+                start: "top 92%",
+                trigger: mobileTransition,
               },
-              x: () => window.innerWidth * 0.04,
-            },
-          );
+            });
 
-          gsap.from("[data-scroll-signature-reveal]", {
-            autoAlpha: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            stagger: 0.09,
-            scrollTrigger: {
-              once: true,
-              start: "top 82%",
-              trigger: "[data-scroll-signature-foreground]",
-            },
-            y: desktop ? 28 : 18,
-          });
+            mobileTransitionTimeline
+              .fromTo(
+                transitionPanel,
+                {
+                  autoAlpha: 0.72,
+                  clipPath: "inset(14% 3% 0 3% round 48% 48% 0 0)",
+                  scale: 0.97,
+                  yPercent: 18,
+                },
+                {
+                  autoAlpha: 1,
+                  clipPath: "inset(0% 0% 0% 0% round 0% 0% 0% 0%)",
+                  duration: 0.9,
+                  scale: 1,
+                  yPercent: 0,
+                },
+                0,
+              )
+              .fromTo(
+                transitionBotanical,
+                {
+                  autoAlpha: 0,
+                  clipPath: "inset(0 50% 0 50%)",
+                  rotation: -8,
+                  scale: 0.72,
+                },
+                {
+                  autoAlpha: 1,
+                  clipPath: "inset(0 0% 0 0%)",
+                  duration: 0.64,
+                  rotation: 0,
+                  scale: 1,
+                },
+                0.26,
+              )
+              .fromTo(
+                transitionTitleLines,
+                {
+                  autoAlpha: 0,
+                  clipPath: "inset(0 0 100% 0)",
+                  rotation: 1.5,
+                  yPercent: 112,
+                },
+                {
+                  autoAlpha: 1,
+                  clipPath: "inset(0 0 0% 0)",
+                  duration: 0.68,
+                  rotation: 0,
+                  stagger: 0.12,
+                  yPercent: 0,
+                },
+                0.5,
+              )
+              .fromTo(
+                transitionDivider,
+                { autoAlpha: 0, scaleX: 0.08 },
+                { autoAlpha: 1, duration: 0.55, scaleX: 1 },
+                0.96,
+              )
+              .fromTo(
+                transitionTagline,
+                { autoAlpha: 0, letterSpacing: "0.34em", y: 14 },
+                {
+                  autoAlpha: 1,
+                  duration: 0.6,
+                  letterSpacing: "0.17em",
+                  y: 0,
+                },
+                1.12,
+              )
+              .fromTo(
+                transitionSparkle,
+                { autoAlpha: 0, rotation: -45, scale: 0 },
+                {
+                  autoAlpha: 1,
+                  duration: 0.48,
+                  rotation: 0,
+                  scale: 1,
+                },
+                1.35,
+              )
+              .fromTo(
+                transitionScrollLink,
+                { autoAlpha: 0, scale: 0.78, y: 12 },
+                {
+                  autoAlpha: 1,
+                  duration: 0.42,
+                  scale: 1,
+                  y: 0,
+                },
+                1.48,
+              )
+              .to(
+                transitionCurve,
+                {
+                  duration: 0.72,
+                  ease: "power2.inOut",
+                  scaleY: 1.34,
+                },
+                1.72,
+              )
+              .to(
+                transitionContent,
+                {
+                  autoAlpha: 0.16,
+                  duration: 0.72,
+                  ease: "power2.in",
+                  y: -26,
+                },
+                2.22,
+              )
+              .to(
+                transitionBotanical,
+                { duration: 0.65, ease: "power2.in", y: -18 },
+                2.2,
+              )
+              .to(
+                transitionSparkle,
+                {
+                  autoAlpha: 0,
+                  duration: 0.55,
+                  ease: "power2.in",
+                  rotation: 90,
+                  y: 24,
+                },
+                2.25,
+              )
+              .to(
+                transitionScrollLink,
+                {
+                  autoAlpha: 0,
+                  duration: 0.4,
+                  ease: "power1.in",
+                  y: 18,
+                },
+                2.34,
+              )
+              .to(
+                transitionPanel,
+                {
+                  autoAlpha: 0.2,
+                  duration: 0.72,
+                  ease: "power2.in",
+                  scale: 0.985,
+                  yPercent: -7,
+                },
+                2.44,
+              );
+          }
 
           if (instagram) {
             const instagramCopy = instagram.querySelector<HTMLElement>(
               "[data-scroll-instagram-copy]",
             );
+            const instagramEyebrow = instagramCopy?.querySelector<HTMLElement>(
+              ".instagram-showcase__eyebrow",
+            );
+            const instagramTitle =
+              instagramCopy?.querySelector<HTMLElement>("h2");
+            const instagramTitleAccent =
+              instagramTitle?.querySelector<HTMLElement>("span");
+            const instagramIntroParts = gsap.utils.toArray<HTMLElement>(
+              ".instagram-showcase__intro > *",
+              instagramCopy ?? undefined,
+            );
+            const instagramHalo = instagram.querySelector<HTMLElement>(
+              ".instagram-showcase__halo",
+            );
             const instagramCards = gsap.utils.toArray<HTMLElement>(
               "[data-scroll-instagram-card]",
               instagram,
             );
+            const instagramStages = gsap.utils.toArray<HTMLElement>(
+              "[data-scroll-instagram-stage]",
+              instagram,
+            );
 
-            gsap.fromTo(
-              instagramCopy,
-              { autoAlpha: 0, y: desktop ? 34 : 22 },
-              {
-                autoAlpha: 1,
-                duration: 0.72,
-                ease: "power3.out",
+            if (instagramCopy) {
+              const copyReveal = gsap.timeline({
+                defaults: { ease: "power3.out" },
                 scrollTrigger: {
                   once: true,
                   start: "top 84%",
                   trigger: instagram,
                 },
-                y: 0,
-              },
-            );
+              });
 
-            gsap.fromTo(
-              instagramCards,
-              {
-                autoAlpha: 0,
-                clipPath: "inset(18% 12% 12% 12% round 0.35rem)",
-              },
-              {
-                autoAlpha: 1,
-                clipPath: "inset(0% 0% 0% 0% round 0.35rem)",
-                duration: 0.78,
-                ease: "power3.out",
-                stagger: 0.08,
+              if (instagramEyebrow) {
+                copyReveal.fromTo(
+                  instagramEyebrow,
+                  { autoAlpha: 0, x: -28 },
+                  { autoAlpha: 1, duration: 0.55, x: 0 },
+                );
+              }
+
+              if (instagramTitle) {
+                copyReveal.fromTo(
+                  instagramTitle,
+                  {
+                    autoAlpha: 0,
+                    clipPath: "inset(0 0 100% 0)",
+                    y: desktop ? 48 : 30,
+                  },
+                  {
+                    autoAlpha: 1,
+                    clipPath: "inset(0 0 0% 0)",
+                    duration: 0.82,
+                    y: 0,
+                  },
+                  "-=0.28",
+                );
+              }
+
+              if (instagramTitleAccent) {
+                copyReveal.fromTo(
+                  instagramTitleAccent,
+                  { autoAlpha: 0, scale: 0.94, x: -18 },
+                  {
+                    autoAlpha: 1,
+                    duration: 0.55,
+                    scale: 1,
+                    x: 0,
+                  },
+                  "-=0.42",
+                );
+              }
+
+              if (instagramIntroParts.length > 0) {
+                copyReveal.fromTo(
+                  instagramIntroParts,
+                  { autoAlpha: 0, x: 30 },
+                  {
+                    autoAlpha: 1,
+                    duration: 0.6,
+                    stagger: 0.09,
+                    x: 0,
+                  },
+                  "-=0.45",
+                );
+              }
+            }
+
+            if (instagramHalo) {
+              gsap.fromTo(
+                instagramHalo,
+                { rotation: -2.5, scale: 0.92, yPercent: -5 },
+                {
+                  ease: "none",
+                  rotation: 2.5,
+                  scale: 1.08,
+                  scrollTrigger: {
+                    end: "bottom top",
+                    invalidateOnRefresh: true,
+                    scrub: 0.8,
+                    start: "top bottom",
+                    trigger: instagram,
+                  },
+                  yPercent: 5,
+                },
+              );
+            }
+
+            gsap.set(instagramStages, {
+              force3D: true,
+              transformOrigin: "50% 55%",
+              transformPerspective: 1200,
+            });
+
+            if (pinnedGallery) {
+              const fanReveal = gsap.timeline({
                 scrollTrigger: {
                   once: true,
                   start: "top 78%",
                   trigger: instagram,
                 },
-              },
-            );
+              });
+
+              fanReveal.fromTo(
+                instagramCards,
+                {
+                  autoAlpha: 0,
+                  clipPath: "inset(18% 12% 12% 12% round 0.35rem)",
+                },
+                {
+                  autoAlpha: 1,
+                  clipPath: "inset(0% 0% 0% 0% round 0.35rem)",
+                  duration: 0.9,
+                  ease: "power3.out",
+                  stagger: {
+                    amount: 0.48,
+                    from: "center",
+                  },
+                },
+              );
+
+              fanReveal.fromTo(
+                instagramStages,
+                {
+                  rotationX: 16,
+                  scale: 0.84,
+                  y: 92,
+                },
+                {
+                  duration: 0.9,
+                  ease: "power3.out",
+                  rotationX: 0,
+                  scale: 1,
+                  stagger: {
+                    amount: 0.48,
+                    from: "center",
+                  },
+                  y: 0,
+                },
+                0,
+              );
+
+              const fanMeta = gsap.utils.toArray<HTMLElement>(
+                ".instagram-fan__meta",
+                instagram,
+              );
+              const fanShine = gsap.utils.toArray<HTMLElement>(
+                ".instagram-fan__shine",
+                instagram,
+              );
+
+              fanReveal
+                .fromTo(
+                  fanMeta,
+                  { autoAlpha: 0, y: 12 },
+                  {
+                    autoAlpha: 1,
+                    duration: 0.42,
+                    ease: "power2.out",
+                    stagger: 0.035,
+                    y: 0,
+                  },
+                  "-=0.52",
+                )
+                .fromTo(
+                  fanShine,
+                  { autoAlpha: 0 },
+                  {
+                    autoAlpha: 1,
+                    duration: 0.45,
+                    ease: "power2.out",
+                    stagger: 0.05,
+                  },
+                  "-=0.48",
+                );
+            } else {
+              instagramCards.forEach((card, index) => {
+                const cardStage = card.querySelector<HTMLElement>(
+                  "[data-scroll-instagram-stage]",
+                );
+                const cardMeta = gsap.utils.toArray<HTMLElement>(
+                  ".instagram-fan__meta",
+                  card,
+                );
+                const cardShine = card.querySelector<HTMLElement>(
+                  ".instagram-fan__shine",
+                );
+                const cardReveal = gsap.timeline({
+                  scrollTrigger: {
+                    once: true,
+                    start: "top 93%",
+                    trigger: card,
+                  },
+                });
+
+                cardReveal.fromTo(
+                  card,
+                  { autoAlpha: 0 },
+                  {
+                    autoAlpha: 1,
+                    duration: 0.78,
+                    ease: "power3.out",
+                  },
+                );
+
+                if (cardStage) {
+                  cardReveal.fromTo(
+                    cardStage,
+                    {
+                      rotationX: index % 2 === 0 ? 8 : -8,
+                      scale: 0.94,
+                      y: 72,
+                    },
+                    {
+                      duration: 0.78,
+                      ease: "power3.out",
+                      rotationX: 0,
+                      scale: 1,
+                      y: 0,
+                    },
+                    0,
+                  );
+                }
+
+                if (cardMeta.length > 0) {
+                  cardReveal.fromTo(
+                    cardMeta,
+                    { autoAlpha: 0, x: 28 },
+                    {
+                      autoAlpha: 1,
+                      duration: 0.42,
+                      ease: "power2.out",
+                      stagger: 0.04,
+                      x: 0,
+                    },
+                    "-=0.38",
+                  );
+                }
+
+                if (cardShine) {
+                  cardReveal.fromTo(
+                    cardShine,
+                    { autoAlpha: 0 },
+                    { autoAlpha: 1, duration: 0.35, ease: "power2.out" },
+                    "-=0.34",
+                  );
+                }
+              });
+            }
 
             gsap.set(instagramFlips, {
               force3D: true,
@@ -133,34 +691,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
               defaults: {
                 ease: "power2.inOut",
               },
-              scrollTrigger: pinnedGallery
-                ? {
-                    anticipatePin: 1,
-                    end: () => `+=${Math.max(window.innerHeight * 1.9, 1400)}`,
-                    invalidateOnRefresh: true,
-                    onLeave: () => gsap.set(instagramFlips, { rotationY: 180 }),
-                    onLeaveBack: () =>
-                      gsap.set(instagramFlips, { rotationY: 0 }),
-                    pin: true,
-                    pinSpacing: true,
-                    scrub: 0.32,
-                    start: "top top",
-                    trigger: instagram,
-                  }
-                : {
-                    end: () =>
-                      `+=${Math.max(
-                        instagram.offsetHeight * 0.55,
-                        window.innerHeight * 0.65,
-                      )}`,
-                    invalidateOnRefresh: true,
-                    onLeave: () => gsap.set(instagramFlips, { rotationY: 180 }),
-                    onLeaveBack: () =>
-                      gsap.set(instagramFlips, { rotationY: 0 }),
-                    scrub: 0.28,
-                    start: "top 72%",
-                    trigger: instagram,
-                  },
+              paused: true,
             });
 
             transformation.to({}, { duration: 0.35 });
@@ -178,9 +709,66 @@ export function ScrollExperience({ children }: Readonly<Props>) {
             });
 
             transformation.to({}, { duration: 0.06 });
+
+            let furthestTransformationProgress = 0;
+            const advanceTransformation = (progress: number) => {
+              const nextProgress = gsap.utils.clamp(0, 1, progress);
+
+              if (nextProgress <= furthestTransformationProgress) return;
+
+              furthestTransformationProgress = nextProgress;
+              transformation.progress(nextProgress);
+            };
+
+            ScrollTrigger.create(
+              desktop
+                ? {
+                    anticipatePin: 1,
+                    end: () => `+=${Math.max(window.innerHeight * 2.35, 1600)}`,
+                    invalidateOnRefresh: true,
+                    onLeave: () => advanceTransformation(1),
+                    onUpdate: (self) => {
+                      const animationProgress = gsap.utils.mapRange(
+                        0.08,
+                        0.9,
+                        0,
+                        1,
+                        self.progress,
+                      );
+
+                      advanceTransformation(animationProgress);
+                    },
+                    pin: true,
+                    pinSpacing: true,
+                    start: "top top",
+                    trigger: instagram,
+                  }
+                : pinnedGallery
+                  ? {
+                      end: () => `+=${Math.max(window.innerHeight * 0.9, 720)}`,
+                      invalidateOnRefresh: true,
+                      onLeave: () => advanceTransformation(1),
+                      onUpdate: (self) =>
+                        advanceTransformation(self.progress * 2),
+                      start: "top top",
+                      trigger: instagram,
+                    }
+                  : {
+                      end: () =>
+                        `+=${Math.max(
+                          instagram.offsetHeight * 0.55,
+                          window.innerHeight * 0.65,
+                        )}`,
+                      invalidateOnRefresh: true,
+                      onLeave: () => advanceTransformation(1),
+                      onUpdate: (self) => advanceTransformation(self.progress),
+                      start: "top 72%",
+                      trigger: instagram,
+                    },
+            );
           }
 
-          const footer = root.current?.querySelector<HTMLElement>(
+          const footer = scrollRoot.querySelector<HTMLElement>(
             "[data-scroll-footer]",
           );
 
