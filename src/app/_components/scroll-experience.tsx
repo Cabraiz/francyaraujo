@@ -245,13 +245,17 @@ export function ScrollExperience({ children }: Readonly<Props>) {
               mobileTransition.querySelector<HTMLElement>(
                 "[data-mobile-transition-scroll-link]",
               );
+            const mobileTransitionSpeed = 2;
+            const mobileTransitionScrollDistance = () =>
+              (mobileTransition.offsetHeight + window.innerHeight * 0.92) /
+              mobileTransitionSpeed;
 
             const mobileTransitionTimeline = gsap.timeline({
               defaults: { ease: "power3.out" },
               scrollTrigger: {
-                end: "bottom top",
+                end: () => `+=${mobileTransitionScrollDistance()}`,
                 invalidateOnRefresh: true,
-                scrub: 0.85,
+                scrub: 0.85 / mobileTransitionSpeed,
                 start: "top 92%",
                 trigger: mobileTransition,
               },
@@ -794,94 +798,299 @@ export function ScrollExperience({ children }: Readonly<Props>) {
             "[data-scroll-footer-glow]",
           );
 
-          const footerReveal = gsap.timeline({
-            defaults: { ease: "power2.out" },
-            scrollTrigger: {
-              end: () => {
-                const footerHeight = footer.offsetHeight;
-                const finishBuffer = Math.min(18, footerHeight * 0.08);
-                const finishLine =
-                  ((window.innerHeight - footerHeight + finishBuffer) /
-                    window.innerHeight) *
-                  100;
+          const footerScrollEnd = () => {
+            const footerHeight = footer.offsetHeight;
+            const finishBuffer = Math.min(18, footerHeight * 0.08);
+            const finishLine =
+              ((window.innerHeight - footerHeight + finishBuffer) /
+                window.innerHeight) *
+              100;
 
-                return `top ${gsap.utils.clamp(0, 94, finishLine)}%`;
-              },
-              invalidateOnRefresh: true,
-              scrub: 0.65,
-              start: "top 96%",
-              trigger: footer,
-            },
-          });
+            return `top ${gsap.utils.clamp(0, 94, finishLine)}%`;
+          };
 
-          footerReveal
-            .fromTo(
-              footer,
-              {
-                clipPath: "inset(0 0 16% 0 round 1.4rem)",
-                filter: "saturate(0.72) brightness(0.78)",
-              },
-              {
-                clipPath: "inset(0 0 0% 0 round 0rem)",
-                filter: "saturate(1) brightness(1)",
-              },
-              0,
-            )
-            .fromTo(
-              footerGlow,
-              { autoAlpha: 0, scale: 0.62 },
-              { autoAlpha: 1, scale: 1, duration: 0.92 },
-              0,
-            )
-            .fromTo(
-              footerIdentity,
-              { autoAlpha: 0, force3D: true, x: desktop ? -82 : -46 },
-              { autoAlpha: 1, duration: 0.68, force3D: true, x: 0 },
-              0.08,
-            )
-            .fromTo(
-              footerCopy,
-              { autoAlpha: 0, force3D: true, y: 26 },
-              { autoAlpha: 1, duration: 0.6, force3D: true, y: 0 },
-              0.2,
-            )
-            .fromTo(
-              footerMetrics,
-              { autoAlpha: 0, force3D: true, y: 12 },
-              {
-                autoAlpha: 1,
-                duration: 0.42,
-                force3D: true,
-                stagger: 0.045,
-                y: 0,
-              },
-              0.28,
-            )
-            .fromTo(
-              footerCta,
-              {
-                autoAlpha: 0,
-                force3D: true,
-                scale: 0.96,
-                x: desktop ? 76 : 0,
-                y: desktop ? 0 : 22,
-              },
-              {
-                autoAlpha: 1,
-                duration: 0.64,
-                force3D: true,
-                scale: 1,
-                x: 0,
-                y: 0,
-              },
-              0.3,
-            )
-            .fromTo(
-              footerSignature,
-              { autoAlpha: 0, force3D: true, y: 14 },
-              { autoAlpha: 1, duration: 0.42, force3D: true, y: 0 },
-              0.48,
+          if (mobile) {
+            const footerFrame = footer.querySelector<HTMLElement>(
+              ".cabraiz-credit__inner",
             );
+            const footerLogo = footer.querySelector<HTMLElement>(
+              ".cabraiz-credit__logo",
+            );
+            const footerWordmark = footer.querySelector<HTMLElement>(
+              ".cabraiz-credit__wordmark",
+            );
+            const footerMenu = footer.querySelector<HTMLElement>(
+              ".cabraiz-credit__mobile-menu",
+            );
+            const footerMenuLines = gsap.utils.toArray<HTMLElement>(
+              ".cabraiz-credit__mobile-menu span",
+              footer,
+            );
+            const footerIntroParts = gsap.utils.toArray<HTMLElement>(
+              ".cabraiz-credit__intro-eyebrow, .cabraiz-credit__intro h2, .cabraiz-credit__intro p",
+              footer,
+            );
+            const footerMetricIcons = gsap.utils.toArray<HTMLElement>(
+              ".cabraiz-credit__metric-icon",
+              footer,
+            );
+            const footerMountainImage = footer.querySelector<HTMLElement>(
+              ".cabraiz-credit__mountain img",
+            );
+            const footerButton = footer.querySelector<HTMLElement>(
+              ".cabraiz-credit__cta",
+            );
+            const footerArrow = footer.querySelector<HTMLElement>(
+              ".cabraiz-credit__arrow",
+            );
+
+            const mobileFooterReveal = gsap.timeline({
+              defaults: { ease: "power3.out" },
+              scrollTrigger: {
+                end: footerScrollEnd,
+                invalidateOnRefresh: true,
+                scrub: 0.78,
+                start: "top 98%",
+                trigger: footer,
+              },
+            });
+
+            mobileFooterReveal
+              .fromTo(
+                footerFrame,
+                {
+                  clipPath: "inset(0 0 14% 0 round 1.9rem)",
+                  force3D: true,
+                  scale: 0.985,
+                  transformOrigin: "50% 0%",
+                  y: 38,
+                },
+                {
+                  clipPath: "inset(0 0 0% 0 round 1.9rem)",
+                  duration: 1,
+                  force3D: true,
+                  scale: 1,
+                  y: 0,
+                },
+                0,
+              )
+              .fromTo(
+                footerIdentity,
+                { autoAlpha: 0.25, force3D: true, y: -32 },
+                { autoAlpha: 1, duration: 0.46, force3D: true, y: 0 },
+                0.02,
+              )
+              .fromTo(
+                [footerLogo, footerWordmark, footerMenu],
+                { autoAlpha: 0, force3D: true, scale: 0.9, y: 14 },
+                {
+                  autoAlpha: 1,
+                  duration: 0.34,
+                  force3D: true,
+                  scale: 1,
+                  stagger: 0.045,
+                  y: 0,
+                },
+                0.1,
+              )
+              .fromTo(
+                footerMenuLines,
+                { scaleX: 0, transformOrigin: "0% 50%", x: -4 },
+                {
+                  duration: 0.26,
+                  scaleX: 1,
+                  stagger: 0.025,
+                  x: 0,
+                },
+                0.17,
+              )
+              .fromTo(
+                footerCopy,
+                { autoAlpha: 0, force3D: true, y: 32 },
+                { autoAlpha: 1, duration: 0.54, force3D: true, y: 0 },
+                0.2,
+              )
+              .fromTo(
+                footerIntroParts,
+                { autoAlpha: 0, force3D: true, y: 22 },
+                {
+                  autoAlpha: 1,
+                  duration: 0.38,
+                  force3D: true,
+                  stagger: 0.055,
+                  y: 0,
+                },
+                0.25,
+              )
+              .fromTo(
+                footerMetrics,
+                {
+                  autoAlpha: 0,
+                  force3D: true,
+                  scale: 0.94,
+                  x: (index) => (index % 2 === 0 ? -28 : 28),
+                  y: 18,
+                },
+                {
+                  autoAlpha: 1,
+                  duration: 0.46,
+                  force3D: true,
+                  scale: 1,
+                  stagger: 0.06,
+                  x: 0,
+                  y: 0,
+                },
+                0.34,
+              )
+              .fromTo(
+                footerMetricIcons,
+                {
+                  force3D: true,
+                  rotation: (index) => (index % 2 === 0 ? -22 : 22),
+                  scale: 0.55,
+                },
+                {
+                  duration: 0.42,
+                  force3D: true,
+                  rotation: 0,
+                  scale: 1,
+                  stagger: 0.055,
+                },
+                0.4,
+              )
+              .fromTo(
+                footerCta,
+                { autoAlpha: 0.2 },
+                { autoAlpha: 1, duration: 0.68 },
+                0.48,
+              )
+              .fromTo(
+                footerMountainImage,
+                { force3D: true, scale: 1.13, yPercent: 7 },
+                {
+                  duration: 0.86,
+                  ease: "none",
+                  force3D: true,
+                  scale: 1,
+                  yPercent: 0,
+                },
+                0.44,
+              )
+              .fromTo(
+                footerButton,
+                {
+                  autoAlpha: 0,
+                  force3D: true,
+                  scale: 0.88,
+                  y: 48,
+                },
+                {
+                  autoAlpha: 1,
+                  duration: 0.5,
+                  force3D: true,
+                  scale: 1,
+                  y: 0,
+                },
+                0.64,
+              )
+              .fromTo(
+                footerArrow,
+                { force3D: true, rotation: -34, scale: 0.72 },
+                {
+                  duration: 0.38,
+                  force3D: true,
+                  rotation: 0,
+                  scale: 1,
+                },
+                0.72,
+              )
+              .fromTo(
+                footerSignature,
+                { autoAlpha: 0, force3D: true, y: 18 },
+                { autoAlpha: 1, duration: 0.42, force3D: true, y: 0 },
+                0.82,
+              );
+          } else {
+            const footerReveal = gsap.timeline({
+              defaults: { ease: "power2.out" },
+              scrollTrigger: {
+                end: footerScrollEnd,
+                invalidateOnRefresh: true,
+                scrub: 0.65,
+                start: "top 96%",
+                trigger: footer,
+              },
+            });
+
+            footerReveal
+              .fromTo(
+                footer,
+                {
+                  clipPath: "inset(0 0 16% 0 round 1.4rem)",
+                  filter: "saturate(0.72) brightness(0.78)",
+                },
+                {
+                  clipPath: "inset(0 0 0% 0 round 0rem)",
+                  filter: "saturate(1) brightness(1)",
+                },
+                0,
+              )
+              .fromTo(
+                footerGlow,
+                { autoAlpha: 0, scale: 0.62 },
+                { autoAlpha: 1, scale: 1, duration: 0.92 },
+                0,
+              )
+              .fromTo(
+                footerIdentity,
+                { autoAlpha: 0, force3D: true, x: desktop ? -82 : -46 },
+                { autoAlpha: 1, duration: 0.68, force3D: true, x: 0 },
+                0.08,
+              )
+              .fromTo(
+                footerCopy,
+                { autoAlpha: 0, force3D: true, y: 26 },
+                { autoAlpha: 1, duration: 0.6, force3D: true, y: 0 },
+                0.2,
+              )
+              .fromTo(
+                footerMetrics,
+                { autoAlpha: 0, force3D: true, y: 12 },
+                {
+                  autoAlpha: 1,
+                  duration: 0.42,
+                  force3D: true,
+                  stagger: 0.045,
+                  y: 0,
+                },
+                0.28,
+              )
+              .fromTo(
+                footerCta,
+                {
+                  autoAlpha: 0,
+                  force3D: true,
+                  scale: 0.96,
+                  x: desktop ? 76 : 0,
+                  y: desktop ? 0 : 22,
+                },
+                {
+                  autoAlpha: 1,
+                  duration: 0.64,
+                  force3D: true,
+                  scale: 1,
+                  x: 0,
+                  y: 0,
+                },
+                0.3,
+              )
+              .fromTo(
+                footerSignature,
+                { autoAlpha: 0, force3D: true, y: 14 },
+                { autoAlpha: 1, duration: 0.42, force3D: true, y: 0 },
+                0.48,
+              );
+          }
         },
       );
 

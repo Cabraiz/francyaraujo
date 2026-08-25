@@ -35,17 +35,50 @@ export function Footer() {
             </span>
             <strong className="cabraiz-credit__name">CABRAIZ</strong>
           </span>
+          <a
+            aria-label="Visitar o site da Cabraiz"
+            className="cabraiz-credit__mobile-menu"
+            href="https://cabraiz.com"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <span />
+            <span />
+            <span />
+          </a>
         </div>
 
         <div className="cabraiz-credit__proof">
           <div className="cabraiz-credit__proof-stage">
+            <section className="cabraiz-credit__intro" data-scroll-footer-copy>
+              <span className="cabraiz-credit__intro-eyebrow">
+                ESTRATÉGIA · DESIGN · TECNOLOGIA
+              </span>
+              <h2>
+                SOLUÇÕES DIGITAIS
+                <br />
+                QUE GERAM RESULTADOS
+              </h2>
+              <p>
+                Unimos criatividade, estratégia e tecnologia para construir
+                experiências digitais que conectam marcas e pessoas.
+              </p>
+            </section>
             <div className="cabraiz-credit__stats-visual">
               <section
                 aria-label="Indicadores da Cabraiz"
                 className="cabraiz-credit__stats"
-                data-scroll-footer-copy
               >
                 <div className="cabraiz-credit__metric">
+                  <div
+                    aria-hidden="true"
+                    className="cabraiz-credit__metric-icon"
+                  >
+                    <svg aria-hidden="true" fill="none" viewBox="0 0 32 32">
+                      <path d="M7 23.5h18M8.5 20l5.2-5.3 4 3.4L24 10.5" />
+                      <path d="M20 10.5h4v4" />
+                    </svg>
+                  </div>
                   <strong>+120</strong>
                   <span>
                     PROJETOS
@@ -54,6 +87,15 @@ export function Footer() {
                   </span>
                 </div>
                 <div className="cabraiz-credit__metric">
+                  <div
+                    aria-hidden="true"
+                    className="cabraiz-credit__metric-icon"
+                  >
+                    <svg aria-hidden="true" fill="none" viewBox="0 0 32 32">
+                      <circle cx="16" cy="16" r="9" />
+                      <path d="M12 14h.01M20 14h.01M12.5 19c2 2.2 5 2.2 7 0" />
+                    </svg>
+                  </div>
                   <strong>98%</strong>
                   <span>
                     SATISFAÇÃO
@@ -62,6 +104,14 @@ export function Footer() {
                   </span>
                 </div>
                 <div className="cabraiz-credit__metric">
+                  <div
+                    aria-hidden="true"
+                    className="cabraiz-credit__metric-icon"
+                  >
+                    <svg aria-hidden="true" fill="none" viewBox="0 0 32 32">
+                      <path d="m16 6 3 6.1 6.7 1-4.9 4.7 1.2 6.7-6-3.2-6 3.2 1.2-6.7-4.9-4.7 6.7-1L16 6Z" />
+                    </svg>
+                  </div>
                   <strong>+12 ANOS</strong>
                   <span>
                     DE
@@ -70,6 +120,15 @@ export function Footer() {
                   </span>
                 </div>
                 <div className="cabraiz-credit__metric">
+                  <div
+                    aria-hidden="true"
+                    className="cabraiz-credit__metric-icon"
+                  >
+                    <svg aria-hidden="true" fill="none" viewBox="0 0 32 32">
+                      <circle cx="16" cy="16" r="9" />
+                      <path d="M7 16h18M16 7c2 2.5 3 5.5 3 9s-1 6.5-3 9c-2-2.5-3-5.5-3-9s1-6.5 3-9Z" />
+                    </svg>
+                  </div>
                   <strong>4</strong>
                   <span>
                     PAÍSES
