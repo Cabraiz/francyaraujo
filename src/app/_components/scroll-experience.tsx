@@ -879,26 +879,16 @@ export function ScrollExperience({ children }: Readonly<Props>) {
             const mobileFooterReveal = gsap.timeline({
               defaults: { ease: "power3.out" },
               scrollTrigger: {
-                end: footerScrollEnd,
-                invalidateOnRefresh: true,
-                scrub: 0.78,
-                start: "top 98%",
+                once: true,
+                start: "top 90%",
+                toggleActions: "play none none none",
                 trigger: footer,
               },
             });
 
+            gsap.set(footerFrame, { clearProps: "clipPath" });
+
             mobileFooterReveal
-              .fromTo(
-                footerFrame,
-                {
-                  clipPath: "inset(0 0 14% 0)",
-                },
-                {
-                  clipPath: "inset(0 0 0% 0)",
-                  duration: 1,
-                },
-                0,
-              )
               .fromTo(
                 footerIdentity,
                 { autoAlpha: 0.25, force3D: true, y: -32 },

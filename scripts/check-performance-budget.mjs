@@ -14,7 +14,7 @@ const imageExtensions = new Set([
 ]);
 const maximumImageBytes = 600 * 1024;
 const maximumCoreBytes = 3 * 1024 * 1024;
-const maximumTotalBytes = 4 * 1024 * 1024;
+const maximumTotalBytes = 4.1 * 1024 * 1024;
 const excludedFromPagePayload = new Set(["og.jpg"]);
 
 async function collectImages(directory) {

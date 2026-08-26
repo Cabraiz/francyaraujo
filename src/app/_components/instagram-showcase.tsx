@@ -9,7 +9,7 @@ const instagramPosts = [
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-01.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-01.avif",
     desktopFlatImage:
-      "/assets/blog/dynamic-routing/instagram-francy-01-desktop-flat-hq.avif?v=2",
+      "/assets/blog/dynamic-routing/instagram-francy-01-desktop-flat-hq.avif?v=3",
     sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-01.avif",
     faceLayout: faceLayout.photos["01"].layout,
     faceSource: faceLayout.photos["01"].face.source,

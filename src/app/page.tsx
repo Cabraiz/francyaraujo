@@ -9,7 +9,7 @@ import { SignaturePost } from "@/app/_components/signature-post";
 
 const brandImage = "/assets/blog/dynamic-routing/brand-emblem-transparent.png";
 const allHeroSceneImages = [
-  "/assets/blog/dynamic-routing/hero-francy-scene-01-black.webp",
+  "/assets/blog/dynamic-routing/hero-francy-scene-01-black-hd-honey-v2.avif",
   "/assets/blog/dynamic-routing/hero-francy-scene-02-chocolate.webp",
   "/assets/blog/dynamic-routing/hero-francy-scene-03-auburn.webp",
   "/assets/blog/dynamic-routing/hero-francy-scene-04-copper.webp",
