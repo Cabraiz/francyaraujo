@@ -2843,10 +2843,10 @@ html::-webkit-scrollbar {
   }
 
   .cabraiz-credit__metric-icon--flags {
-    --flag-card-width: 1.72rem;
+    --flag-card-width: 1.548rem;
     --flag-column-gap: 0.68rem;
-    --flag-cycle-width: 19.2rem;
-    --flag-row-gap: 0.52rem;
+    --flag-cycle-width: 17.824rem;
+    --flag-row-gap: 0.64rem;
 
     position: absolute;
     inset: -0.6rem auto -0.6rem 1px;
@@ -3348,10 +3348,10 @@ html::-webkit-scrollbar {
   }
 
   .cabraiz-credit__metric-icon--flags {
-    --flag-card-width: 2.55rem;
+    --flag-card-width: 2.295rem;
     --flag-column-gap: 0.85rem;
-    --flag-cycle-width: 27.2rem;
-    --flag-row-gap: 0.72rem;
+    --flag-cycle-width: 25.16rem;
+    --flag-row-gap: 0.88rem;
 
     position: absolute;
     inset: -1px auto -1px -1px;
