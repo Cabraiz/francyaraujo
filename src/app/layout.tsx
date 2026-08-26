@@ -137,6 +137,9 @@ export const metadata: Metadata = {
   category: "beleza",
   alternates: {
     canonical: "/",
+    types: {
+      "text/markdown": "/index.md",
+    },
   },
   formatDetection: {
     address: false,
@@ -192,6 +195,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        <link rel="describedby" href="/llms.txt" type="text/markdown" />
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD is static, owned data and escapes opening brackets.
           dangerouslySetInnerHTML={{
@@ -233,6 +237,22 @@ export default function RootLayout({
       >
         <SmoothScroll>
           <ThemeSwitcher />
+          <noscript>
+            <nav
+              aria-label="Navegação sem JavaScript"
+              className="no-script-navigation"
+              data-agent-fallback="navigation"
+            >
+              <strong>Francy Araújo</strong>
+              <span>Esta navegação funciona sem JavaScript:</span>
+              <a href="/#servicos">Serviços</a>
+              <a href="/#historia">História</a>
+              <a href={whatsappUrl}>Agendar pelo WhatsApp</a>
+              <a href={instagramUrl}>Instagram</a>
+              <a href="/index.md">Versão em Markdown</a>
+              <a href="/llms.txt">Índice para agentes de IA</a>
+            </nav>
+          </noscript>
           <div className="min-h-screen">{children}</div>
         </SmoothScroll>
       </body>

@@ -4183,3 +4183,23 @@ html::-webkit-scrollbar {
     line-height: 1.4;
   }
 }
+
+.no-script-navigation {
+  position: relative;
+  z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgb(181 133 77 / 45%);
+  background: #f7efe5;
+  color: #2f241f;
+  font-size: 0.875rem;
+}
+
+.no-script-navigation a {
+  color: #821e28;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

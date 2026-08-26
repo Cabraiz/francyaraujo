@@ -10,12 +10,26 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export const metadata: Metadata = {
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug, ["title", "excerpt"]);
+
+  return {
+    title: post?.title,
+    description: post?.excerpt,
+    alternates: {
+      types: {
+        "text/markdown": `/posts/${slug}.md`,
+      },
+    },
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
+}
 
 export default async function PostPage({ params }: PageProps) {
   const { slug } = await params;
