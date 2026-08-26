@@ -1,5 +1,40 @@
 import Image from "next/image";
 
+const servedCountries = [
+  { code: "mx", name: "México" },
+  { code: "br", name: "Brasil" },
+  { code: "us", name: "Estados Unidos" },
+  { code: "ca", name: "Canadá" },
+  { code: "ar", name: "Argentina" },
+  { code: "pt", name: "Portugal" },
+  { code: "in", name: "Índia" },
+  { code: "gw", name: "Guiné-Bissau" },
+] as const;
+
+type CountryCode = (typeof servedCountries)[number]["code"];
+
+function CountryFlag({ code }: Readonly<{ code: CountryCode }>) {
+  const artwork = `/assets/blog/dynamic-routing/flags-3d/flag-${code}.avif`;
+
+  return (
+    <svg
+      aria-hidden="true"
+      className="cabraiz-credit__flag-artwork"
+      preserveAspectRatio="none"
+      viewBox="0 0 20 30"
+    >
+      <g transform="translate(20 0) rotate(90)">
+        <image
+          height="20"
+          href={artwork}
+          preserveAspectRatio="none"
+          width="30"
+        />
+      </g>
+    </svg>
+  );
+}
+
 export function Footer() {
   return (
     <footer className="cabraiz-credit" data-scroll-footer>
@@ -86,21 +121,21 @@ export function Footer() {
                     ENTREGUES
                   </span>
                 </div>
-                <div className="cabraiz-credit__metric">
+                <div className="cabraiz-credit__metric cabraiz-credit__metric--satisfaction">
                   <div
                     aria-hidden="true"
                     className="cabraiz-credit__metric-icon"
                   >
                     <svg aria-hidden="true" fill="none" viewBox="0 0 32 32">
-                      <circle cx="16" cy="16" r="9" />
-                      <path d="M12 14h.01M20 14h.01M12.5 19c2 2.2 5 2.2 7 0" />
+                      <circle cx="16" cy="16" r="10" />
+                      <path d="M16 10v6l4 2" />
                     </svg>
                   </div>
-                  <strong>98%</strong>
+                  <strong>34 MIN</strong>
                   <span>
-                    SATISFAÇÃO
+                    MTTR
                     <br />
-                    DOS CLIENTES
+                    MÉDIO
                   </span>
                 </div>
                 <div className="cabraiz-credit__metric">
@@ -119,17 +154,37 @@ export function Footer() {
                     EXPERIÊNCIA
                   </span>
                 </div>
-                <div className="cabraiz-credit__metric">
+                <div className="cabraiz-credit__metric cabraiz-credit__metric--countries">
                   <div
-                    aria-hidden="true"
-                    className="cabraiz-credit__metric-icon"
+                    aria-label={`Países atendidos: ${servedCountries
+                      .map(({ name }) => name)
+                      .join(", ")}`}
+                    className="cabraiz-credit__metric-icon cabraiz-credit__metric-icon--flags"
+                    role="img"
                   >
-                    <svg aria-hidden="true" fill="none" viewBox="0 0 32 32">
-                      <circle cx="16" cy="16" r="9" />
-                      <path d="M7 16h18M16 7c2 2.5 3 5.5 3 9s-1 6.5-3 9c-2-2.5-3-5.5-3-9s1-6.5 3-9Z" />
-                    </svg>
+                    <span
+                      aria-hidden="true"
+                      className="cabraiz-credit__flag-track"
+                    >
+                      {servedCountries.map(({ code, name }) => (
+                        <span
+                          className="cabraiz-credit__flag"
+                          data-country={code}
+                          key={name}
+                        >
+                          <CountryFlag code={code} />
+                        </span>
+                      ))}
+                      <span
+                        className="cabraiz-credit__flag"
+                        data-country="mx"
+                        key="mexico-loop"
+                      >
+                        <CountryFlag code="mx" />
+                      </span>
+                    </span>
                   </div>
-                  <strong>4</strong>
+                  <strong>8</strong>
                   <span>
                     PAÍSES
                     <br />
@@ -137,16 +192,6 @@ export function Footer() {
                   </span>
                 </div>
               </section>
-            </div>
-            <div aria-hidden="true" className="cabraiz-credit__mascot">
-              <Image
-                alt=""
-                className="cabraiz-credit__mascot-image"
-                height="640"
-                sizes="7rem"
-                src="/assets/blog/dynamic-routing/cabraiz-mascot-v1.webp"
-                width="640"
-              />
             </div>
             <nav
               aria-label="Atalhos da Cabraiz"
@@ -187,6 +232,16 @@ export function Footer() {
                 </span>
               </a>
             </nav>
+          </div>
+          <div aria-hidden="true" className="cabraiz-credit__mascot">
+            <Image
+              alt=""
+              className="cabraiz-credit__mascot-image"
+              height="640"
+              sizes="7rem"
+              src="/assets/blog/dynamic-routing/cabraiz-mascot-v1.webp"
+              width="640"
+            />
           </div>
 
           <div className="cabraiz-credit__signature-visual">

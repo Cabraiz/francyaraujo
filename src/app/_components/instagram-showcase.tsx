@@ -1,33 +1,60 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { FaInstagram, FaPlay } from "react-icons/fa6";
+import faceLayout from "@/app/_data/instagram-face-layout.json";
 
 const instagramPosts = [
   {
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-01.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-01.avif",
+    sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-01.avif",
+    faceLayout: faceLayout.photos["01"].layout,
+    faceSource: faceLayout.photos["01"].face.source,
   },
   {
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-02.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-02.avif",
+    sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-02.avif",
+    faceLayout: faceLayout.photos["02"].layout,
+    faceSource: faceLayout.photos["02"].face.source,
   },
   {
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-03.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-03.avif",
+    sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-03.avif",
+    faceLayout: faceLayout.photos["03"].layout,
+    faceSource: faceLayout.photos["03"].face.source,
   },
   {
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-04.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-04.avif",
+    sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-04.avif",
+    faceLayout: faceLayout.photos["04"].layout,
+    faceSource: faceLayout.photos["04"].face.source,
   },
   {
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-05.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-05.avif",
+    sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-05.avif",
+    faceLayout: faceLayout.photos["05"].layout,
+    faceSource: faceLayout.photos["05"].face.source,
   },
 ] as const;
+
+function getFaceStyle(post: (typeof instagramPosts)[number]) {
+  return {
+    "--instagram-face-image-height": `${post.faceLayout.imageHeightPercent}%`,
+    "--instagram-face-shift-x": `${post.faceLayout.translateXPercent}%`,
+    "--instagram-face-shift-y": `${post.faceLayout.translateYPercent}%`,
+    "--instagram-face-target-x": `${faceLayout.target.centerX * 100}%`,
+    "--instagram-face-target-y": `${faceLayout.target.centerY * 100}%`,
+  } as CSSProperties;
+}
 
 export function InstagramShowcase() {
   return (
@@ -104,14 +131,37 @@ export function InstagramShowcase() {
                   </span>
                 </div>
                 <div className="instagram-fan__face instagram-fan__face--after">
-                  <span className="instagram-fan__subject-frame">
+                  <span
+                    aria-hidden="true"
+                    className="instagram-fan__depth-background"
+                    data-scroll-instagram-background
+                  >
                     <Image
                       alt=""
-                      className="instagram-fan__image instagram-fan__image--expanded instagram-fan__image--subject"
-                      fill
+                      className="instagram-fan__image instagram-fan__image--background instagram-fan__image--expanded"
+                      height={640}
                       sizes="(max-width: 767px) 100vw, (max-width: 1199px) 19vw, 16vw"
-                      src={post.afterImage}
+                      src={post.sceneImage}
+                      style={getFaceStyle(post)}
+                      width={960}
                     />
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="instagram-fan__depth-subject"
+                    data-scroll-instagram-subject
+                  >
+                    <span className="instagram-fan__subject-frame">
+                      <Image
+                        alt=""
+                        className="instagram-fan__image instagram-fan__image--expanded instagram-fan__image--foreground instagram-fan__image--subject"
+                        height={post.faceSource.height}
+                        sizes="(max-width: 767px) 100vw, (max-width: 1199px) 19vw, 16vw"
+                        src={post.afterImage}
+                        style={getFaceStyle(post)}
+                        width={post.faceSource.width}
+                      />
+                    </span>
                   </span>
                   <span className="instagram-fan__shine" />
                   <span className="instagram-fan__meta">

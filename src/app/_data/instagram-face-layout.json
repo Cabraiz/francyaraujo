@@ -1,0 +1,250 @@
+{
+  "detector": {
+    "name": "OpenCV YuNet",
+    "model": "face-detection-yunet.onnx",
+    "modelSource": "https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx",
+    "scoreThreshold": 0.7
+  },
+  "target": {
+    "centerX": 0.4,
+    "centerY": 0.2,
+    "faceHeight": 0.36
+  },
+  "photos": {
+    "01": {
+      "src": "/assets/blog/dynamic-routing/instagram-francy-synthetic-01.avif",
+      "face": {
+        "source": {
+          "width": 960,
+          "height": 640
+        },
+        "box": {
+          "x": 0.231717,
+          "y": 0.115043,
+          "width": 0.151283,
+          "height": 0.317641
+        },
+        "center": {
+          "x": 0.307358,
+          "y": 0.273863
+        },
+        "landmarks": {
+          "rightEye": {
+            "x": 0.286355,
+            "y": 0.247467
+          },
+          "leftEye": {
+            "x": 0.350182,
+            "y": 0.228146
+          },
+          "noseTip": {
+            "x": 0.336015,
+            "y": 0.300838
+          },
+          "rightMouthCorner": {
+            "x": 0.304782,
+            "y": 0.357742
+          },
+          "leftMouthCorner": {
+            "x": 0.358474,
+            "y": 0.341917
+          }
+        },
+        "confidence": 0.937747
+      },
+      "layout": {
+        "imageHeightPercent": 113.335495,
+        "translateXPercent": -30.7358,
+        "translateYPercent": -27.3863
+      }
+    },
+    "02": {
+      "src": "/assets/blog/dynamic-routing/instagram-francy-synthetic-02.avif",
+      "face": {
+        "source": {
+          "width": 1536,
+          "height": 1024
+        },
+        "box": {
+          "x": 0.264191,
+          "y": 0.187766,
+          "width": 0.156507,
+          "height": 0.304053
+        },
+        "center": {
+          "x": 0.342445,
+          "y": 0.339792
+        },
+        "landmarks": {
+          "rightEye": {
+            "x": 0.335278,
+            "y": 0.31511
+          },
+          "leftEye": {
+            "x": 0.393942,
+            "y": 0.311905
+          },
+          "noseTip": {
+            "x": 0.383789,
+            "y": 0.373549
+          },
+          "rightMouthCorner": {
+            "x": 0.339153,
+            "y": 0.423802
+          },
+          "leftMouthCorner": {
+            "x": 0.386206,
+            "y": 0.42147
+          }
+        },
+        "confidence": 0.941714
+      },
+      "layout": {
+        "imageHeightPercent": 118.40041,
+        "translateXPercent": -34.2445,
+        "translateYPercent": -33.9792
+      }
+    },
+    "03": {
+      "src": "/assets/blog/dynamic-routing/instagram-francy-synthetic-03.avif",
+      "face": {
+        "source": {
+          "width": 960,
+          "height": 640
+        },
+        "box": {
+          "x": 0.1833,
+          "y": 0.19732,
+          "width": 0.159108,
+          "height": 0.290189
+        },
+        "center": {
+          "x": 0.262854,
+          "y": 0.342414
+        },
+        "landmarks": {
+          "rightEye": {
+            "x": 0.229095,
+            "y": 0.323076
+          },
+          "leftEye": {
+            "x": 0.298962,
+            "y": 0.304819
+          },
+          "noseTip": {
+            "x": 0.27568,
+            "y": 0.375245
+          },
+          "rightMouthCorner": {
+            "x": 0.24904,
+            "y": 0.422436
+          },
+          "leftMouthCorner": {
+            "x": 0.306159,
+            "y": 0.40846
+          }
+        },
+        "confidence": 0.934606
+      },
+      "layout": {
+        "imageHeightPercent": 124.05708,
+        "translateXPercent": -26.2854,
+        "translateYPercent": -34.2414
+      }
+    },
+    "04": {
+      "src": "/assets/blog/dynamic-routing/instagram-francy-synthetic-04.avif",
+      "face": {
+        "source": {
+          "width": 960,
+          "height": 640
+        },
+        "box": {
+          "x": 0.17986,
+          "y": 0.22294,
+          "width": 0.124882,
+          "height": 0.2852
+        },
+        "center": {
+          "x": 0.242301,
+          "y": 0.36554
+        },
+        "landmarks": {
+          "rightEye": {
+            "x": 0.199422,
+            "y": 0.328734
+          },
+          "leftEye": {
+            "x": 0.249324,
+            "y": 0.337162
+          },
+          "noseTip": {
+            "x": 0.206725,
+            "y": 0.387039
+          },
+          "rightMouthCorner": {
+            "x": 0.199308,
+            "y": 0.429755
+          },
+          "leftMouthCorner": {
+            "x": 0.242894,
+            "y": 0.437377
+          }
+        },
+        "confidence": 0.934099
+      },
+      "layout": {
+        "imageHeightPercent": 126.227209,
+        "translateXPercent": -24.2301,
+        "translateYPercent": -36.554
+      }
+    },
+    "05": {
+      "src": "/assets/blog/dynamic-routing/instagram-francy-synthetic-05.avif",
+      "face": {
+        "source": {
+          "width": 1536,
+          "height": 1024
+        },
+        "box": {
+          "x": 0.271523,
+          "y": 0.293796,
+          "width": 0.084223,
+          "height": 0.187607
+        },
+        "center": {
+          "x": 0.313634,
+          "y": 0.387599
+        },
+        "landmarks": {
+          "rightEye": {
+            "x": 0.282357,
+            "y": 0.373011
+          },
+          "leftEye": {
+            "x": 0.314393,
+            "y": 0.372917
+          },
+          "noseTip": {
+            "x": 0.286126,
+            "y": 0.407763
+          },
+          "rightMouthCorner": {
+            "x": 0.286729,
+            "y": 0.43837
+          },
+          "leftMouthCorner": {
+            "x": 0.313167,
+            "y": 0.437206
+          }
+        },
+        "confidence": 0.942313
+      },
+      "layout": {
+        "imageHeightPercent": 191.890494,
+        "translateXPercent": -31.3634,
+        "translateYPercent": -38.7599
+      }
+    }
+  }
+}

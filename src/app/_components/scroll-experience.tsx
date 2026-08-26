@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ReactNode } from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 type Props = {
   children: ReactNode;
@@ -16,6 +16,64 @@ if (typeof window !== "undefined") {
 
 export function ScrollExperience({ children }: Readonly<Props>) {
   const root = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const footer = root.current?.querySelector<HTMLElement>(
+      "[data-scroll-footer]",
+    );
+    const siteChoice = footer?.querySelector<HTMLAnchorElement>(
+      ".cabraiz-credit__speech-balloon a:first-child",
+    );
+
+    if (!footer || !siteChoice) return;
+
+    let pointerX = 0;
+    let frame = 0;
+
+    const getLayoutLeft = (element: HTMLElement) => {
+      let left = 0;
+      let current: HTMLElement | null = element;
+
+      while (current) {
+        left += current.offsetLeft;
+        current = current.offsetParent as HTMLElement | null;
+      }
+
+      return left - window.scrollX;
+    };
+
+    const updateNearestChoice = () => {
+      frame = 0;
+      const siteRight = getLayoutLeft(siteChoice) + siteChoice.offsetWidth;
+      const nearestChoice = pointerX < siteRight ? "site" : "whatsapp";
+
+      if (footer.dataset.nearestAction !== nearestChoice) {
+        footer.dataset.nearestAction = nearestChoice;
+      }
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
+
+      pointerX = event.clientX;
+      if (!frame) frame = window.requestAnimationFrame(updateNearestChoice);
+    };
+
+    const clearNearestChoice = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = 0;
+      delete footer.dataset.nearestAction;
+    };
+
+    footer.addEventListener("pointermove", handlePointerMove);
+    footer.addEventListener("pointerleave", clearNearestChoice);
+
+    return () => {
+      clearNearestChoice();
+      footer.removeEventListener("pointermove", handlePointerMove);
+      footer.removeEventListener("pointerleave", clearNearestChoice);
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -45,12 +103,13 @@ export function ScrollExperience({ children }: Readonly<Props>) {
           const instagram = scrollRoot.querySelector<HTMLElement>(
             "[data-scroll-instagram]",
           );
-          const instagramFlips = instagram
-            ? gsap.utils.toArray<HTMLElement>(
-                "[data-scroll-instagram-flip]",
-                instagram,
-              )
-            : [];
+          const instagramFlips =
+            instagram && !mobile
+              ? gsap.utils.toArray<HTMLElement>(
+                  "[data-scroll-instagram-flip]",
+                  instagram,
+                )
+              : [];
 
           if (reducedMotion) {
             gsap.set(instagramFlips, { rotationY: 180 });
@@ -214,10 +273,6 @@ export function ScrollExperience({ children }: Readonly<Props>) {
             const transitionPanel = mobileTransition.querySelector<HTMLElement>(
               "[data-mobile-transition-panel]",
             );
-            const transitionContent =
-              mobileTransition.querySelector<HTMLElement>(
-                "[data-mobile-transition-content]",
-              );
             const transitionBotanical =
               mobileTransition.querySelector<HTMLElement>(
                 "[data-mobile-transition-botanical]",
@@ -294,7 +349,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                   rotation: 0,
                   scale: 1,
                 },
-                0.26,
+                0.08,
               )
               .fromTo(
                 transitionTitleLines,
@@ -312,13 +367,13 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                   stagger: 0.12,
                   yPercent: 0,
                 },
-                0.5,
+                0.22,
               )
               .fromTo(
                 transitionDivider,
                 { autoAlpha: 0, scaleX: 0.08 },
                 { autoAlpha: 1, duration: 0.55, scaleX: 1 },
-                0.96,
+                0.72,
               )
               .fromTo(
                 transitionTagline,
@@ -329,7 +384,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                   letterSpacing: "0.17em",
                   y: 0,
                 },
-                1.12,
+                0.84,
               )
               .fromTo(
                 transitionSparkle,
@@ -340,7 +395,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                   rotation: 0,
                   scale: 1,
                 },
-                1.35,
+                1.05,
               )
               .fromTo(
                 transitionScrollLink,
@@ -351,7 +406,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                   scale: 1,
                   y: 0,
                 },
-                1.48,
+                1.16,
               )
               .to(
                 transitionCurve,
@@ -360,54 +415,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                   ease: "power2.inOut",
                   scaleY: 1.34,
                 },
-                1.72,
-              )
-              .to(
-                transitionContent,
-                {
-                  autoAlpha: 0.16,
-                  duration: 0.72,
-                  ease: "power2.in",
-                  y: -26,
-                },
-                2.22,
-              )
-              .to(
-                transitionBotanical,
-                { duration: 0.65, ease: "power2.in", y: -18 },
-                2.2,
-              )
-              .to(
-                transitionSparkle,
-                {
-                  autoAlpha: 0,
-                  duration: 0.55,
-                  ease: "power2.in",
-                  rotation: 90,
-                  y: 24,
-                },
-                2.25,
-              )
-              .to(
-                transitionScrollLink,
-                {
-                  autoAlpha: 0,
-                  duration: 0.4,
-                  ease: "power1.in",
-                  y: 18,
-                },
-                2.34,
-              )
-              .to(
-                transitionPanel,
-                {
-                  autoAlpha: 0.2,
-                  duration: 0.72,
-                  ease: "power2.in",
-                  scale: 0.985,
-                  yPercent: -7,
-                },
-                2.44,
+                1.38,
               );
           }
 
@@ -616,11 +624,17 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                   "[data-scroll-instagram-stage]",
                 );
                 const cardMeta = gsap.utils.toArray<HTMLElement>(
-                  ".instagram-fan__meta",
+                  ".instagram-fan__face--after .instagram-fan__meta",
                   card,
                 );
                 const cardShine = card.querySelector<HTMLElement>(
-                  ".instagram-fan__shine",
+                  ".instagram-fan__face--after .instagram-fan__shine",
+                );
+                const cardScene = card.querySelector<HTMLElement>(
+                  "[data-scroll-instagram-background]",
+                );
+                const cardSubject = card.querySelector<HTMLElement>(
+                  "[data-scroll-instagram-subject]",
                 );
                 const cardReveal = gsap.timeline({
                   scrollTrigger: {
@@ -659,6 +673,50 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                   );
                 }
 
+                if (cardScene) {
+                  cardReveal.fromTo(
+                    cardScene,
+                    {
+                      force3D: true,
+                      scale: 1.09,
+                      xPercent: index % 2 === 0 ? -3 : 3,
+                    },
+                    {
+                      duration: 1.05,
+                      ease: "power2.out",
+                      force3D: true,
+                      scale: 1.015,
+                      xPercent: 0,
+                    },
+                    0,
+                  );
+                }
+
+                if (cardSubject) {
+                  cardReveal.fromTo(
+                    cardSubject,
+                    {
+                      autoAlpha: 0,
+                      clipPath: "inset(22% 0 0 0)",
+                      force3D: true,
+                      scale: 0.9,
+                      xPercent: index % 2 === 0 ? -7 : 7,
+                      yPercent: 16,
+                    },
+                    {
+                      autoAlpha: 1,
+                      clipPath: "inset(0% 0 0 0)",
+                      duration: 0.92,
+                      ease: "power3.out",
+                      force3D: true,
+                      scale: 1,
+                      xPercent: 0,
+                      yPercent: 0,
+                    },
+                    0.16,
+                  );
+                }
+
                 if (cardMeta.length > 0) {
                   cardReveal.fromTo(
                     cardMeta,
@@ -685,91 +743,140 @@ export function ScrollExperience({ children }: Readonly<Props>) {
               });
             }
 
-            gsap.set(instagramFlips, {
-              force3D: true,
-              rotationY: 0,
-              transformOrigin: "50% 50%",
-            });
+            if (instagramFlips.length > 0) {
+              gsap.set(instagramFlips, {
+                force3D: true,
+                rotationY: 0,
+                transformOrigin: "50% 50%",
+              });
 
-            const transformation = gsap.timeline({
-              defaults: {
-                ease: "power2.inOut",
-              },
-              paused: true,
-            });
-
-            transformation.to({}, { duration: 0.35 });
-
-            instagramFlips.forEach((flip, index) => {
-              transformation.to(
-                flip,
-                {
-                  duration: 0.9,
-                  force3D: true,
-                  rotationY: 180,
+              const transformation = gsap.timeline({
+                defaults: {
+                  ease: "power2.inOut",
                 },
-                index === 0 ? ">" : "-=0.28",
-              );
-            });
+                paused: true,
+              });
 
-            transformation.to({}, { duration: 0.06 });
+              transformation.to({}, { duration: 0.35 });
 
-            let furthestTransformationProgress = 0;
-            const advanceTransformation = (progress: number) => {
-              const nextProgress = gsap.utils.clamp(0, 1, progress);
+              instagramFlips.forEach((flip, index) => {
+                const depthBackground = flip.querySelector<HTMLElement>(
+                  "[data-scroll-instagram-background]",
+                );
+                const depthSubject = flip.querySelector<HTMLElement>(
+                  "[data-scroll-instagram-subject]",
+                );
+                const flipPosition = index === 0 ? ">" : "-=0.28";
 
-              if (nextProgress <= furthestTransformationProgress) return;
+                transformation.to(
+                  flip,
+                  {
+                    duration: 0.9,
+                    force3D: true,
+                    rotationY: 180,
+                  },
+                  flipPosition,
+                );
 
-              furthestTransformationProgress = nextProgress;
-              transformation.progress(nextProgress);
-            };
-
-            ScrollTrigger.create(
-              desktop
-                ? {
-                    anticipatePin: 1,
-                    end: () => `+=${Math.max(window.innerHeight * 2.35, 1600)}`,
-                    invalidateOnRefresh: true,
-                    onLeave: () => advanceTransformation(1),
-                    onUpdate: (self) => {
-                      const animationProgress = gsap.utils.mapRange(
-                        0.08,
-                        0.9,
-                        0,
-                        1,
-                        self.progress,
-                      );
-
-                      advanceTransformation(animationProgress);
+                if (depthBackground) {
+                  transformation.fromTo(
+                    depthBackground,
+                    {
+                      force3D: true,
+                      scale: 1.06,
+                      xPercent: index % 2 === 0 ? -1.2 : 1.2,
                     },
-                    pin: true,
-                    pinSpacing: true,
-                    start: "top top",
-                    trigger: instagram,
-                  }
-                : pinnedGallery
+                    {
+                      duration: 1.04,
+                      ease: "power2.out",
+                      force3D: true,
+                      scale: 1.015,
+                      xPercent: 0,
+                    },
+                    "<",
+                  );
+                }
+
+                if (depthSubject) {
+                  transformation.fromTo(
+                    depthSubject,
+                    {
+                      force3D: true,
+                      scale: 1.025,
+                      xPercent: index % 2 === 0 ? 1.2 : -1.2,
+                      yPercent: 2,
+                    },
+                    {
+                      duration: 0.96,
+                      ease: "power3.out",
+                      force3D: true,
+                      scale: 1,
+                      xPercent: 0,
+                      yPercent: 0,
+                    },
+                    "<+0.06",
+                  );
+                }
+              });
+
+              transformation.to({}, { duration: 0.06 });
+
+              let furthestTransformationProgress = 0;
+              const advanceTransformation = (progress: number) => {
+                const nextProgress = gsap.utils.clamp(0, 1, progress);
+
+                if (nextProgress <= furthestTransformationProgress) return;
+
+                furthestTransformationProgress = nextProgress;
+                transformation.progress(nextProgress);
+              };
+
+              ScrollTrigger.create(
+                desktop
                   ? {
-                      end: () => `+=${Math.max(window.innerHeight * 0.9, 720)}`,
+                      anticipatePin: 1,
+                      end: () =>
+                        `+=${Math.max(window.innerHeight * 0.85, 720)}`,
                       invalidateOnRefresh: true,
-                      onLeave: () => advanceTransformation(1),
-                      onUpdate: (self) =>
-                        advanceTransformation(self.progress * 2),
+                      onLeave: (self) => {
+                        advanceTransformation(1);
+                        self.disable(true);
+                        window.requestAnimationFrame(() => {
+                          ScrollTrigger.refresh();
+                        });
+                      },
+                      onUpdate: (self) => advanceTransformation(self.progress),
+                      pin: true,
+                      pinSpacing: true,
                       start: "top top",
                       trigger: instagram,
                     }
-                  : {
-                      end: () =>
-                        `+=${Math.max(
-                          instagram.offsetHeight * 0.55,
-                          window.innerHeight * 0.65,
-                        )}`,
-                      invalidateOnRefresh: true,
-                      onLeave: () => advanceTransformation(1),
-                      onUpdate: (self) => advanceTransformation(self.progress),
-                      start: "top 72%",
-                      trigger: instagram,
-                    },
-            );
+                  : pinnedGallery
+                    ? {
+                        end: () =>
+                          `+=${Math.max(window.innerHeight * 0.9, 720)}`,
+                        invalidateOnRefresh: true,
+                        onLeave: () => advanceTransformation(1),
+                        onUpdate: (self) =>
+                          advanceTransformation(self.progress * 2),
+                        start: "top top",
+                        trigger: instagram,
+                      }
+                    : {
+                        end: () =>
+                          `+=${Math.max(
+                            instagram.offsetHeight * 0.55,
+                            window.innerHeight * 0.65,
+                          )}`,
+                        invalidateOnRefresh: true,
+                        onLeave: () => advanceTransformation(1),
+                        onUpdate: (self) =>
+                          advanceTransformation(self.progress),
+                        start: "top 72%",
+                        trigger: instagram,
+                      },
+              );
+            }
           }
 
           const footer = scrollRoot.querySelector<HTMLElement>(
@@ -859,18 +966,11 @@ export function ScrollExperience({ children }: Readonly<Props>) {
               .fromTo(
                 footerFrame,
                 {
-                  clipPath: "inset(0 0 14% 0 round 1.9rem)",
-                  force3D: true,
-                  scale: 0.985,
-                  transformOrigin: "50% 0%",
-                  y: 38,
+                  clipPath: "inset(0 0 14% 0)",
                 },
                 {
-                  clipPath: "inset(0 0 0% 0 round 1.9rem)",
+                  clipPath: "inset(0 0 0% 0)",
                   duration: 1,
-                  force3D: true,
-                  scale: 1,
-                  y: 0,
                 },
                 0,
               )

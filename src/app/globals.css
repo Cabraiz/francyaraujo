@@ -450,12 +450,12 @@ html::-webkit-scrollbar {
   --hero-scene-fade:
     linear-gradient(
       90deg,
-      rgba(225, 208, 191, 0.94) 0%,
-      rgba(225, 208, 191, 0.86) 30%,
-      rgba(225, 208, 191, 0.56) 47%,
-      transparent 66%
+      rgba(239, 225, 211, 0.82) 0%,
+      rgba(239, 225, 211, 0.7) 30%,
+      rgba(239, 225, 211, 0.36) 47%,
+      transparent 62%
     ),
-    linear-gradient(0deg, rgba(30, 17, 12, 0.2), transparent 38%);
+    linear-gradient(0deg, rgba(30, 17, 12, 0.1), transparent 32%);
 
   height: 100%;
   min-height: min(640px, calc(100svh - var(--site-header-height)));
@@ -1555,21 +1555,21 @@ html::-webkit-scrollbar {
     position: relative;
     z-index: 30;
     display: block;
-    height: 168svh;
-    min-height: 58rem;
+    height: 50svh;
+    min-height: 16rem;
     isolation: isolate;
-    background: #e7f1f1;
+    background: transparent;
   }
 
   .mobile-portfolio-transition__panel {
-    --mobile-transition-curve-height: clamp(2.7rem, 6.2svh, 3.35rem);
+    --mobile-transition-curve-height: clamp(1.35rem, 3.1svh, 1.675rem);
 
     position: sticky;
     top: 0;
     display: grid;
     width: 100%;
-    height: 100svh;
-    min-height: 32rem;
+    height: 50svh;
+    min-height: 16rem;
     overflow: visible;
     place-items: center;
     color: #342823;
@@ -1635,7 +1635,7 @@ html::-webkit-scrollbar {
   }
 
   .mobile-portfolio-transition__content {
-    --mobile-transition-divider-top: clamp(21.5rem, 64svh, 34rem);
+    --mobile-transition-divider-top: clamp(13.25rem, 27.5svh, 14.25rem);
 
     position: relative;
     z-index: 2;
@@ -1647,9 +1647,9 @@ html::-webkit-scrollbar {
 
   .mobile-portfolio-transition__botanical {
     position: absolute;
-    top: clamp(3.2rem, 8.5svh, 4.75rem);
+    top: clamp(1rem, 2.5svh, 1.5rem);
     left: 50%;
-    width: min(44vw, 11.5rem);
+    width: min(31vw, 8rem);
     height: auto;
     translate: -50% 0;
     transform-origin: 50% 50%;
@@ -1658,7 +1658,7 @@ html::-webkit-scrollbar {
 
   .mobile-portfolio-transition__title {
     position: absolute;
-    top: clamp(8.8rem, 24svh, 13rem);
+    top: clamp(3.75rem, 7.25svh, 4rem);
     right: 1rem;
     left: 1rem;
     display: grid;
@@ -1690,6 +1690,11 @@ html::-webkit-scrollbar {
     letter-spacing: -0.045em;
   }
 
+  .mobile-portfolio-transition__line-mask
+    > .mobile-portfolio-transition__title-accent {
+    padding-bottom: 0.2em;
+  }
+
   .mobile-portfolio-transition__divider {
     position: absolute;
     top: var(--mobile-transition-divider-top);
@@ -1703,7 +1708,7 @@ html::-webkit-scrollbar {
 
   .mobile-portfolio-transition__tagline {
     position: absolute;
-    top: calc(var(--mobile-transition-divider-top) + 2rem);
+    top: calc(var(--mobile-transition-divider-top) + 1rem);
     right: 0.75rem;
     left: 0.75rem;
     max-width: 91%;
@@ -1721,7 +1726,7 @@ html::-webkit-scrollbar {
     position: absolute;
     bottom: calc(
       var(--mobile-transition-curve-height) +
-      clamp(1rem, 2.4svh, 1.5rem)
+      clamp(0.5rem, 1.2svh, 0.75rem)
     );
     left: 50%;
     z-index: 4;
@@ -1740,7 +1745,6 @@ html::-webkit-scrollbar {
     z-index: 3;
     width: 100%;
     height: var(--mobile-transition-curve-height);
-    filter: drop-shadow(0 0.45rem 0.45rem rgba(71, 43, 32, 0.12));
     pointer-events: none;
     transform-origin: 50% 0;
     will-change: transform;
@@ -1923,6 +1927,8 @@ html::-webkit-scrollbar {
 }
 
 .instagram-fan__card {
+  --instagram-subject-mask-x: 40%;
+
   position: absolute;
   top: 0;
   left: 50%;
@@ -2021,12 +2027,51 @@ html::-webkit-scrollbar {
   overflow: hidden;
 }
 
-.instagram-fan__image--subject {
+.instagram-fan__depth-background,
+.instagram-fan__depth-subject {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  transform-origin: 50% 58%;
+  will-change: transform;
+}
+
+.instagram-fan__depth-background {
+  z-index: 0;
+  background: #211a17;
+}
+
+.instagram-fan__depth-subject {
   z-index: 1;
+  -webkit-mask-image: radial-gradient(
+    ellipse 52% 82% at var(--instagram-subject-mask-x) 50%,
+    #000 0 58%,
+    rgba(0, 0, 0, 0.94) 70%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 52% 82% at var(--instagram-subject-mask-x) 50%,
+    #000 0 58%,
+    rgba(0, 0, 0, 0.94) 70%,
+    transparent 100%
+  );
+}
+
+.instagram-fan__image--background {
+  filter: blur(1.4px) saturate(0.86) brightness(0.84);
+}
+
+.instagram-fan__image--foreground {
+  filter: saturate(1.02) contrast(1.01);
 }
 
 .instagram-fan__image--expanded {
+  position: absolute;
+  inset: 0;
   display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .instagram-fan__shine {
@@ -2104,12 +2149,41 @@ html::-webkit-scrollbar {
   .instagram-fan {
     transform: translateY(clamp(3rem, 8svh, 5rem));
   }
+
+  .instagram-fan__image--portrait {
+    transform: translateX(5%) scale(1.12);
+    transform-origin: 50% 50%;
+  }
+
+  .instagram-fan__image--expanded {
+    top: var(--instagram-face-target-y);
+    right: auto;
+    bottom: auto;
+    left: var(--instagram-face-target-x);
+    width: auto;
+    max-width: none;
+    height: var(--instagram-face-image-height);
+    object-fit: contain;
+    object-position: center;
+    transform: translate(
+      var(--instagram-face-shift-x),
+      var(--instagram-face-shift-y)
+    );
+    transform-origin: 0 0;
+  }
 }
 
 @media (max-width: 767px) {
   .instagram-showcase {
     min-height: auto;
-    padding: 3.5rem 0 0;
+    margin-top: calc(-1 * clamp(1.35rem, 3.1svh, 1.675rem));
+    padding: 0;
+    border-top: 0;
+  }
+
+  .instagram-showcase::before,
+  .instagram-showcase::after {
+    display: none;
   }
 
   .instagram-showcase__header {
@@ -2132,12 +2206,28 @@ html::-webkit-scrollbar {
     display: none;
   }
 
+  .instagram-fan__card-inner {
+    transform: none;
+    transform-style: flat;
+  }
+
+  .instagram-fan__face--before {
+    display: none;
+  }
+
+  .instagram-fan__face--after {
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+    transform: none;
+    transform-style: flat;
+  }
+
   .instagram-fan {
     display: grid;
     width: 100%;
     max-width: none;
     height: auto;
-    margin: 2.5rem auto 0;
+    margin: 0 auto;
     padding: 0;
     overflow: hidden;
     gap: 0;
@@ -2202,6 +2292,25 @@ html::-webkit-scrollbar {
 
   .instagram-fan__face {
     background: #0a0a0a;
+  }
+
+  .instagram-fan__depth-subject {
+    -webkit-mask-image: radial-gradient(
+      ellipse 46% 88% at var(--instagram-subject-mask-x) 50%,
+      #000 0 58%,
+      rgba(0, 0, 0, 0.96) 72%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 46% 88% at var(--instagram-subject-mask-x) 50%,
+      #000 0 58%,
+      rgba(0, 0, 0, 0.96) 72%,
+      transparent 100%
+    );
+  }
+
+  .instagram-fan__image--background {
+    filter: saturate(0.92) brightness(0.9) contrast(1.03);
   }
 
   .instagram-fan__subject-frame {
@@ -2304,7 +2413,7 @@ html::-webkit-scrollbar {
     linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
     #090a0a;
   background-size: 32px 32px;
-  border-top: 1px solid rgba(241, 196, 15, 0.68);
+  border-top: 0;
 }
 
 .cabraiz-credit__glow {
@@ -2369,7 +2478,7 @@ html::-webkit-scrollbar {
 
 .cabraiz-credit__proof-stage {
   position: relative;
-  width: clamp(18rem, 26vw, 21rem);
+  width: clamp(18rem, 28vw, 22.5rem);
   max-width: 100%;
   min-width: 0;
 }
@@ -2469,17 +2578,17 @@ html::-webkit-scrollbar {
 
 .cabraiz-credit__mascot {
   position: absolute;
-  inset: calc(50% + 0.55rem) auto auto -2.35rem;
+  inset: auto auto -0.85rem -2.35rem;
   z-index: 2;
   display: grid;
-  width: 5rem;
-  height: 5rem;
+  width: 6.325rem;
+  height: 6.325rem;
   place-items: center;
   opacity: 0;
   filter: blur(8px);
   pointer-events: none;
-  transform: translate(0, -43%) scale(0.72) rotate(-4deg);
-  transform-origin: 0 80%;
+  transform: scale(0.72) rotate(-4deg);
+  transform-origin: 0 100%;
   transition:
     opacity 0.32s ease 0.08s,
     filter 0.42s ease 0.05s,
@@ -2498,7 +2607,7 @@ html::-webkit-scrollbar {
   position: absolute;
   top: calc(50% + 0.6rem);
   right: auto;
-  left: 4rem;
+  left: 4.75rem;
   z-index: 4;
   display: grid;
   width: clamp(15.4rem, 21vw, 17.5rem);
@@ -2644,6 +2753,11 @@ html::-webkit-scrollbar {
 }
 
 @media (min-width: 1001px) and (hover: hover) and (pointer: fine) {
+  .cabraiz-credit__proof {
+    align-self: stretch;
+    align-content: center;
+  }
+
   .cabraiz-credit:hover .cabraiz-credit__stats-visual {
     opacity: 0;
     filter: blur(5px);
@@ -2653,7 +2767,7 @@ html::-webkit-scrollbar {
   .cabraiz-credit:hover .cabraiz-credit__mascot {
     opacity: 1;
     filter: blur(0);
-    transform: translate(0, -50%) scale(1) rotate(0);
+    transform: scale(1) rotate(0);
   }
 
   .cabraiz-credit:hover .cabraiz-credit__speech-balloon {
@@ -2663,6 +2777,24 @@ html::-webkit-scrollbar {
     transform: translate(0, -50%) scale(1);
     transition-delay: 0s, 0.1s, 0.04s;
   }
+
+  .cabraiz-credit[data-nearest-action="site"]
+    .cabraiz-credit__speech-balloon:not(:focus-within)
+    a:first-child,
+  .cabraiz-credit[data-nearest-action="whatsapp"]
+    .cabraiz-credit__speech-balloon:not(:focus-within)
+    a:last-child {
+    color: #f5ca0d;
+  }
+
+  .cabraiz-credit[data-nearest-action="site"]
+    .cabraiz-credit__speech-balloon:not(:focus-within)
+    a:first-child::before,
+  .cabraiz-credit[data-nearest-action="whatsapp"]
+    .cabraiz-credit__speech-balloon:not(:focus-within)
+    a:last-child::before {
+    opacity: 1;
+  }
 }
 
 .cabraiz-credit__metric {
@@ -2671,8 +2803,8 @@ html::-webkit-scrollbar {
   min-width: 0;
   min-height: 2.75rem;
   padding: 0.05rem clamp(0.45rem, 1vw, 0.8rem);
-  align-content: start;
-  grid-template-rows: auto 1fr;
+  align-content: center;
+  grid-template-rows: auto auto;
   gap: 0.3rem;
   border-left: 1px solid rgba(244, 244, 239, 0.14);
 }
@@ -2695,6 +2827,102 @@ html::-webkit-scrollbar {
   font-size: clamp(0.34rem, 0.4vw, 0.43rem);
   line-height: 1.4;
   letter-spacing: 0.09em;
+}
+
+@media (min-width: 681px) {
+  .cabraiz-credit__stats {
+    overflow: hidden;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.3fr);
+  }
+
+  .cabraiz-credit__metric--countries {
+    position: relative;
+    overflow: visible;
+    padding-right: 0.35rem;
+    padding-left: 3.2rem;
+  }
+
+  .cabraiz-credit__metric-icon--flags {
+    position: absolute;
+    inset: -0.6rem auto -0.6rem 1px;
+    z-index: 1;
+    display: block;
+    width: 2.65rem;
+    height: auto;
+    padding-left: 0.2rem;
+    overflow: hidden;
+    background: #111;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .cabraiz-credit__flag-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    animation: cabraiz-country-flags-desktop 20s linear infinite;
+    will-change: transform;
+  }
+
+  .cabraiz-credit__flag {
+    position: relative;
+    display: grid;
+    width: 100%;
+    height: 3.95rem;
+    flex: 0 0 3.95rem;
+    overflow: hidden;
+    isolation: isolate;
+    place-items: stretch;
+    background: #111;
+  }
+
+  .cabraiz-credit__flag::before,
+  .cabraiz-credit__flag::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+  }
+
+  .cabraiz-credit__flag::before {
+    z-index: 1;
+    background:
+      url("/assets/blog/dynamic-routing/flags-3d/flag-cloth-lighting-v1.avif")
+      center / cover no-repeat;
+    filter: contrast(1.28) brightness(0.96);
+    mix-blend-mode: hard-light;
+    opacity: 0.68;
+  }
+
+  .cabraiz-credit__flag::after {
+    z-index: 2;
+    background:
+      linear-gradient(
+        105deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        transparent 19% 62%,
+        rgba(0, 0, 0, 0.36) 100%
+      ),
+      radial-gradient(
+        ellipse at 37% 12%,
+        rgba(255, 255, 255, 0.22),
+        transparent 42%
+      );
+    box-shadow:
+      inset 0.2rem 0 0.35rem rgba(255, 255, 255, 0.18),
+      inset -0.28rem 0 0.42rem rgba(0, 0, 0, 0.34);
+    mix-blend-mode: overlay;
+  }
+
+  .cabraiz-credit__flag-artwork {
+    position: relative;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    filter: saturate(1.06) contrast(1.04);
+  }
 }
 
 .cabraiz-credit__action {
@@ -2920,8 +3148,10 @@ html::-webkit-scrollbar {
 
 @media (max-width: 680px) {
   .cabraiz-credit {
-    padding: 0.7rem 0.45rem 1rem;
-    background: #eaf6f7;
+    width: 100%;
+    min-height: 100%;
+    padding: 0;
+    background: #070808;
     border-top: 0;
   }
 
@@ -2933,17 +3163,16 @@ html::-webkit-scrollbar {
   .cabraiz-credit__inner {
     display: flex;
     width: 100%;
-    padding: 0.48rem;
+    min-height: 100%;
+    padding: 0;
     overflow: hidden;
     flex-direction: column;
     gap: 0;
-    margin-inline: auto;
+    margin: 0;
     background: #0d0e0e;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 1.9rem;
-    box-shadow:
-      0 1.2rem 2.8rem rgba(26, 40, 41, 0.22),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .cabraiz-credit__identity {
@@ -2961,7 +3190,7 @@ html::-webkit-scrollbar {
         transparent 58%
       ),
       linear-gradient(180deg, #ffd926 0%, #f4c800 100%);
-    border-radius: 1.35rem 1.35rem 0 0;
+    border-radius: 0;
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.5);
   }
 
@@ -3104,6 +3333,10 @@ html::-webkit-scrollbar {
       0 0.7rem 1.2rem rgba(0, 0, 0, 0.15);
   }
 
+  .cabraiz-credit__metric--satisfaction {
+    grid-template-columns: 3.35rem minmax(0, 1fr);
+  }
+
   .cabraiz-credit__metric-icon {
     display: grid;
     width: 2.65rem;
@@ -3118,6 +3351,105 @@ html::-webkit-scrollbar {
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.8);
   }
 
+  .cabraiz-credit__metric-icon--flags {
+    position: absolute;
+    inset: -1px auto -1px -1px;
+    width: calc(4rem + 1px);
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+    align-self: stretch;
+    grid-column: auto;
+    grid-row: auto;
+    background: transparent;
+    border: 0;
+    border-radius: 0.95rem 0 0 0.95rem;
+    box-shadow: none;
+  }
+
+  .cabraiz-credit__metric--countries {
+    position: relative;
+    overflow: hidden;
+    padding-left: 4.7rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cabraiz-credit__metric.cabraiz-credit__metric--countries strong,
+  .cabraiz-credit__metric.cabraiz-credit__metric--countries > span {
+    grid-column: 1;
+  }
+
+  .cabraiz-credit__flag-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    animation: cabraiz-country-flags 20s linear infinite;
+    will-change: transform;
+  }
+
+  .cabraiz-credit__flag {
+    position: relative;
+    display: grid;
+    width: 100%;
+    height: 5.65rem;
+    flex: 0 0 5.65rem;
+    overflow: hidden;
+    isolation: isolate;
+    place-items: stretch;
+    background: #111;
+  }
+
+  .cabraiz-credit__flag::before,
+  .cabraiz-credit__flag::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+  }
+
+  .cabraiz-credit__flag::before {
+    z-index: 1;
+    background:
+      url("/assets/blog/dynamic-routing/flags-3d/flag-cloth-lighting-v1.avif")
+      center / cover no-repeat;
+    filter: contrast(1.28) brightness(0.96);
+    mix-blend-mode: hard-light;
+    opacity: 0.68;
+  }
+
+  .cabraiz-credit__flag::after {
+    z-index: 2;
+    background:
+      linear-gradient(
+        105deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        transparent 19% 62%,
+        rgba(0, 0, 0, 0.36) 100%
+      ),
+      radial-gradient(
+        ellipse at 37% 12%,
+        rgba(255, 255, 255, 0.22),
+        transparent 42%
+      );
+    box-shadow:
+      inset 0.28rem 0 0.5rem rgba(255, 255, 255, 0.18),
+      inset -0.42rem 0 0.62rem rgba(0, 0, 0, 0.34);
+    mix-blend-mode: overlay;
+  }
+
+  .cabraiz-credit__flag-artwork {
+    position: relative;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    filter: saturate(1.06) contrast(1.04);
+  }
+
   .cabraiz-credit__metric-icon svg {
     width: 1.55rem;
     height: 1.55rem;
@@ -3125,6 +3457,11 @@ html::-webkit-scrollbar {
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 1.8;
+  }
+
+  .cabraiz-credit__metric-icon--flags .cabraiz-credit__flag-artwork {
+    width: 100%;
+    height: 100%;
   }
 
   .cabraiz-credit__metric strong {
@@ -3147,17 +3484,20 @@ html::-webkit-scrollbar {
   .cabraiz-credit__action {
     order: 3;
     position: relative;
+    display: flex;
     width: 100%;
-    min-height: 15.5rem;
+    min-height: 0;
     overflow: hidden;
+    flex-direction: column;
     grid-column: auto;
     background: #070808;
   }
 
   .cabraiz-credit__mountain {
-    position: absolute;
-    inset: 0;
+    position: relative;
     width: 100%;
+    height: 13rem;
+    flex: 0 0 13rem;
   }
 
   .cabraiz-credit__mountain::after {
@@ -3184,12 +3524,9 @@ html::-webkit-scrollbar {
   }
 
   .cabraiz-credit__cta {
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
-    left: 1rem;
+    position: relative;
     z-index: 3;
-    width: calc(100% - 2rem);
+    width: 100%;
     min-width: 0;
     max-width: none;
     flex: 0 0 auto;
@@ -3203,7 +3540,7 @@ html::-webkit-scrollbar {
         transparent 58%
       ),
       linear-gradient(180deg, #ffda20 0%, #f3c400 100%);
-    border-radius: 1.15rem;
+    border-radius: 0;
     box-shadow:
       inset 0 1px rgba(255, 255, 255, 0.52),
       0 0.75rem 1.7rem rgba(0, 0, 0, 0.36);
@@ -3250,7 +3587,7 @@ html::-webkit-scrollbar {
     font-size: clamp(0.43rem, 2vw, 0.53rem);
     line-height: 1.35;
     letter-spacing: 0.045em;
-    border-top: 1px solid rgba(246, 202, 15, 0.78);
+    border-top: 0;
   }
 
   .cabraiz-credit__signature > span:first-child {
@@ -3272,6 +3609,158 @@ html::-webkit-scrollbar {
 
   .cabraiz-credit__separator {
     display: none;
+  }
+}
+
+.cabraiz-credit__metric-icon--flags {
+  isolation: isolate;
+  background: #111;
+  box-shadow:
+    inset 0.18rem 0 0.3rem rgba(255, 255, 255, 0.1),
+    inset -0.24rem 0 0.34rem rgba(0, 0, 0, 0.36),
+    -0.18rem 0 0.48rem rgba(0, 0, 0, 0.32),
+    0.18rem 0 0.48rem rgba(0, 0, 0, 0.32);
+}
+
+.cabraiz-credit__metric-icon--flags::before,
+.cabraiz-credit__metric-icon--flags::after {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  content: "";
+  pointer-events: none;
+}
+
+.cabraiz-credit__metric-icon--flags::before {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.42) 0%,
+    rgba(0, 0, 0, 0.08) 14%,
+    transparent 28%,
+    transparent 72%,
+    rgba(0, 0, 0, 0.08) 86%,
+    rgba(0, 0, 0, 0.42) 100%
+  );
+}
+
+.cabraiz-credit__metric-icon--flags::after {
+  inset: 1px;
+  background: linear-gradient(
+    108deg,
+    transparent 14%,
+    rgba(255, 255, 255, 0.13) 38%,
+    transparent 58%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0.1rem 0 0.2rem rgba(255, 255, 255, 0.08),
+    inset -0.14rem 0 0.24rem rgba(0, 0, 0, 0.32),
+    inset 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 -1px rgba(0, 0, 0, 0.34);
+  mix-blend-mode: soft-light;
+}
+
+.cabraiz-credit__flag {
+  box-shadow:
+    inset 0.12rem 0 0.22rem rgba(255, 255, 255, 0.1),
+    inset -0.18rem 0 0.26rem rgba(0, 0, 0, 0.28);
+}
+
+@keyframes cabraiz-country-flags-desktop {
+  0%,
+  9% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  12.5%,
+  21.5% {
+    transform: translate3d(0, -3.95rem, 0);
+  }
+
+  25%,
+  34% {
+    transform: translate3d(0, -7.9rem, 0);
+  }
+
+  37.5%,
+  46.5% {
+    transform: translate3d(0, -11.85rem, 0);
+  }
+
+  50%,
+  59% {
+    transform: translate3d(0, -15.8rem, 0);
+  }
+
+  62.5%,
+  71.5% {
+    transform: translate3d(0, -19.75rem, 0);
+  }
+
+  75%,
+  84% {
+    transform: translate3d(0, -23.7rem, 0);
+  }
+
+  87.5%,
+  96.5% {
+    transform: translate3d(0, -27.65rem, 0);
+  }
+
+  100% {
+    transform: translate3d(0, -31.6rem, 0);
+  }
+}
+
+@keyframes cabraiz-country-flags {
+  0%,
+  9% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  12.5%,
+  21.5% {
+    transform: translate3d(0, -5.65rem, 0);
+  }
+
+  25%,
+  34% {
+    transform: translate3d(0, -11.3rem, 0);
+  }
+
+  37.5%,
+  46.5% {
+    transform: translate3d(0, -16.95rem, 0);
+  }
+
+  50%,
+  59% {
+    transform: translate3d(0, -22.6rem, 0);
+  }
+
+  62.5%,
+  71.5% {
+    transform: translate3d(0, -28.25rem, 0);
+  }
+
+  75%,
+  84% {
+    transform: translate3d(0, -33.9rem, 0);
+  }
+
+  87.5%,
+  96.5% {
+    transform: translate3d(0, -39.55rem, 0);
+  }
+
+  100% {
+    transform: translate3d(0, -45.2rem, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cabraiz-credit__flag-track {
+    animation: none;
   }
 }
 
@@ -3553,6 +4042,19 @@ html::-webkit-scrollbar {
 }
 
 @media (min-width: 1200px) and (max-height: 800px) {
+  .instagram-showcase__header h2 {
+    font-size: clamp(3rem, 5vw, 5.7rem);
+  }
+
+  .instagram-showcase__intro p {
+    font-size: clamp(0.84rem, 0.99vw, 1rem);
+  }
+
+  .instagram-fan {
+    margin-top: 2rem;
+    transform: translateY(2rem);
+  }
+
   .hero-sequence-frame[data-scene-frame] {
     transform: translate3d(4.5%, 0, 0) scale(1.04);
   }
