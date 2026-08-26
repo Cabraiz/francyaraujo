@@ -11,6 +11,20 @@ const servedCountries = [
   { code: "gw", name: "Guiné-Bissau" },
 ] as const;
 
+const flagCarouselRows = [
+  { direction: "right", id: "top", startAt: 1 },
+  { direction: "left", id: "middle", startAt: 4 },
+  { direction: "right", id: "bottom", startAt: 7 },
+] as const;
+const flagCarouselCycles = ["primary", "duplicate"] as const;
+
+function getOrderedCountries(startAt: number) {
+  return [
+    ...servedCountries.slice(startAt),
+    ...servedCountries.slice(0, startAt),
+  ];
+}
+
 type CountryCode = (typeof servedCountries)[number]["code"];
 
 function CountryFlag({ code }: Readonly<{ code: CountryCode }>) {
@@ -21,16 +35,9 @@ function CountryFlag({ code }: Readonly<{ code: CountryCode }>) {
       aria-hidden="true"
       className="cabraiz-credit__flag-artwork"
       preserveAspectRatio="none"
-      viewBox="0 0 20 30"
+      viewBox="0 0 30 20"
     >
-      <g transform="translate(20 0) rotate(90)">
-        <image
-          height="20"
-          href={artwork}
-          preserveAspectRatio="none"
-          width="30"
-        />
-      </g>
+      <image height="20" href={artwork} preserveAspectRatio="none" width="30" />
     </svg>
   );
 }
@@ -164,24 +171,35 @@ export function Footer() {
                   >
                     <span
                       aria-hidden="true"
-                      className="cabraiz-credit__flag-track"
+                      className="cabraiz-credit__flag-marquee"
                     >
-                      {servedCountries.map(({ code, name }) => (
+                      {flagCarouselRows.map(({ direction, id, startAt }) => (
                         <span
-                          className="cabraiz-credit__flag"
-                          data-country={code}
-                          key={name}
+                          className={`cabraiz-credit__flag-row cabraiz-credit__flag-row--${direction} cabraiz-credit__flag-row--${id}`}
+                          key={id}
                         >
-                          <CountryFlag code={code} />
+                          <span className="cabraiz-credit__flag-strip">
+                            {flagCarouselCycles.map((cycle) => (
+                              <span
+                                className="cabraiz-credit__flag-cycle"
+                                key={`${id}-${cycle}`}
+                              >
+                                {getOrderedCountries(startAt).map(
+                                  ({ code, name }) => (
+                                    <span
+                                      className="cabraiz-credit__flag"
+                                      data-country={code}
+                                      key={`${id}-${cycle}-${name}`}
+                                    >
+                                      <CountryFlag code={code} />
+                                    </span>
+                                  ),
+                                )}
+                              </span>
+                            ))}
+                          </span>
                         </span>
                       ))}
-                      <span
-                        className="cabraiz-credit__flag"
-                        data-country="mx"
-                        key="mexico-loop"
-                      >
-                        <CountryFlag code="mx" />
-                      </span>
                     </span>
                   </div>
                   <strong>8</strong>

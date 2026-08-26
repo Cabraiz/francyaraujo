@@ -2843,6 +2843,11 @@ html::-webkit-scrollbar {
   }
 
   .cabraiz-credit__metric-icon--flags {
+    --flag-card-width: 1.72rem;
+    --flag-column-gap: 0.68rem;
+    --flag-cycle-width: 19.2rem;
+    --flag-row-gap: 0.52rem;
+
     position: absolute;
     inset: -0.6rem auto -0.6rem 1px;
     z-index: 1;
@@ -2856,21 +2861,12 @@ html::-webkit-scrollbar {
     border-radius: 0;
   }
 
-  .cabraiz-credit__flag-track {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
-    animation: cabraiz-country-flags-desktop 20s linear infinite;
-    will-change: transform;
-  }
-
   .cabraiz-credit__flag {
     position: relative;
     display: grid;
-    width: 100%;
-    height: 3.95rem;
-    flex: 0 0 3.95rem;
+    width: var(--flag-card-width);
+    height: 100%;
+    flex: 0 0 var(--flag-card-width);
     overflow: hidden;
     isolation: isolate;
     place-items: stretch;
@@ -3352,6 +3348,11 @@ html::-webkit-scrollbar {
   }
 
   .cabraiz-credit__metric-icon--flags {
+    --flag-card-width: 2.55rem;
+    --flag-column-gap: 0.85rem;
+    --flag-cycle-width: 27.2rem;
+    --flag-row-gap: 0.72rem;
+
     position: absolute;
     inset: -1px auto -1px -1px;
     width: calc(4rem + 1px);
@@ -3379,22 +3380,12 @@ html::-webkit-scrollbar {
     grid-column: 1;
   }
 
-  .cabraiz-credit__flag-track {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
-    align-items: center;
-    animation: cabraiz-country-flags 20s linear infinite;
-    will-change: transform;
-  }
-
   .cabraiz-credit__flag {
     position: relative;
     display: grid;
-    width: 100%;
-    height: 5.65rem;
-    flex: 0 0 5.65rem;
+    width: var(--flag-card-width);
+    height: 100%;
+    flex: 0 0 var(--flag-card-width);
     overflow: hidden;
     isolation: isolate;
     place-items: stretch;
@@ -3666,100 +3657,79 @@ html::-webkit-scrollbar {
     inset -0.18rem 0 0.26rem rgba(0, 0, 0, 0.28);
 }
 
-@keyframes cabraiz-country-flags-desktop {
-  0%,
-  9% {
+.cabraiz-credit__flag-marquee {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: var(--flag-row-gap);
+}
+
+.cabraiz-credit__flag-row {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #0a0b0b;
+}
+
+.cabraiz-credit__flag-strip {
+  display: flex;
+  width: calc(var(--flag-cycle-width) + var(--flag-cycle-width));
+  min-width: calc(var(--flag-cycle-width) + var(--flag-cycle-width));
+  max-width: none;
+  height: 100%;
+  animation: cabraiz-country-flags-left 18s linear infinite;
+  animation-fill-mode: both;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.cabraiz-credit__flag-cycle {
+  display: flex;
+  width: var(--flag-cycle-width);
+  min-width: var(--flag-cycle-width);
+  height: 100%;
+  flex: 0 0 var(--flag-cycle-width);
+  padding-right: var(--flag-column-gap);
+  gap: var(--flag-column-gap);
+}
+
+.cabraiz-credit__flag-row--right .cabraiz-credit__flag-strip {
+  animation-name: cabraiz-country-flags-right;
+}
+
+.cabraiz-credit__flag-row--middle .cabraiz-credit__flag-strip {
+  animation-duration: 20s;
+}
+
+.cabraiz-credit__flag-row--bottom .cabraiz-credit__flag-strip {
+  animation-duration: 16.5s;
+}
+
+@keyframes cabraiz-country-flags-left {
+  from {
     transform: translate3d(0, 0, 0);
   }
 
-  12.5%,
-  21.5% {
-    transform: translate3d(0, -3.95rem, 0);
-  }
-
-  25%,
-  34% {
-    transform: translate3d(0, -7.9rem, 0);
-  }
-
-  37.5%,
-  46.5% {
-    transform: translate3d(0, -11.85rem, 0);
-  }
-
-  50%,
-  59% {
-    transform: translate3d(0, -15.8rem, 0);
-  }
-
-  62.5%,
-  71.5% {
-    transform: translate3d(0, -19.75rem, 0);
-  }
-
-  75%,
-  84% {
-    transform: translate3d(0, -23.7rem, 0);
-  }
-
-  87.5%,
-  96.5% {
-    transform: translate3d(0, -27.65rem, 0);
-  }
-
-  100% {
-    transform: translate3d(0, -31.6rem, 0);
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
-@keyframes cabraiz-country-flags {
-  0%,
-  9% {
+@keyframes cabraiz-country-flags-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
     transform: translate3d(0, 0, 0);
-  }
-
-  12.5%,
-  21.5% {
-    transform: translate3d(0, -5.65rem, 0);
-  }
-
-  25%,
-  34% {
-    transform: translate3d(0, -11.3rem, 0);
-  }
-
-  37.5%,
-  46.5% {
-    transform: translate3d(0, -16.95rem, 0);
-  }
-
-  50%,
-  59% {
-    transform: translate3d(0, -22.6rem, 0);
-  }
-
-  62.5%,
-  71.5% {
-    transform: translate3d(0, -28.25rem, 0);
-  }
-
-  75%,
-  84% {
-    transform: translate3d(0, -33.9rem, 0);
-  }
-
-  87.5%,
-  96.5% {
-    transform: translate3d(0, -39.55rem, 0);
-  }
-
-  100% {
-    transform: translate3d(0, -45.2rem, 0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cabraiz-credit__flag-track {
+  .cabraiz-credit__flag-strip {
     animation: none;
   }
 }
