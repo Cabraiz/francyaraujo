@@ -1937,9 +1937,12 @@ html::-webkit-scrollbar {
   isolation: isolate;
   overflow: hidden;
   perspective: 70rem;
-  pointer-events: none;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: pan-y;
   user-select: none;
   color: #fff;
+  text-decoration: none;
   background: #352a25;
   border: 0.42rem solid #fffaf4;
   border-radius: 0.35rem;
@@ -1949,6 +1952,11 @@ html::-webkit-scrollbar {
   rotate: var(--fan-rotate);
   translate: var(--fan-x) var(--fan-y);
   transform-origin: 50% 115%;
+}
+
+.instagram-fan__card:focus-visible {
+  outline: 0.2rem solid #7b2028;
+  outline-offset: 0.25rem;
 }
 
 .instagram-fan__card-stage {
@@ -2186,6 +2194,10 @@ html::-webkit-scrollbar {
     display: none;
   }
 
+  .instagram-showcase__halo {
+    display: none;
+  }
+
   .instagram-showcase__header {
     display: none;
     width: calc(100% - 2.5rem);
@@ -2209,6 +2221,7 @@ html::-webkit-scrollbar {
   .instagram-fan__card-inner {
     transform: none;
     transform-style: flat;
+    will-change: auto;
   }
 
   .instagram-fan__face--before {
@@ -2261,6 +2274,11 @@ html::-webkit-scrollbar {
     transform-origin: 50% 50%;
   }
 
+  .instagram-fan__card-stage {
+    transform-style: flat;
+    will-change: auto;
+  }
+
   .instagram-fan__card:nth-child(1) {
     z-index: 1;
     margin-top: 0;
@@ -2295,18 +2313,13 @@ html::-webkit-scrollbar {
   }
 
   .instagram-fan__depth-subject {
-    -webkit-mask-image: radial-gradient(
-      ellipse 46% 88% at var(--instagram-subject-mask-x) 50%,
-      #000 0 58%,
-      rgba(0, 0, 0, 0.96) 72%,
-      transparent 100%
-    );
-    mask-image: radial-gradient(
-      ellipse 46% 88% at var(--instagram-subject-mask-x) 50%,
-      #000 0 58%,
-      rgba(0, 0, 0, 0.96) 72%,
-      transparent 100%
-    );
+    -webkit-mask-image: none;
+    mask-image: none;
+    will-change: auto;
+  }
+
+  .instagram-fan__depth-background {
+    display: none;
   }
 
   .instagram-fan__image--background {
@@ -2843,9 +2856,9 @@ html::-webkit-scrollbar {
   }
 
   .cabraiz-credit__metric-icon--flags {
-    --flag-card-width: 1.548rem;
-    --flag-column-gap: 0.68rem;
-    --flag-cycle-width: 17.824rem;
+    --flag-card-width: 1.161rem;
+    --flag-column-gap: 0.85rem;
+    --flag-cycle-width: 16.088rem;
     --flag-row-gap: 0.64rem;
 
     position: absolute;
@@ -3348,9 +3361,9 @@ html::-webkit-scrollbar {
   }
 
   .cabraiz-credit__metric-icon--flags {
-    --flag-card-width: 2.295rem;
-    --flag-column-gap: 0.85rem;
-    --flag-cycle-width: 25.16rem;
+    --flag-card-width: 1.72125rem;
+    --flag-column-gap: 1.0625rem;
+    --flag-cycle-width: 22.27rem;
     --flag-row-gap: 0.88rem;
 
     position: absolute;
@@ -3605,53 +3618,17 @@ html::-webkit-scrollbar {
 
 .cabraiz-credit__metric-icon--flags {
   isolation: isolate;
-  background: #111;
-  box-shadow:
-    inset 0.18rem 0 0.3rem rgba(255, 255, 255, 0.1),
-    inset -0.24rem 0 0.34rem rgba(0, 0, 0, 0.36),
-    -0.18rem 0 0.48rem rgba(0, 0, 0, 0.32),
-    0.18rem 0 0.48rem rgba(0, 0, 0, 0.32);
+  background: #1a1b1b;
+  box-shadow: none;
 }
 
 .cabraiz-credit__metric-icon--flags::before,
 .cabraiz-credit__metric-icon--flags::after {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  content: "";
-  pointer-events: none;
-}
-
-.cabraiz-credit__metric-icon--flags::before {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.42) 0%,
-    rgba(0, 0, 0, 0.08) 14%,
-    transparent 28%,
-    transparent 72%,
-    rgba(0, 0, 0, 0.08) 86%,
-    rgba(0, 0, 0, 0.42) 100%
-  );
-}
-
-.cabraiz-credit__metric-icon--flags::after {
-  inset: 1px;
-  background: linear-gradient(
-    108deg,
-    transparent 14%,
-    rgba(255, 255, 255, 0.13) 38%,
-    transparent 58%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    inset 0.1rem 0 0.2rem rgba(255, 255, 255, 0.08),
-    inset -0.14rem 0 0.24rem rgba(0, 0, 0, 0.32),
-    inset 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 -1px rgba(0, 0, 0, 0.34);
-  mix-blend-mode: soft-light;
+  display: none;
 }
 
 .cabraiz-credit__flag {
+  background: #1a1b1b;
   box-shadow:
     inset 0.12rem 0 0.22rem rgba(255, 255, 255, 0.1),
     inset -0.18rem 0 0.26rem rgba(0, 0, 0, 0.28);
@@ -3671,7 +3648,7 @@ html::-webkit-scrollbar {
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  background: #0a0b0b;
+  background: #1a1b1b;
 }
 
 .cabraiz-credit__flag-strip {
@@ -4008,6 +3985,32 @@ html::-webkit-scrollbar {
     position: relative;
     height: auto;
     min-height: clamp(320px, 62vw, 720px);
+  }
+}
+
+@media (min-width: 1600px) and (min-height: 900px) {
+  .instagram-fan__card {
+    width: 18.1125rem;
+  }
+
+  .instagram-fan__card:nth-child(1) {
+    --fan-x: calc(-50% - 31.05rem);
+    --fan-y: 3.45rem;
+  }
+
+  .instagram-fan__card:nth-child(2) {
+    --fan-x: calc(-50% - 15.525rem);
+    --fan-y: 1.5525rem;
+  }
+
+  .instagram-fan__card:nth-child(4) {
+    --fan-x: calc(-50% + 15.525rem);
+    --fan-y: 1.5525rem;
+  }
+
+  .instagram-fan__card:nth-child(5) {
+    --fan-x: calc(-50% + 31.05rem);
+    --fan-y: 3.45rem;
   }
 }
 

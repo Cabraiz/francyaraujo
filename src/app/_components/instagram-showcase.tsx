@@ -46,6 +46,8 @@ const instagramPosts = [
   },
 ] as const;
 
+const instagramProfileUrl = "https://www.instagram.com/francyaraujocenario/";
+
 function getFaceStyle(post: (typeof instagramPosts)[number]) {
   return {
     "--instagram-face-image-height": `${post.faceLayout.imageHeightPercent}%`,
@@ -93,11 +95,14 @@ export function InstagramShowcase() {
 
       <div className="instagram-fan">
         {instagramPosts.map((post, index) => (
-          <article
-            aria-label={`Transformação ${index + 1}: do cabelo escuro ao ruivo`}
+          <a
+            aria-label={`Ver a transformação ${index + 1} no Instagram da Francy Araújo`}
             className="instagram-fan__card"
             data-scroll-instagram-card
+            href={instagramProfileUrl}
             key={post.afterImage}
+            rel="noreferrer"
+            target="_blank"
           >
             <div
               className="instagram-fan__card-stage"
@@ -177,7 +182,7 @@ export function InstagramShowcase() {
                 </div>
               </div>
             </div>
-          </article>
+          </a>
         ))}
       </div>
     </section>

@@ -446,7 +446,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
               instagram,
             );
 
-            if (instagramCopy) {
+            if (instagramCopy && !mobile) {
               const copyReveal = gsap.timeline({
                 defaults: { ease: "power3.out" },
                 scrollTrigger: {
@@ -511,7 +511,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
               }
             }
 
-            if (instagramHalo) {
+            if (instagramHalo && !mobile) {
               gsap.fromTo(
                 instagramHalo,
                 { rotation: -2.5, scale: 0.92, yPercent: -5 },
@@ -531,13 +531,13 @@ export function ScrollExperience({ children }: Readonly<Props>) {
               );
             }
 
-            gsap.set(instagramStages, {
-              force3D: true,
-              transformOrigin: "50% 55%",
-              transformPerspective: 1200,
-            });
-
             if (pinnedGallery) {
+              gsap.set(instagramStages, {
+                force3D: true,
+                transformOrigin: "50% 55%",
+                transformPerspective: 1200,
+              });
+
               const fanReveal = gsap.timeline({
                 scrollTrigger: {
                   once: true,
@@ -619,23 +619,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                   "-=0.48",
                 );
             } else {
-              instagramCards.forEach((card, index) => {
-                const cardStage = card.querySelector<HTMLElement>(
-                  "[data-scroll-instagram-stage]",
-                );
-                const cardMeta = gsap.utils.toArray<HTMLElement>(
-                  ".instagram-fan__face--after .instagram-fan__meta",
-                  card,
-                );
-                const cardShine = card.querySelector<HTMLElement>(
-                  ".instagram-fan__face--after .instagram-fan__shine",
-                );
-                const cardScene = card.querySelector<HTMLElement>(
-                  "[data-scroll-instagram-background]",
-                );
-                const cardSubject = card.querySelector<HTMLElement>(
-                  "[data-scroll-instagram-subject]",
-                );
+              instagramCards.forEach((card) => {
                 const cardReveal = gsap.timeline({
                   scrollTrigger: {
                     once: true,
@@ -646,100 +630,14 @@ export function ScrollExperience({ children }: Readonly<Props>) {
 
                 cardReveal.fromTo(
                   card,
-                  { autoAlpha: 0 },
+                  { autoAlpha: 0, y: 28 },
                   {
                     autoAlpha: 1,
-                    duration: 0.78,
+                    duration: 0.58,
                     ease: "power3.out",
+                    y: 0,
                   },
                 );
-
-                if (cardStage) {
-                  cardReveal.fromTo(
-                    cardStage,
-                    {
-                      rotationX: index % 2 === 0 ? 8 : -8,
-                      scale: 0.94,
-                      y: 72,
-                    },
-                    {
-                      duration: 0.78,
-                      ease: "power3.out",
-                      rotationX: 0,
-                      scale: 1,
-                      y: 0,
-                    },
-                    0,
-                  );
-                }
-
-                if (cardScene) {
-                  cardReveal.fromTo(
-                    cardScene,
-                    {
-                      force3D: true,
-                      scale: 1.09,
-                      xPercent: index % 2 === 0 ? -3 : 3,
-                    },
-                    {
-                      duration: 1.05,
-                      ease: "power2.out",
-                      force3D: true,
-                      scale: 1.015,
-                      xPercent: 0,
-                    },
-                    0,
-                  );
-                }
-
-                if (cardSubject) {
-                  cardReveal.fromTo(
-                    cardSubject,
-                    {
-                      autoAlpha: 0,
-                      clipPath: "inset(22% 0 0 0)",
-                      force3D: true,
-                      scale: 0.9,
-                      xPercent: index % 2 === 0 ? -7 : 7,
-                      yPercent: 16,
-                    },
-                    {
-                      autoAlpha: 1,
-                      clipPath: "inset(0% 0 0 0)",
-                      duration: 0.92,
-                      ease: "power3.out",
-                      force3D: true,
-                      scale: 1,
-                      xPercent: 0,
-                      yPercent: 0,
-                    },
-                    0.16,
-                  );
-                }
-
-                if (cardMeta.length > 0) {
-                  cardReveal.fromTo(
-                    cardMeta,
-                    { autoAlpha: 0, x: 28 },
-                    {
-                      autoAlpha: 1,
-                      duration: 0.42,
-                      ease: "power2.out",
-                      stagger: 0.04,
-                      x: 0,
-                    },
-                    "-=0.38",
-                  );
-                }
-
-                if (cardShine) {
-                  cardReveal.fromTo(
-                    cardShine,
-                    { autoAlpha: 0 },
-                    { autoAlpha: 1, duration: 0.35, ease: "power2.out" },
-                    "-=0.34",
-                  );
-                }
               });
             }
 
@@ -840,10 +738,7 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                       invalidateOnRefresh: true,
                       onLeave: (self) => {
                         advanceTransformation(1);
-                        self.disable(true);
-                        window.requestAnimationFrame(() => {
-                          ScrollTrigger.refresh();
-                        });
+                        self.disable(false);
                       },
                       onUpdate: (self) => advanceTransformation(self.progress),
                       pin: true,
