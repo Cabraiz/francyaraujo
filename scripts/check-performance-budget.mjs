@@ -13,7 +13,8 @@ const imageExtensions = new Set([
   ".webp",
 ]);
 const maximumImageBytes = 600 * 1024;
-const maximumTotalBytes = 3 * 1024 * 1024;
+const maximumCoreBytes = 3 * 1024 * 1024;
+const maximumTotalBytes = 4 * 1024 * 1024;
 const excludedFromPagePayload = new Set(["og.jpg"]);
 
 async function collectImages(directory) {
@@ -48,26 +49,42 @@ async function collectImages(directory) {
 
 const images = await collectImages(publicDirectory);
 const totalBytes = images.reduce((total, image) => total + image.bytes, 0);
+const coreBytes = images
+  .filter(
+    (image) =>
+      !(image.path.includes("-desktop-") && image.path.includes("-hq.")),
+  )
+  .reduce((total, image) => total + image.bytes, 0);
 const oversizedImages = images.filter(
   (image) => image.bytes > maximumImageBytes,
 );
 
-if (oversizedImages.length > 0 || totalBytes > maximumTotalBytes) {
+if (
+  oversizedImages.length > 0 ||
+  coreBytes > maximumCoreBytes ||
+  totalBytes > maximumTotalBytes
+) {
   for (const image of oversizedImages) {
     console.error(
       `${image.path} ultrapassa o limite: ${(image.bytes / 1024).toFixed(1)} KB`,
     );
   }
 
+  if (coreBytes > maximumCoreBytes) {
+    console.error(
+      `As imagens principais somam ${(coreBytes / 1024 / 1024).toFixed(2)} MB; o limite é 3 MB.`,
+    );
+  }
+
   if (totalBytes > maximumTotalBytes) {
     console.error(
-      `As imagens somam ${(totalBytes / 1024 / 1024).toFixed(2)} MB; o limite é 2 MB.`,
+      `As imagens com variantes HQ de desktop somam ${(totalBytes / 1024 / 1024).toFixed(2)} MB; o limite é 4 MB.`,
     );
   }
 
   process.exitCode = 1;
 } else {
   console.log(
-    `Orçamento aprovado: ${images.length} imagens, ${(totalBytes / 1024 / 1024).toFixed(2)} MB no total.`,
+    `Orçamento aprovado: ${images.length} imagens, ${(coreBytes / 1024 / 1024).toFixed(2)} MB principais e ${(totalBytes / 1024 / 1024).toFixed(2)} MB com HQ de desktop.`,
   );
 }

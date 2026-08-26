@@ -445,6 +445,14 @@ export function ScrollExperience({ children }: Readonly<Props>) {
               "[data-scroll-instagram-stage]",
               instagram,
             );
+            const instagramCompletionLayers = gsap.utils.toArray<HTMLElement>(
+              "[data-scroll-instagram-background], [data-scroll-instagram-subject]",
+              instagram,
+            );
+            const instagramCompletionOverlays = gsap.utils.toArray<HTMLElement>(
+              ".instagram-fan__meta, .instagram-fan__shine",
+              instagram,
+            );
 
             if (instagramCopy && !mobile) {
               const copyReveal = gsap.timeline({
@@ -737,8 +745,30 @@ export function ScrollExperience({ children }: Readonly<Props>) {
                         `+=${Math.max(window.innerHeight * 0.85, 720)}`,
                       invalidateOnRefresh: true,
                       onLeave: (self) => {
+                        const preservedScrollPosition = self.start;
+
                         advanceTransformation(1);
-                        self.disable(false);
+                        instagram.dataset.transformationComplete = "true";
+                        gsap.set(
+                          [
+                            ...instagramStages,
+                            ...instagramFlips,
+                            ...instagramCompletionLayers,
+                          ],
+                          { clearProps: "transform,willChange" },
+                        );
+                        gsap.set(instagramCompletionOverlays, {
+                          clearProps: "opacity,transform,visibility,willChange",
+                        });
+                        self.kill(true);
+                        window.dispatchEvent(
+                          new CustomEvent("francy:settle-scroll", {
+                            detail: { top: preservedScrollPosition },
+                          }),
+                        );
+                        window.requestAnimationFrame(() => {
+                          ScrollTrigger.refresh();
+                        });
                       },
                       onUpdate: (self) => advanceTransformation(self.progress),
                       pin: true,

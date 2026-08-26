@@ -8,6 +8,8 @@ const instagramPosts = [
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-01.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-01.avif",
+    desktopFlatImage:
+      "/assets/blog/dynamic-routing/instagram-francy-01-desktop-flat-hq.avif?v=2",
     sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-01.avif",
     faceLayout: faceLayout.photos["01"].layout,
     faceSource: faceLayout.photos["01"].face.source,
@@ -16,6 +18,8 @@ const instagramPosts = [
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-02.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-02.avif",
+    desktopFlatImage:
+      "/assets/blog/dynamic-routing/instagram-francy-02-desktop-flat-hq.avif",
     sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-02.avif",
     faceLayout: faceLayout.photos["02"].layout,
     faceSource: faceLayout.photos["02"].face.source,
@@ -24,6 +28,8 @@ const instagramPosts = [
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-03.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-03.avif",
+    desktopFlatImage:
+      "/assets/blog/dynamic-routing/instagram-francy-03-desktop-flat-hq.avif",
     sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-03.avif",
     faceLayout: faceLayout.photos["03"].layout,
     faceSource: faceLayout.photos["03"].face.source,
@@ -32,6 +38,8 @@ const instagramPosts = [
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-04.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-04.avif",
+    desktopFlatImage:
+      "/assets/blog/dynamic-routing/instagram-francy-04-desktop-flat-hq.avif?v=2",
     sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-04.avif",
     faceLayout: faceLayout.photos["04"].layout,
     faceSource: faceLayout.photos["04"].face.source,
@@ -40,6 +48,8 @@ const instagramPosts = [
     afterImage:
       "/assets/blog/dynamic-routing/instagram-francy-synthetic-05.avif",
     beforeImage: "/assets/blog/dynamic-routing/instagram-francy-before-05.avif",
+    desktopFlatImage:
+      "/assets/blog/dynamic-routing/instagram-francy-05-desktop-flat-hq.avif?v=2",
     sceneImage: "/assets/blog/dynamic-routing/instagram-francy-scene-05.avif",
     faceLayout: faceLayout.photos["05"].layout,
     faceSource: faceLayout.photos["05"].face.source,
@@ -69,9 +79,6 @@ export function InstagramShowcase() {
       <div aria-hidden="true" className="instagram-showcase__halo" />
       <header className="instagram-showcase__header" data-scroll-instagram-copy>
         <div>
-          <p className="instagram-showcase__eyebrow">
-            SERVIÇOS · PORTFÓLIO VIVO
-          </p>
           <h2 id="instagram-showcase-title">
             Transformações que
             <span> falam por si.</span>
@@ -98,6 +105,7 @@ export function InstagramShowcase() {
           <a
             aria-label={`Ver a transformação ${index + 1} no Instagram da Francy Araújo`}
             className="instagram-fan__card"
+            data-desktop-flat={post.desktopFlatImage ? "true" : undefined}
             data-scroll-instagram-card
             href={instagramProfileUrl}
             key={post.afterImage}
@@ -168,6 +176,17 @@ export function InstagramShowcase() {
                       />
                     </span>
                   </span>
+                  {post.desktopFlatImage ? (
+                    <span
+                      aria-hidden="true"
+                      className="instagram-fan__desktop-flat"
+                      style={
+                        {
+                          "--instagram-desktop-flat-image": `url("${post.desktopFlatImage}")`,
+                        } as CSSProperties
+                      }
+                    />
+                  ) : null}
                   <span className="instagram-fan__shine" />
                   <span className="instagram-fan__meta">
                     <span>

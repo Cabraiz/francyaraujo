@@ -20,6 +20,7 @@ export function SmoothScroll({ children }: Readonly<Props>) {
     const precisePointer = window.matchMedia("(pointer: fine)");
     let lenis: Lenis | null = null;
     let refreshFrame = 0;
+    let settleFrame = 0;
 
     const stopLenis = () => {
       if (!lenis) return;
@@ -32,6 +33,26 @@ export function SmoothScroll({ children }: Readonly<Props>) {
 
     const updateLenis = (time: number) => {
       lenis?.raf(time * 1000);
+    };
+
+    const settleScroll = (event: Event) => {
+      const top = (event as CustomEvent<{ top?: unknown }>).detail?.top;
+
+      if (typeof top !== "number" || !Number.isFinite(top)) return;
+
+      window.cancelAnimationFrame(settleFrame);
+
+      if (!lenis) {
+        window.scrollTo({ behavior: "instant", top });
+        return;
+      }
+
+      lenis.stop();
+      lenis.scrollTo(top, { force: true, immediate: true });
+      settleFrame = window.requestAnimationFrame(() => {
+        settleFrame = 0;
+        lenis?.start();
+      });
     };
 
     const configureScroll = () => {
@@ -62,13 +83,16 @@ export function SmoothScroll({ children }: Readonly<Props>) {
     };
 
     configureScroll();
+    window.addEventListener("francy:settle-scroll", settleScroll);
     reducedMotion.addEventListener("change", configureScroll);
     precisePointer.addEventListener("change", configureScroll);
 
     return () => {
+      window.removeEventListener("francy:settle-scroll", settleScroll);
       reducedMotion.removeEventListener("change", configureScroll);
       precisePointer.removeEventListener("change", configureScroll);
       window.cancelAnimationFrame(refreshFrame);
+      window.cancelAnimationFrame(settleFrame);
       stopLenis();
       delete document.documentElement.dataset.scrollMode;
     };
