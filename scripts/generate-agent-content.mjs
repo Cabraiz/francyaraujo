@@ -40,6 +40,7 @@ Preços, horários disponíveis e duração dos serviços devem ser confirmados 
 - [Página inicial em HTML](${siteUrl}/)
 - [Índice para agentes de IA](${siteUrl}/llms.txt)
 - [Conteúdo completo para agentes](${siteUrl}/llms-full.txt)
+- [Relatório de prontidão para agentes](${siteUrl}/agent-readiness.json)
 - [Sitemap XML](${siteUrl}/sitemap.xml)
 - [Regras de rastreamento](${siteUrl}/robots.txt)
 `;
@@ -63,6 +64,7 @@ const llmsIndex = `# Francy Araújo
 
 - [Sitemap](${siteUrl}/sitemap.xml)
 - [Robots](${siteUrl}/robots.txt)
+- [Relatório de prontidão](${siteUrl}/agent-readiness.json): checklist automatizado publicado pelo pipeline do site.
 `;
 
 const llmsFull = `${homepageMarkdown.trim()}
