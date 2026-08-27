@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const minimumVisibleDuration = 500;
+const minimumVisibleDuration = 700;
 const maximumAssetWaitDuration = 6_000;
-const exitDuration = 360;
+const exitDuration = 520;
 
 type LoaderPhase = "loading" | "leaving" | "hidden";
 
@@ -99,10 +100,27 @@ export function InitialSiteLoader() {
       data-site-loader={phase}
       role="status"
     >
+      <div aria-hidden="true" className="site-initial-loader__halo" />
       <div className="site-initial-loader__content">
+        <div aria-hidden="true" className="site-initial-loader__emblem">
+          <Image
+            alt=""
+            height={120}
+            priority
+            sizes="(max-width: 767px) 96px, 116px"
+            src="/assets/blog/dynamic-routing/preloader-emblem-minimal-v2.webp"
+            width={120}
+          />
+        </div>
         <strong className="site-initial-loader__brand">FRANCY ARAÚJO</strong>
+        <span className="site-initial-loader__tagline">
+          BELEZA · ESTILO · CONFIANÇA
+        </span>
         <span aria-hidden="true" className="site-initial-loader__progress">
           <i />
+        </span>
+        <span className="site-initial-loader__status">
+          Preparando seu ritual
         </span>
       </div>
     </div>
