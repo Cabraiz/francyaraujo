@@ -2,6 +2,7 @@ import cn from "classnames";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
+import { InitialSiteLoader } from "@/app/_components/initial-site-loader";
 import { SmoothScroll } from "@/app/_components/smooth-scroll";
 import { ThemeSwitcher } from "./_components/theme-switcher";
 
@@ -193,7 +194,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html data-site-loading="true" lang="pt-BR">
       <head>
         <link rel="describedby" href="/llms.txt" type="text/markdown" />
         <script
@@ -228,6 +229,13 @@ export default function RootLayout({
           content="/favicon/browserconfig.xml"
         />
         <meta name="theme-color" content="#1c120e" />
+        <noscript>
+          <style>{`
+            html[data-site-loading] { overflow: auto !important; }
+            .site-initial-loader { display: none !important; }
+            .site-content { opacity: 1 !important; visibility: visible !important; }
+          `}</style>
+        </noscript>
       </head>
       <body
         className={cn(
@@ -235,6 +243,7 @@ export default function RootLayout({
           "bg-[#1c120e] text-white dark:bg-[#1c120e] dark:text-white",
         )}
       >
+        <InitialSiteLoader />
         <SmoothScroll>
           <ThemeSwitcher />
           <noscript>
@@ -253,7 +262,7 @@ export default function RootLayout({
               <a href="/llms.txt">Índice para agentes de IA</a>
             </nav>
           </noscript>
-          <div className="min-h-screen">{children}</div>
+          <div className="site-content min-h-screen">{children}</div>
         </SmoothScroll>
       </body>
     </html>

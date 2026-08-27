@@ -112,6 +112,16 @@ for (const [id, signal, label] of [
 
 for (const [id, signal, label] of [
   [
+    "initial-loader",
+    'data-site-loader="loading"',
+    "HTML possui abertura inicial protegida",
+  ],
+  [
+    "initial-loader-noscript",
+    ".site-initial-loader { display: none !important; }",
+    "Abertura inicial possui escape sem JavaScript",
+  ],
+  [
     "no-js-fallback",
     'data-agent-fallback="navigation"',
     "HTML possui navegação sem JavaScript",
