@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const minimumVisibleDuration = 700;
+const minimumVisibleDuration = 500;
 const maximumAssetWaitDuration = 6_000;
-const exitDuration = 520;
+const exitDuration = 360;
 
 type LoaderPhase = "loading" | "leaving" | "hidden";
 
@@ -92,6 +91,7 @@ export function InitialSiteLoader() {
 
   return (
     <div
+      aria-label="Carregando o site da Francy Araújo"
       aria-live="polite"
       className={`site-initial-loader ${
         phase === "leaving" ? "site-initial-loader--leaving" : ""
@@ -99,27 +99,10 @@ export function InitialSiteLoader() {
       data-site-loader={phase}
       role="status"
     >
-      <div aria-hidden="true" className="site-initial-loader__halo" />
       <div className="site-initial-loader__content">
-        <div aria-hidden="true" className="site-initial-loader__emblem">
-          <Image
-            alt=""
-            height={136}
-            priority
-            sizes="(max-width: 767px) 96px, 116px"
-            src="/assets/blog/dynamic-routing/preloader-emblem-v1.webp"
-            width={136}
-          />
-        </div>
         <strong className="site-initial-loader__brand">FRANCY ARAÚJO</strong>
-        <span className="site-initial-loader__tagline">
-          BELEZA · ESTILO · CONFIANÇA
-        </span>
         <span aria-hidden="true" className="site-initial-loader__progress">
           <i />
-        </span>
-        <span className="site-initial-loader__status">
-          Preparando seu ritual
         </span>
       </div>
     </div>

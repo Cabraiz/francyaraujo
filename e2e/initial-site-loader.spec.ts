@@ -24,7 +24,7 @@ test("protege o primeiro frame até fontes e imagem crítica estarem prontas", a
   await expect(root).toHaveAttribute("data-site-loading", "true");
   await expect(loader).toBeVisible();
   await expect(loader).toContainText("FRANCY ARAÚJO");
-  await expect(loader).toContainText("Preparando seu ritual");
+  await expect(loader.locator("img")).toHaveCount(0);
   await expect(content).toHaveCSS("opacity", "0");
   await expect(root).toHaveCSS("overflow", "hidden");
 
