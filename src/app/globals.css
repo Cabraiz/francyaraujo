@@ -3571,9 +3571,9 @@ html[data-site-loading="true"] .site-content {
   }
 
   .cabraiz-credit__metric-icon--flags {
-    --flag-card-width: 0.72rem;
+    --flag-card-width: 1.44rem;
     --flag-column-gap: 0.72rem;
-    --flag-cycle-width: 11.52rem;
+    --flag-cycle-width: 17.28rem;
     --flag-handoff-bottom-delay: -10.762s;
     --flag-handoff-middle-delay: -8.511s;
     --flag-row-gap: 0.6rem;
@@ -3684,7 +3684,7 @@ html[data-site-loading="true"] .site-content {
   .cabraiz-credit__metric strong {
     grid-column: 1;
     align-self: end;
-    font-size: clamp(0.62rem, 2.75vw, 0.76rem);
+    font-size: clamp(0.74rem, 3.15vw, 0.86rem);
     font-weight: 700;
     white-space: nowrap;
     text-align: center;
@@ -3694,9 +3694,9 @@ html[data-site-loading="true"] .site-content {
     max-width: none;
     grid-column: 1;
     align-self: start;
-    font-size: clamp(0.3rem, 1.38vw, 0.37rem);
-    line-height: 1.22;
-    letter-spacing: 0.035em;
+    font-size: clamp(0.4rem, 1.8vw, 0.46rem);
+    line-height: 1.18;
+    letter-spacing: 0.02em;
     text-align: center;
   }
 
@@ -3720,26 +3720,11 @@ html[data-site-loading="true"] .site-content {
   }
 
   .cabraiz-credit__mountain::after {
-    background:
-      linear-gradient(
-        180deg,
-        #070808 0%,
-        transparent 22%,
-        transparent 74%,
-        rgba(7, 8, 8, 0.72) 100%
-      ),
-      linear-gradient(
-        90deg,
-        #070808 0%,
-        transparent 12%,
-        transparent 88%,
-        #070808 100%
-      );
+    display: none;
   }
 
   .cabraiz-credit__mountain img {
-    object-position: 50% 58%;
-    filter: grayscale(1) contrast(1.28) brightness(0.76);
+    display: none;
   }
 
   .cabraiz-credit__cta {
